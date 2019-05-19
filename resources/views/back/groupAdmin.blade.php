@@ -1,4 +1,4 @@
-@extends('back.dashUsers')
+@extends('back.admins')
 
 @section('user-content')
 <br><br>

@@ -77,6 +77,40 @@ Route::group(['middleware' => 'admin'], function () {
 	* End Admin route
 	*/
 
+	// Editor routes 
+	Route::get('/admin/editor', function () {
+	    return view('back/selectEditor');
+	})->name('select.editor');
+
+	Route::post('/admin/editor/store/images', 'EditorController@builderStorageImage')->name('storage.images');
+
+	Route::get('/admin/editor/{type}', 'EditorController@loadEditor')->name('select.type.editor');
+
+	Route::post('/admin/editor/store/{page}', 'EditorController@builderPost');
+
+	Route::get('/admin/editor/{page}/load', 'EditorController@builderLoad');
+
+	// End editor routes 
+
+	/*
+	* Pages to Back-end route
+	*/
+	Route::get('admin/dashboard/pages', 'PageController')->name('dash.pages');
+
+	Route::get('admin/dashboard/pages/add', 'PageController@showForm')->name('add.page');
+
+	Route::post('admin/dashboard/pages/add/save', 'PageController@addPage')->name('add.page.action');
+
+	Route::get('admin/dashboard/pages/edit/{page}', 'PageController@showForm')->name('edit.page');
+
+	Route::post('admin/dashboard/pages/edit/save', 'PageController@editPage')->name('edit.page.action');
+
+	Route::get('admin/dashboard/pages/delete/{page}', 'PageController@deletePage')->name('delete.page');
+
+
+
+	Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
+
 });
 
 
@@ -84,36 +118,3 @@ Route::get('/sign', function () {
     return view('front/sign');
 });
 
-// Editor routes 
-Route::get('/admin/editor', function () {
-    return view('back/selectEditor');
-})->name('select.editor');
-
-Route::post('/admin/editor/store/images', 'EditorController@builderStorageImage')->name('storage.images');
-
-Route::get('/admin/editor/{type}', 'EditorController@loadEditor')->name('select.type.editor');
-
-Route::post('/admin/editor/store/{page}', 'EditorController@builderPost');
-
-Route::get('/admin/editor/{page}/load', 'EditorController@builderLoad');
-
-// End editor routes 
-
-/*
-* Pages to Back-end route
-*/
-Route::get('admin/dashboard/pages', 'PageController')->name('dash.pages');
-
-Route::get('admin/dashboard/pages/add', 'PageController@showForm')->name('add.page');
-
-Route::post('admin/dashboard/pages/add/save', 'PageController@addPage')->name('add.page.action');
-
-Route::get('admin/dashboard/pages/edit/{page}', 'PageController@showForm')->name('edit.page');
-
-Route::post('admin/dashboard/pages/edit/save', 'PageController@editPage')->name('edit.page.action');
-
-Route::get('admin/dashboard/pages/delete/{page}', 'PageController@deletePage')->name('delete.page');
-
-
-
-Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
