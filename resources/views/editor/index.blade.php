@@ -3,12 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Huka Editor</title> 
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/editor.css') }}">
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/editor.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
+    <script src="{{ asset('js/app.js') }}"></script>
     <style>
       body,
 
@@ -51,6 +49,9 @@
       .panel__top {
         padding: 0;
         width: 100%;
+        height: 7%;
+        min-height: 43px;
+        max-height: 45px;
         display: flex;
         position: initial;
         justify-content: center;
@@ -58,6 +59,7 @@
       }
       .panel__basic-actions {
         width: 9%;
+        max-width: 126px;
         position: initial;
         border: 2px solid rgba(0,0,0,0.2);
       }
@@ -74,6 +76,7 @@
 
       .panel__switcher {
         width: 14.5%;
+        max-width: 200px;
         border: 2px solid rgba(0,0,0,0.2);
         position: initial;
       }
@@ -83,7 +86,7 @@
         justify-content: flex-start;
         align-items: stretch;
         flex-wrap: nowrap;
-        height: 300px;
+        height: 100%;
       }
 
       .editor-canvas {
@@ -94,19 +97,18 @@
         flex-basis: 200px;
         position: relative;
         overflow-y: auto;
-        height: 590px;
+        height: 100%;
       }
       .panel__left {
         flex-basis: 125px;
         position: relative;
         overflow-y: auto;
-        height: 590px;
+        height: 100%;
       }
       .pages-btn{
         width: 100%; 
         background: rgba(0,0,0,0.1); 
         color: white; 
-        padding: 3px;
         padding-right: 10px;
         outline: none; 
         border: 1px solid rgba(0,0,0,0.25);
@@ -151,9 +153,8 @@
       </div>
     </div>
     <script type="text/javascript">
-      // Before load editor we must set the variables token, pages and images 
-      const token = "{{ csrf_token() }}";
       // These pages are getting through the controller and only get pages corresponding to selected type are set
+      const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
       const pages = [
       @foreach($pages as $page)
         {

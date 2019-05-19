@@ -117,12 +117,11 @@ class PageController extends Controller
     public function loadFrontEnd(Page $page)
     {
         if (!empty($page)) {
-            $builder = json_decode($page->builder, true);
-            $components = json_decode($builder['gjs-components']);
+            $components = json_decode($page->components, true);
             return view('index', [
             	'page' => $page,
-            	'components' => $components,
-            	'css' => $builder['gjs-css'],
+            	'components' => json_decode($components, true),
+            	'css' => $page->css,
                 'template' => 'css/bootstrap-new.css'
             ]);
         }

@@ -3,12 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $page->name }}</title> 
     <style>
     {{ $css }}
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset($template) }}">
+    <script src="{{ asset('js/app.js') }}"></script>
   </head>
   <body>
     @if($errors->all() != [])
@@ -19,7 +20,7 @@
       </ul>
     @endif
     <script type="text/javascript">
-      const token = '{{ csrf_token() }}';
+      const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
       const components = @json($components);
       components.forEach(function(component) {
         element = builderElement(component);
