@@ -40,7 +40,7 @@
     }
     </style>
   </head>
-  <body>
+  <body><br><br>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
       <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
@@ -71,15 +71,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link @if(request()->is('admin/dashboard/functionality')) active @endif" href="{{ route('dash.functionality') }}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                  Functionalities
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link @if(request()->is('admin/dashboard/template')) active @endif" href="{{ route('dash.template') }}">
+                <a class="nav-link @if(request()->is('admin/dashboard/products/modules') || request()->is('admin/dashboard/products/templates')) active @endif" href="{{ route('dash.products') }}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                  Templates
+                  Products
                 </a>
               </li>
               <li class="nav-item">

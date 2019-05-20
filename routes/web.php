@@ -32,23 +32,23 @@ Route::group(['middleware' => 'admin'], function () {
 	    return view('back/content');
 	})->name('dash.init');
 
-	Route::get('/admin/dashboard/functionality', 'FunctionalityController')->name('dash.functionality');
+	Route::get('admin/dashboard/products/modules', 'ProductsController')->name('dash.products');
 
-	Route::get('/admin/dashboard/template', 'TemplateController')->name('dash.template');
+	Route::get('admin/dashboard/products/templates', 'ProductsController')->name('dash.products.templates');
 
 	Route::get('/admin/dashboard/configuration', 'ConfigurationController')->name('dash.configuration');
 
-	Route::post('/admin/dashboard/install-functionality', 'FunctionalityController@installFunctionality')->name('install.functionality');
+	Route::post('/admin/dashboard/module/install', 'ProductsController@installProduct')->name('install.products');
 
-	Route::post('/admin/dashboard/delete-functionality', 'FunctionalityController@deleteFunctionality')->name('delete.functionality');
+	Route::post('/admin/dashboard/module/delete', 'ProductsController@deleteProduct')->name('delete.products');
 
-	Route::post('/admin/dashboard/update-functionality', 'FunctionalityController@updateFunctionality')->name('update.functionality');
+	Route::post('/admin/dashboard/module/update', 'ProductsController@updateProduct')->name('update.products');
 
-	Route::post('/admin/dashboard/install-template', 'TemplateController@installTemplate')->name('install.template');
+	Route::post('/admin/dashboard/template/install', 'ProductsController@installProduct')->name('install.products.template');
 
-	Route::post('/admin/dashboard/delete-template', 'TemplateController@deleteTemplate')->name('delete.template');
+	Route::post('/admin/dashboard/template/delete', 'ProductsController@deleteProduct')->name('delete.products.template');
 
-	Route::post('/admin/dashboard/update-template', 'TemplateController@updateTemplate')->name('update.template');
+	Route::post('/admin/dashboard/template/update', 'ProductsController@updateProduct')->name('update.products.template');
 
 	/*
 	* Functionalities Admin route

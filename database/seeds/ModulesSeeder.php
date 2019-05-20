@@ -16,7 +16,6 @@ class ModulesSeeder extends Seeder
         DB::table('modules')->insert([
             'name' => 'Authentication',
             'description' => 'Module to login and register',
-            'route' => 'route',
             'icon' => 'icon',
             'active' => true,
         ]);
