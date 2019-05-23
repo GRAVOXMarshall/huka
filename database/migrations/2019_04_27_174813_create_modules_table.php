@@ -18,8 +18,7 @@ class CreateModulesTable extends Migration
             $table->unsignedInteger('parent_id')->default(0);
             $table->string('name', 255);
             $table->text('description');
-            $table->text('icon');
-            $table->boolean('active');
+            $table->boolean('active')->default(0);;
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Classes;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Classes\ModuleConfigure;
 use Illuminate\Database\Eloquent\Model;
 
 class Module extends Model
@@ -13,32 +15,46 @@ class Module extends Model
      */
     protected $table = 'modules';
 
-    protected $fillable = ['parent_id', 'web_id', 'name', 'description', 'route', 'icon', 'active'];
+    protected $fillable = ['name', 'description'];
+
+    public $name;
+
+    public $description;
+
+    public $error;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
-     * Insert module into datable
+     * Insert module into database
+     * @return bool result
      */
     public function install()
     {
         // Check if module is installed
-        /*
-        $result = Module::isInstalled($this->name);
+        $result = $this->isInstalled($this->name);
         if ($result) {
-            $this->_errors[] = Tools::displayError('This module has already been installed.');
+            $this->error = 'This module has already been installed.';
             return false;
         }
 
         // Install module and retrieve the installation id
-        $result = Db::getInstance()->insert($this->table, array('name' => $this->name, 'active' => 1));
+        $result = DB::table('modules')->insert([
+            'name' => $this->name, 
+            'description' => $this->description,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
 
         if (!$result) {
-            $this->_errors[] = Tools::displayError('Technical error: PrestaShop could not install this module.');
+            $this->error = 'Problem to insert';
             return false;
         }
-        $this->id = Db::getInstance()->Insert_ID();
 
         return true;
-        */
     }
 
      /**
@@ -47,25 +63,98 @@ class Module extends Model
      * @return bool result
      */
     public function uninstall()
-    {
-    	/*
-        // Check module installation id validation
-        if (!Validate::isUnsignedId($this->id)) {
-            $this->_errors[] = Tools::displayError('The module is not installed.');
+    {  
+        // Check if module is installed
+        if (!$this->isInstalled($this->attributes['name'])) {
+            $this->error = 'The module is not installed.';
             return false;
         }
+        // Disable the module
+        $this->active(false);
 
-        // Disable the module for all shops
-        $this->disable(true);
-
+        $deletedRows = ModuleConfigure::where('module_id', $this->attributes['id'])->delete();
 
         // Uninstall the module
-        if (Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'module` WHERE `id_module` = '.(int)$this->id)) {
+        if (parent::delete()) {
             return true;
         }
 
         return false;
-        */
+    }
+
+    /**
+     * Validate if a module is already registered in database
+     * @param string
+     * @return bool result
+     */
+    public function isInstalled($name = null)
+    {
+        $result = false;
+        if (!is_null($name)) {
+            try {
+                $module = Module::where('name', '=', $name)->first();
+                if (!is_null($module)) {
+                    $result = true;
+                }
+            } catch (Exception $e) {
+                
+            }
+            
+        }
+        return $result;
+    }
+
+    /**
+     * Update or register a module configuration
+     * @param string to module_name, name and description
+     * @param integer to step
+     * @return bool result
+     */
+    public function updateConfiguration($module_name = null, $name = null, $description = null, $step = 0)
+    {
+        if ($step > 0 && !is_null($module_name) && !is_null($name) && !is_null($description) && !is_null($module = $this->getByName($module_name))) {
+            $configuration = ModuleConfigure::firstOrNew(['module_id' => $module->id, 'name' => $name]);
+            $configuration->description = $description;
+            $configuration->step = $step;
+            if ($configuration->save()) {
+                return true;
+            }
+
+        }
+        $this->error = 'Problem to install this module.';
+        return false;
+    }
+
+     /**
+     * Get object module by name
+     * @param string
+     * @return Object Module
+     */
+    public function getByName($name = null)
+    {
+        if (!is_null($name)) {
+            try {
+                $module = Module::where('name', '=', $name)->first();
+                if (!is_null($module)) {
+                    return $module;
+                }
+            } catch (Exception $e) {
+                
+            }
+        }
+        $this->error = 'Module Invalid';
+        return null;
+    }
+
+    /**
+     * Active or disable module in db
+     * @param bool
+     * @return void
+     */
+    public function active($active = true)
+    {
+        $this->attributes['active'] = $active;
+        parent::save();
     }
 
 }

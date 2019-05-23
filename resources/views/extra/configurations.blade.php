@@ -3,17 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Laravel</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/editor.css') }}">
-    <!-- Custom styles for this template -->
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -39,10 +34,7 @@
       -webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;
       }
     </style>
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script src="{{ asset('js/editor.js') }}"></script>
-    <script src="{{ asset('js/grapesjs-plugin.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
   </head>
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">

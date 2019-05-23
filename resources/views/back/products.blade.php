@@ -133,8 +133,8 @@
                                   </div>
                               @if($softwareFunctionality && in_array($functionality['name'], array_column($softwareFunctionality->toArray(), 'name')))
                                 @foreach($softwareFunctionality as $soft)
-                                  @if($soft->name === $functionality['name'])
-                                    @if($soft->active === 0)
+                                  @if($soft['name'] === $functionality['name'])
+                                    @if($soft['active'] === 0)
                                     <div class="d-flex align-items-center">
 
                                     <div class="u-ver-divider pr-3 mr-3">
@@ -152,12 +152,10 @@
                                       <button class="btn btn-primary" style="width: 112px;">Uninstall</button>
                                     </form>
                                     </div>
-
                                     </div>
                                     
-                                    
                                     @endif
-                                    @if($soft->active === 1)
+                                    @if($soft['active'] === 1)
                                     <div class="d-flex align-items-center">
 
                                     <div class="u-ver-divider pr-3 mr-3">
@@ -185,7 +183,8 @@
                               @else
                                 <form action="{{ route('install.products') }}" method="post">
                                     @csrf
-                                    <input type="text" hidden value="{{ Crypt::encrypt($functionality['id']) }}" name="func_id">
+                                    <input type="hidden" name="type" value="functionality">
+                                    <input type="hidden" name="product_id" value="{{ Crypt::encrypt($functionality['id']) }}" >
                                     <button class="btn btn-primary" style="width: 112px;">Install</button>
                                 </form>
                               @endif
@@ -236,7 +235,8 @@
        
                         <form action="{{ route('install.products') }}" method="post">
                           @csrf
-                          <input type="text" hidden value="{{ Crypt::encrypt($functionality['id']) }}" name="func_id">
+                          <input type="hidden" name="type" value="functionality">
+                          <input type="hidden" name="product_id" value="{{ Crypt::encrypt($functionality['id']) }}" >
                           <button class="btn btn-primary" style="width: 112px;">Download</button>
                         </form>
                        </div>

@@ -13,5 +13,5 @@ class ModuleConfigure extends Model
      */
     protected $table = 'module_configuration';
 
-    protected $fillable = ['module_id', 'name', 'description', 'value', 'step'];
+    protected $fillable = ['module_id', 'name', 'description', 'step'];
 }

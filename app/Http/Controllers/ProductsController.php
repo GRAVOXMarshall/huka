@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Crypt;
+use Validator;
+use ZipArchive;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -9,9 +13,6 @@ use App\Http\Classes\Web;
 use App\Http\Classes\Module;
 use App\Http\Classes\Template;
 use Illuminate\Support\Facades\Storage;
-use Crypt;
-use Auth;
-use ZipArchive;
 
 class ProductsController extends Controller
 {
@@ -73,6 +74,60 @@ class ProductsController extends Controller
     }
 
     public function installProduct(Request $request){
+
+    	$validator = Validator::make($request->all(), [
+            'product_id' => 'required|string',
+            'type' => 'required|string|in:functionality,template',
+        ]);
+
+        if (!$validator->fails()) {
+        	$web = Web::all()->first();
+	    	$client = new Client(['base_uri' => 'http://localhost/webx/public/api/']);
+	    	$type = $request->type;
+	    	$data = ['id'=> Crypt::decrypt($request->product_id), 'type' => $type, 'web' => $web->domain, 'email' => Auth::guard('admins')->user()->email ];
+	    	// Send a request to http://localhost/WebServiceApp/public/api/user/tipoprojeto/
+	    	$response = $client->post('store', [ 'json' => $data]);
+	    	
+	    	// $response contains the data you are trying to get, you can do whatever u want with that data now. However to get the content add the line
+	    	$contents = json_decode($response->getBody()->getContents(), true);
+	    	if ($contents['txt'] == 0) {
+	    		switch ($type) {
+		    		case 'functionality':
+		    			$name = $contents['functionality']['name'];
+		    			if (!file_exists('../modules/'.$name.'/')) {
+		    				$result = $this->extractZipFile($contents['functionality']['file_route'], '../modules');
+		    				if ($result['error']) {
+		    					return back()->with('error', $result['menssage']);
+		    				}
+		    			}
+		    			$className = 'Modules\\'.$name.'\\'.$name;
+		                $module = new $className;
+		                if (!$module->install()) {
+		                	return back()->with('error', $module->error);
+		                }
+	                    return back()->with('txt', 'Instalado con exito');
+		                //return contents()->download($tempImage, 'archivo.rar');
+		    		break;
+		    		
+		    		case 'template':
+
+		    			$result = $this->extractZipFile($contents['template']['file_route'], 'css/template/');
+	    				if ($result['error']) {
+	    					return back()->with('error', $result['menssage']);
+	    				}
+		    			$template = new Template;
+						$template->web_id = Web::find(1)->id;
+						$template->name = $contents['template']['name'];
+						$template->route = $contents['template']['file_route'];
+
+		    		break;
+		    	}
+	    	}else{
+				return back()->with('txt', 'Descargada con exito');
+			}
+        }
+
+        /*
     	if (request()->is('admin/dashboard/module/install')) {
 
     		$web = Web::all()->first();
@@ -194,6 +249,7 @@ class ProductsController extends Controller
 			}
 
     	}
+    	*/
     }
 
     public function updateProduct(Request $request){
@@ -230,8 +286,11 @@ class ProductsController extends Controller
     public function deleteProduct(Request $request){
     	if (request()->is('admin/dashboard/module/delete')) {
     		$module = Module::find(Crypt::decrypt($request->delete_func_id));
-	    	$module->delete();
-	    	return back()->with('txt','Desintalado con exito!');
+    		if ($module->uninstall()) {
+    			return back()->with('txt','Desintalado con exito!');
+    		}
+    		return back()->with('error','Error al desinalar el modulo.');
+	    	
     	}
     	if (request()->is('admin/dashboard/template/delete')) {
     		$template = Template::find(Crypt::decrypt($request->delete_tem_id));
@@ -245,17 +304,58 @@ class ProductsController extends Controller
     }
 
     function decodificar($dato) {
-            $resultado = base64_decode($dato);
-            list($resultado, $letra) = explode('+', $resultado);
-            $arrayLetras = array('M', 'A', 'R', 'C', 'O', 'S');
-            for ($i = 0; $i < count($arrayLetras); $i++) {
-                if ($arrayLetras[$i] == $letra) {
-                    for ($j = 1; $j <= $i; $j++) {
-                        $resultado = base64_decode($resultado);
-                    }
-                    break;
-                }
-            }
-            return $resultado;
-        }
+	    $resultado = base64_decode($dato);
+	    list($resultado, $letra) = explode('+', $resultado);
+	    $arrayLetras = array('M', 'A', 'R', 'C', 'O', 'S');
+	    for ($i = 0; $i < count($arrayLetras); $i++) {
+	        if ($arrayLetras[$i] == $letra) {
+	            for ($j = 1; $j <= $i; $j++) {
+	                $resultado = base64_decode($resultado);
+	            }
+	            break;
+	        }
+	    }
+	    return $resultado;
+	}
+
+	/**
+     * Extract zip file
+     * @param string
+     * @return array
+     */
+	public function extractZipFile($routeFile, $destination)
+	{
+		$error = false;
+		$menssage = '';
+		if (!empty($routeFile) && !empty($destination)) {
+			$data = explode('/', $routeFile);
+			if (isset($data) && isset($data[1])) {
+				$tempImage = tempnam(sys_get_temp_dir(), $data[1]);
+				copy('http://localhost/webx/storage/app/'.$routeFile, $tempImage);
+				$zip = new ZipArchive;
+				if($zip->open($tempImage)) {
+					for($i = 0; $i < $zip->numFiles; $i++){
+						//we get the route that the documents will have when we unzip them
+						$nameFichZip['tmp_name'][$i] =$zip->getNameIndex($i);
+						//we get name of the file
+						$nameFichZip['name'][$i] = $zip->getNameIndex($i);
+					}
+					$zip->extractTo($destination);
+					$zip->close();
+				}else{
+					$error = true;
+					$menssage = 'The file could not be decompressed correctly.';
+				}
+			}else{
+				$error = true;
+				$menssage = 'Route invalid.';
+			}
+		}else{
+			$error = true;
+			$menssage = 'Route o destination empty.';
+		}
+
+		return ['error' => $error, 'menssage' => $menssage];
+	}
+
 }

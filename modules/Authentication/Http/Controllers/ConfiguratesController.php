@@ -29,8 +29,7 @@ class ConfiguratesController extends Controller
         $pages = Page::all();
         // Get active elements in db 
         $elements = Element::where('active', 1)->get();
-
-        return view('authentication::login', compact('columns', 'configurations', 'pages', 'elements'));
+        return view('authentication::configuration', compact('columns', 'configurations', 'pages', 'elements'));
     }
 
     /**
