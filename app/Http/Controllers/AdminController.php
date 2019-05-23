@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Admin;
 use App\Http\Classes\Groups;
+use App\Http\Classes\PermitGroups;
+use App\Http\Classes\Permit;
 
 class AdminController extends Controller
 {
@@ -48,13 +50,95 @@ class AdminController extends Controller
     }
 
     public function configurationGroup($id){
+        $allGroup = PermitGroups::all();
         $group = Groups::find($id);
-        return view('back/configGroup', compact('group'));
+        $admins = Admin::where('group_id', $group->id)->orWhere('group_id', null)->get();
+        $permits = Permit::all();
+        $permitGroup = PermitGroups::where('groups_id',$group->id)->get();
+        return view('back/configGroup', compact('allGroup','group','admins','permits','permitGroup'));
+    }
+
+    public function test(Request $request){
+        $permit = Permit::find($request->permit);
+        $group = Groups::find($request->group);
+        //return response()->json(['txt' => $permit->id, 'group' => $group->id]);
+        if ($request->btn === "permit") {
+            $permitGroup = new PermitGroups();
+            if ($request->type === "insert") {
+                if (!PermitGroups::where(['permit_id' => $permit->id, 'groups_id' => $group->id])->exists()) {
+                    $permitGroup->permit_id = $permit->id;
+                    $permitGroup->groups_id = $group->id;
+                    if ($permitGroup->save()) {
+                        return response()->json(['txt' => 'Permiso asigando con exito']);
+                    }else{
+                        return response()->json(['txt' => 'Permiso no asigando con exito']);
+
+                    }
+                }else{
+                        return response()->json(['txt' => 'Permiso ya asigando anteriormente']);
+
+                }
+                
+                 
+            }
+            if ($request->type === "delete") {
+                $permitsGroup = PermitGroups::where('groups_id', $group->id)->get();
+                //return response()->json(['txt' => $permitsGroup]);
+                
+                    if ( PermitGroups::where(['permit_id' => $permit->id, 'groups_id' => $group->id])->delete()) {
+                        return response()->json(['txt' => 'Permiso eliminado con exito']);
+                    }else{
+                        return response()->json(['txt' => 'Permiso no eliminado con exito']);
+                    }
+            
+                    
+                // return response()->json(['txt' => 'delete']);
+            }
+        }
+        if ($request->btn === "group") {
+            $admin = Admin::find($request->admin);
+            if ($request->type === "insert") {
+                
+
+                if ($admin->group_id == null) {
+                    $admin->group_id = $group->id;
+                    if ($admin->save()) {
+                        return response()->json(['txt' => 'Grupo asignado con exito']);
+                    }else{
+                        return response()->json(['txt' => 'Grupo no asignado con exito']);
+
+                    }
+                }
+
+                
+
+                
+                 
+            }
+            if ($request->type === "delete") {
+                if ($admin->group_id != null) {
+                    $admin->group_id = null;
+                    if ($admin->save()) {
+                        return response()->json(['txt' => 'Grupo quitado con exito']);
+                    }else{
+                        return response()->json(['txt' => 'Grupo no quitado con exito']);
+
+                    }
+                }
+            
+                    
+                // return response()->json(['txt' => 'delete']);
+            }
+        }
+       
+        /*$msg = "This is a simple message.";
+      return response()->json(array('msg'=> $msg), 200);*/
     }
 
     public function formAdmin(Request $request){
     	if (strlen($request->pass) >= 6) {
     		if (!Admin::where('email', $request->email)->exists()) {
+                //dd($request);
 	    		$admin = new Admin();
 	    		$admin->firstname = $request->firstname;
 	    		$admin->lastname = $request->lastname;
@@ -64,7 +148,7 @@ class AdminController extends Controller
                 if (isset($request->group) && $request->group != 0) {
                     $admin->group_id = $request->group;
                 }else{
-                    $admin->group_id = 0;
+                    $admin->group_id = null;
                 }
 	    		$admin->save();
 	    		return back()->with('txt', 'Successfully registered administrator!');

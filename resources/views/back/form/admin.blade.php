@@ -56,13 +56,12 @@
 			<div class="col-md-12 col-12">
 				<p><strong>Group</strong><span class="text-danger">*</span></p> 
 				<select class="form-control" name="group" required>
+					<option value="0" selected>[Select Groups..]</option>
 					@if(isset($group) && $group !== [])
-						@foreach($group as $groups)
-							<option >[Select Groups..]</option>
-							<option value="{{ $groups['id'] }}">{{$groups['name'] }}</option>
+						
+						@foreach($group as $groups)	
+						<option value="{{ $groups['id'] }}">{{$groups['name'] }}</option>
 						@endforeach
-					@else
-							<option value="0">[No Data..]</option>
 					@endif
 				</select>
 			</div>

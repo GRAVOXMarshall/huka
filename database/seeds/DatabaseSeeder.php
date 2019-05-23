@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
     	$this->call(PagesSeeder::class);
         $this->call(ElementSeeder::class);
         $this->call(ModulesSeeder::class);
-        $this->call(ModulesConfigSeeder::class);
+        $this->call(ModulesConfigSeeder::class); 
+        $this->call(PermitsSeeder::class);
         
     }
 }

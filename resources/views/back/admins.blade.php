@@ -131,10 +131,11 @@
 										        	@if($admins->group_id === $groups['id'])
 										        		<td>{{$groups['name']}}</td>
 										        	@endif
-										        	@if($admins->group_id == 0)
-										        		<td>No Group</td>
-										        	@endif
+										        	
 										        @endforeach
+										        @if($admins->group_id == null)
+										        		<td>No Group</td>
+										        @endif
 									        @else
 									        	<td>No Group</td>
 									        @endif

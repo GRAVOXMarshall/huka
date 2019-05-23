@@ -73,6 +73,9 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('/admin/dashboard/group/delete/{id}', 'AdminController@deleteGroup')->name('delete.group');
 
+	Route::post('/admin/dashboard/group/test', 'AdminController@test')->name('test.data');
+
+
 	/*
 	* End Admin route
 	*/
