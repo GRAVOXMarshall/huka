@@ -5,7 +5,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12" align="center">
-			<h3>Group</h3>
+			<h1 class="h3 text-primary font-weight-normal mb-0"><strong>Groups</strong></h1>
 		</div>
 	</div><br>
 	<div class="col-md-12">
@@ -59,7 +59,7 @@
 						    Options
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="{{ route('configuration.group', ['id' => $groups['id']]) }}">Configurar</a>
+						    
 
 						    <a class="dropdown-item" href="{{ route('delete.group', ['id' => $groups['id']]) }}">Borrar</a>
 						    

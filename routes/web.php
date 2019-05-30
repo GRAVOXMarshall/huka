@@ -67,13 +67,13 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('/admin/dashboard/group', 'AdminController@group')->name('group.admin');
 
-	Route::get('/admin/dashboard/group/configuration/{id}', 'AdminController@configurationGroup')->name('configuration.group');
-
 	Route::post('/admin/dashboard/group/add', 'AdminController@addGroup')->name('add.group.admin');
 
 	Route::get('/admin/dashboard/group/delete/{id}', 'AdminController@deleteGroup')->name('delete.group');
 
-	Route::post('/admin/dashboard/group/test', 'AdminController@test')->name('test.data');
+	Route::post('/admin/dashboard/group/options', 'AdminController@options')->name('options.data');
+
+	Route::post('/admin/dashboard/group/load/group', 'AdminController@loadGroup')->name('load.group'); 
 
 
 	/*

@@ -9,6 +9,7 @@ use App\Admin;
 use App\Http\Classes\Groups;
 use App\Http\Classes\PermitGroups;
 use App\Http\Classes\Permit;
+use Route;
 
 class AdminController extends Controller
 {
@@ -19,7 +20,11 @@ class AdminController extends Controller
          return view('back/admins',  compact('admin','group'));
     }
     public function permits(){
-    	return view('back/permitsAdmin');
+         
+        $group = Groups::where('name', '!=', 'Super Admin')->get();
+        $permits = Permit::all();
+        $permitGroup = PermitGroups::all();
+    	return view('back/permitsAdmin', compact('group','permits','permitGroup'));
     }
 
     public function register(){
@@ -49,18 +54,43 @@ class AdminController extends Controller
         return back();
     }
 
-    public function configurationGroup($id){
-        $allGroup = PermitGroups::all();
+    /*public function configurationGroup($id){
         $group = Groups::find($id);
         $admins = Admin::where('group_id', $group->id)->orWhere('group_id', null)->get();
         $permits = Permit::all();
         $permitGroup = PermitGroups::where('groups_id',$group->id)->get();
-        return view('back/configGroup', compact('allGroup','group','admins','permits','permitGroup'));
+        return view('back/configGroup', compact('group','admins','permits','permitGroup'));
+    }*/
+
+    public function loadGroup(Request $request){
+        $group = Groups::find($request->group);
+        $permitGroup = PermitGroups::where('groups_id',$group->id)->get();
+        $permits = Permit::all();
+        $data = [];
+        foreach ($permits as $per) {
+            if($permitGroup->contains('permit_id', $per->id)){
+                $per->type = 0; 
+                $data[] = $per;
+            }else{
+                $per->type = 1; 
+                $data[] = $per;
+            }
+            /*foreach ($permitGroup as $value) {
+                 
+                if($value->permit_id != $per->id  ){
+                    $data[] =  $per;
+                     
+                }
+            }*/
+        }
+        $url =  url('/admin/dashboard/group/options');
+        return response()->json(['group' => $data, 'url' => $url]);
     }
 
-    public function test(Request $request){
-        $permit = Permit::find($request->permit);
-        $group = Groups::find($request->group);
+    public function options(Request $request){
+         $permit = Permit::find($request->permit);
+         $group = Groups::find($request->group);
+        
         //return response()->json(['txt' => $permit->id, 'group' => $group->id]);
         if ($request->btn === "permit") {
             $permitGroup = new PermitGroups();
