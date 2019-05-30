@@ -23,11 +23,6 @@ class Module extends Model
 
     public $error;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Insert module into database
      * @return bool result
@@ -110,12 +105,13 @@ class Module extends Model
      * @param integer to step
      * @return bool result
      */
-    public function updateConfiguration($module_name = null, $name = null, $description = null, $step = 0)
+    public function updateConfiguration($module_name = null, $name = null, $description = null, $type = null, $step = 0)
     {
-        if ($step > 0 && !is_null($module_name) && !is_null($name) && !is_null($description) && !is_null($module = $this->getByName($module_name))) {
+        if ($step > 0 && !is_null($module_name) && !is_null($name) && !is_null($description) && !is_null($type) && !is_null($module = $this->getByName($module_name))) {
             $configuration = ModuleConfigure::firstOrNew(['module_id' => $module->id, 'name' => $name]);
             $configuration->description = $description;
             $configuration->step = $step;
+            $configuration->type = $type;
             if ($configuration->save()) {
                 return true;
             }
@@ -156,5 +152,18 @@ class Module extends Model
         $this->attributes['active'] = $active;
         parent::save();
     }
+
+    /**
+     * Get configurations module 
+     * @return void
+     */
+    public function getConfigurations()
+    {
+        if (!is_null($module = $this->getByName($this->name))) {
+            return ModuleConfigure::where('module_id', $module->id)->get();
+        }
+        return null;
+    }
+    
 
 }

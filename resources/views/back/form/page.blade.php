@@ -1,4 +1,4 @@
-@extends('back.dashboard')
+@extends('back.index')
 
 @section('dash-content')
 	<!-- This content has form to add and edit page -->

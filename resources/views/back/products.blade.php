@@ -152,6 +152,11 @@
                                       <button class="btn btn-primary" style="width: 112px;">Uninstall</button>
                                     </form>
                                     </div>
+
+                                    <div class="u-ver-divider pr-3 mr-3">
+                                      <a href="{{ route(strtolower($functionality['name']).'.configuration') }}" class="btn btn-secondary" role="button" aria-pressed="true">Configurate</a>
+                                    </div>
+
                                     </div>
                                     
                                     @endif

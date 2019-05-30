@@ -11,23 +11,21 @@
 |
 */
 
-Route::prefix('authentication')->group(function() {
-	Route::get('/', 'ConfiguratesController@displayConfigurations');
+Route::prefix('module/authentication')->group(function() {
+	Route::get('/', 'ConfiguratesController@displayConfigurations')->name('authentication.configuration');
 
-	Route::post('/validator/ajax', 'ConfiguratesController@processAjaxValidator')->name('authentication.ajax.validator');
+	Route::post('/configuration/database', 'ConfiguratesController@processConfigurationDataBase')->name('authentication.configuration.database');
 
-	Route::post('/configuration/database', 'ConfiguratesController@processConfigurationDataBase')->name('configuration.database');
+	Route::post('/configuration/type/login', 'ConfiguratesController@processConfigurationTypeLogin')->name('authentication.configuration.type.login');
 
-	Route::post('/configuration/type/login', 'ConfiguratesController@processConfigurationTypeLogin')->name('configuration.type.login');
+	Route::post('/configuration/page', 'ConfiguratesController@processConfigurationPage')->name('authentication.configuration.page');
 
-	Route::post('/configuration/ajax/getconfig', 'ConfiguratesController@processAjaxGetConfigurations')->name('authentication.ajax.configurations');
-
-	Route::post('/configuration/page', 'ConfiguratesController@processConfigurationPage')->name('configuration.page');
-
-	Route::post('/validator/ajax/getpage', 'ConfiguratesController@processAjaxLoginPage')->name('authentication.ajax.loginPage');
-
-	Route::post('/configuration/design/login', 'ConfiguratesController@processConfigurationDesignLogin')->name('configuration.design.login');
+	Route::post('/configuration/design/login', 'ConfiguratesController@processConfigurationDesignLogin')->name('authentication.configuration.design');
 	
 	Route::post('/login', 'AuthenticationController@login')->name('authentication.login');
+
+	Route::post('/logout', 'AuthenticationController@logout')->name('authentication.logout');
+
+	Route::post('/register', 'AuthenticationController@register')->name('authentication.register');
 
 });

@@ -19,6 +19,7 @@ class CreateModuleConfigurationTable extends Migration
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
             $table->string('name', 255);
             $table->text('description');
+            $table->string('type', 255);
             $table->text('value')->nullable();
             $table->mediumInteger('step');
             $table->timestamps();

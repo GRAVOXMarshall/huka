@@ -2,11 +2,14 @@
 
 namespace Modules\Authentication\Http\Controllers;
 
+use App\Http\Classes\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Modules\Authentication\Http\Classes\Authenticates;
 
 class AuthenticationController extends Controller
@@ -65,6 +68,78 @@ class AuthenticationController extends Controller
     protected function guard()
     {
         return Auth::guard('front');
+    }
+
+    /**
+     * Logout the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        //dd(Auth::guard('admins')->getName());
+        $sessionKey = Auth::guard('front')->getName();
+
+        // Logout current user by guard
+        Auth::guard('front')->logout();
+
+        // Delete single session key (just for this user)
+        $request->session()->forget($sessionKey);
+
+        //Auth::guard('admins')->logout();
+
+        //$request->session()->invalidate();
+
+        return redirect('/');
+    }
+
+
+    /**
+     * Register user in the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {   
+        $inputs = $this->validateRegister($request);
+        $values = array();
+        foreach ($inputs as $key => $value) {
+            if ($key != 'password') {
+                $values[$key] = $value;
+            }else{
+                $values[$key] = Hash::make($value);
+            }
+            
+        }
+
+        event(new Registered($user = User::create($values)));
+
+        $this->guard()->login($user);
+
+        return redirect('/');
+        
+    }
+
+    /**
+     * Validate the user register request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateRegister(Request $request)
+    {
+        $inputs = array();
+        
+        foreach ($request->all() as $key => $value) {
+            if ($key != '_token') {
+                $inputs[$key] = 'required|string';
+            }
+        }
+        return $request->validate($inputs);
     }
 
 }
