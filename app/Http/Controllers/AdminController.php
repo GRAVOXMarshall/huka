@@ -10,6 +10,7 @@ use App\Http\Classes\Groups;
 use App\Http\Classes\PermitGroups;
 use App\Http\Classes\Permit;
 use Route;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -17,7 +18,8 @@ class AdminController extends Controller
     public function __invoke(){
     	$admin = Admin::all();
         $group = Groups::where('name', '!=', 'Super Admin')->get()->toArray();
-         return view('back/admins',  compact('admin','group'));
+        $access = PermitGroups::where(['permit_id' => 1, 'groups_id' => Auth::guard('admins')->user()->group_id])->exists();
+         return view('back/admins',  compact('admin','group', 'access'));
     }
     public function permits(){
          

@@ -9,7 +9,8 @@
           <h4 class="text-primary">{{ Auth::guard('admins')->user()->email }}</h4>
         @endif
       </div>
-
+      
+      
 
 	   <br>
       <div class="row stepper">
@@ -70,6 +71,8 @@
 			</div>
       </div>
        <!-- Input -->
+
+
 	<div class="container-fluid">
 		<div class="row">
 			 
@@ -88,11 +91,15 @@
 			        <!-- End Content -->
 
 			        @if(request()->is('admin/dashboard/users'))
-			        <br><br>
+
+
+			        @if(isset($access))
+					  @if($access === true || Auth::guard('admins')->user()->group_id === 1)
+				      	 <br><br>
 			        	<div class="container-fluid">
 							<div class="row">
 								<div class="col-md-12" align="center">
-									<h1 class="h3 text-primary font-weight-normal mb-0"><strong>List of administrators</strong></span></h1>
+									<h1 class="h3 text-primary font-weight-normal mb-0"><strong>List of administrators</strong> </h1>
 								</div>
 							</div><br>
 							<div class="row">
@@ -264,6 +271,12 @@
 						</div>
 						</div><br><br>
 						</div>
+				      @else
+				      <br><br>
+				      	<h1 class="text-danger" align="center">Access Denied!</h1>
+				      @endif
+			      @endif
+			        
 			        @endif
 
 			</div>
