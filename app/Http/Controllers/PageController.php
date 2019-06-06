@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Classes\Page;
+use App\Http\Classes\Layout;
 use App\Http\Controllers\Controller;
 use Validator;
 
@@ -26,10 +27,11 @@ class PageController extends Controller
      * @return view
      */
     public function showForm(Page $page){
+        $layouts = Layout::all();
         if (is_null($page->id)) {
-            return view('back/form/page');
+            return view('back/form/page', compact('layouts'));
         }else{
-            return view('back/form/page', compact('page'));
+            return view('back/form/page', compact('page', 'layouts'));
         }
     }
 
@@ -44,6 +46,7 @@ class PageController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string',
             'type' => 'required|string|in:F,B',
+            'layout' => 'required|integer',
             'description' => 'required|string',
             'link' => 'required|string|unique:pages'
         ]);
@@ -53,6 +56,7 @@ class PageController extends Controller
             $page->name = $request->name;
             $page->title = $request->title;
             $page->type = $request->type;
+            $page->parent_layout = ($request->layout > 0) ? $request->layout : null;
             $page->link = $request->link;
             $page->active = (isset($request->active)) ? true : false;
             $page->description = $request->description;
@@ -73,9 +77,11 @@ class PageController extends Controller
      */
     public function editPage(Request $request){
         $validator = Validator::make($request->all(), [
+            'page' => 'required|integer',
             'name' => 'required|string|max:255',
             'title' => 'required|string',
             'type' => 'required|string|in:F,B',
+            'layout' => 'required|integer',
             'description' => 'required|string',
             'link' => 'required|string|unique:pages,link,'.$request->page
         ]);
@@ -84,6 +90,7 @@ class PageController extends Controller
             $page->name = $request->name;
             $page->title = $request->title;
             $page->type = $request->type;
+            $page->parent_layout = ($request->layout > 0) ? $request->layout : null;
             $page->link = $request->link;
             $page->active = (isset($request->active)) ? true : false;
             $page->description = $request->description;
@@ -117,11 +124,42 @@ class PageController extends Controller
     public function loadFrontEnd(Page $page)
     {
         if (!empty($page)) {
-            $components = json_decode($page->components, true);
+            $result;
+            $css;
+            $components = json_decode(json_decode($page->components, true));
+            foreach ($components as $component) {
+                if ($component->type == 'module') {
+                    $className = 'Modules\\'.$component->module.'\\'.$component->module;
+                    $module = new $className;
+                    if (!is_null($module->has_variable) && $module->has_variable) {
+                        $variables = $module->getVariable();
+                        if (!empty($variables)) {
+                            $this->setVariable($component->components, $variables);
+                        }
+                    }
+                }
+            }
+
+            if (!is_null($page->parent_layout) && $page->parent_layout > 0) {
+                $layout = Layout::findOrFail($page->parent_layout);
+                $parent_components = json_decode(json_decode($layout->components, true));
+                foreach ($parent_components as $component) {
+                    if ($component->type == 'childContainer') {
+                        $component->content = '';
+                        $component->components = $components;
+                    }
+                }
+                $css = $layout->css.' '.$page->css;
+                $result = $parent_components;
+            }else{
+                $result = $components;
+                $css = $page->css;
+            }
+     
             return view('index', [
             	'page' => $page,
-            	'components' => json_decode($components, true),
-            	'css' => $page->css,
+            	'components' => $result,
+            	'css' => $css,
                 'template' => 'css/bootstrap-new.css'
             ]);
         }
@@ -129,5 +167,18 @@ class PageController extends Controller
         return redirect('/');
     }
 
+
+    public function setVariable($components, $variables)
+    {
+        foreach ($components as $component) {
+            if ($component->type == 'variable') {
+                $value = str_replace(['$', '{', '}'], '', $component->content);
+                $component->content = $variables[$value];
+            }
+            if (!empty($component->components)) {
+                $this->setVariable($component->components, $variables);
+            }
+        }
+    }
 
 }

@@ -17,10 +17,19 @@ class Module extends Model
 
     protected $fillable = ['name', 'description'];
 
+    // Name of module is string value
     public $name;
 
+    // Descripction of module is string value
     public $description;
 
+    // Parent is name of parent module and is string value
+    public $parent;
+
+    // boolean value to valid if module has dynamic variable
+    public $has_variable;
+
+    // string value with errors values
     public $error;
 
     /**
@@ -37,15 +46,21 @@ class Module extends Model
         }
 
         // Install module and retrieve the installation id
-        $result = DB::table('modules')->insert([
-            'name' => $this->name, 
-            'description' => $this->description,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
+        if (!is_null($this->parent) && $this->isInstalled($this->parent) || is_null($this->parent)) {
+            $result = DB::table('modules')->insert([
+                'name' => $this->name, 
+                'description' => $this->description,
+                'parent' => $this->parent,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
-        if (!$result) {
-            $this->error = 'Problem to insert';
+            if (!$result) {
+                $this->error = 'Problem to insert';
+                return false;
+            }   
+        }else{
+            $this->error = 'You need to install '.$this->parent.' Module for use it.';
             return false;
         }
 

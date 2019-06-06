@@ -353,7 +353,6 @@
                       case 7:
                         // Add login element if not exit
                         if (!steps[8]) {
-                          console.log('register');
                           var domComponents = editor.DomComponents;
                           var register = domComponents.addComponent({
                             tagName: 'div',

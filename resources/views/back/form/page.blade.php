@@ -29,13 +29,27 @@
 					{!! $errors->first('title', '<div class="invalid-feedback">:message</div>') !!}
 				</div>
 			</div>
-			<div class="form-group">
-				<label>Type Page</label>
-				<select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
-					<option value="F" {{ (isset($page) && $page->type === 'F' || old('type') === 'F') ? 'selected' : '' }}>Front-End</option>
-					<option value="B" {{ (isset($page) && $page->type === 'B' || old('type') === 'B') ? 'selected' : '' }}>Back-End</option>
-				</select>
-				{!! $errors->first('type', '<div class="invalid-feedback">:message</div>') !!}
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label>Type Page</label>
+					<select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
+						<option value="F" {{ (isset($page) && $page->type === 'F' || old('type') === 'F') ? 'selected' : '' }}>Front-End</option>
+						<option value="B" {{ (isset($page) && $page->type === 'B' || old('type') === 'B') ? 'selected' : '' }}>Back-End</option>
+					</select>
+					{!! $errors->first('type', '<div class="invalid-feedback">:message</div>') !!}
+				</div>
+				<div class="form-group col-md-6">
+					<label>Select Layout (Opcional)</label>
+					<select class="form-control {{ $errors->has('layout') ? 'is-invalid' : '' }}" name="layout">
+						<option value="0">None</option>
+						@if(isset($layouts) && count($layouts) > 0)
+							@foreach($layouts as $layout)
+								<option value="{{ $layout->id }}" {{ (isset($page) && !is_null($page->parent_layout) && $page->parent_layout === $layout->id || old('layout') == $layout->id) ? 'selected' : '' }}>{{ $layout->name }}</option>
+							@endforeach
+						@endif
+					</select>
+					{!! $errors->first('layout', '<div class="invalid-feedback">:message</div>') !!}
+				</div>
 			</div>
 			<div class="form-group">
 				<label>Description</label>

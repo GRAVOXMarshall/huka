@@ -110,9 +110,28 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('admin/dashboard/pages/delete/{page}', 'PageController@deletePage')->name('delete.page');
 
-
-
 	Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
+
+	/*
+	* Layouts to Back-end route
+	*/
+	Route::get('admin/dashboard/layouts', 'LayoutController')->name('dash.layouts');
+
+	Route::get('admin/dashboard/layouts/add', 'LayoutController@showForm')->name('add.layout');
+
+	Route::post('admin/dashboard/layouts/add/save', 'LayoutController@addLayout')->name('add.layout.action');
+
+	Route::get('admin/dashboard/layouts/edit/{layout}', 'LayoutController@showForm')->name('edit.layout');
+
+	Route::post('admin/dashboard/layouts/edit/save', 'LayoutController@editLayout')->name('edit.layout.action');
+
+	Route::get('admin/dashboard/layouts/delete/{layout}', 'LayoutController@deleteLayout')->name('delete.layout');
+
+	Route::get('admin/dashboard/layouts/edit/design/{layout}', 'LayoutController@loadEditor')->name('edit.layout.design');
+
+	Route::post('admin/dashboard/layouts/edit/design/store/{layout}', 'LayoutController@builderLayout');
+	
+	Route::get('admin/dashboard/layouts/edit/design/{layout}/load', 'LayoutController@loadLayout');
 
 });
 

@@ -276,43 +276,47 @@
             <div class="card mb-2">
               <div class="row card-body">
                 <div class="col-12 tab-content" id="step-content" style="min-height: 420px;">
-                  <div class="tab-pane fade" id="select-page" role="tabpanel">
-                    <form action="{{ route(strtolower($module->name).'.configuration.page') }}" method="post">
-                      @csrf
-                      <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <label for="select-page-input">Select page</label>
-                          <select id="select-page-input" class="custom-select" name="page" size="8">
-                            @if(isset($pages) && count($pages) > 0)
-                              @foreach($pages as $page)
-                                <option value="{{ $page->id }}" type-page="{{ $page->type }}">{{ $page->name }}</option>
-                              @endforeach
-                            @endif
-                          </select>
+                  @if(Route::has(strtolower($module->name).'.configuration.page'))
+                    <div class="tab-pane fade" id="select-page" role="tabpanel">
+                      <form action="{{ route(strtolower($module->name).'.configuration.page') }}" method="post">
+                        @csrf
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="select-page-input">Select page</label>
+                            <select id="select-page-input" class="custom-select" name="page" size="8">
+                              @if(isset($pages) && count($pages) > 0)
+                                @foreach($pages as $page)
+                                  <option value="{{ $page->id }}" type-page="{{ $page->type }}">{{ $page->name }}</option>
+                                @endforeach
+                              @endif
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="tab-pane fade" id="design-page" role="tabpanel">
-                    <form action="{{ route(strtolower($module->name).'.configuration.design') }}" method="post">
-                      @csrf
-                      <div class="panel__top">
-                        <div class="panel__devices"></div>
-                        <div class="panel__options"></div>
-                        <div class="panel__switcher"></div>
-                      </div>
-                      <div class="editor-row">
-                        <div class="editor-canvas">
-                          <div class="editor"></div>
+                      </form>
+                    </div>
+                  @endif
+                  @if(Route::has(strtolower($module->name).'.configuration.design'))
+                    <div class="tab-pane fade" id="design-page" role="tabpanel">
+                      <form action="{{ route(strtolower($module->name).'.configuration.design') }}" method="post">
+                        @csrf
+                        <div class="panel__top">
+                          <div class="panel__devices"></div>
+                          <div class="panel__options"></div>
+                          <div class="panel__switcher"></div>
                         </div>
-                        <div class="panel__right">
-                          <div class="layers-container"></div>
-                          <div class="styles-container"></div>
-                          <div class="elements-container"></div>
+                        <div class="editor-row">
+                          <div class="editor-canvas">
+                            <div class="editor"></div>
+                          </div>
+                          <div class="panel__right">
+                            <div class="layers-container"></div>
+                            <div class="styles-container"></div>
+                            <div class="elements-container"></div>
+                          </div>
                         </div>
-                      </div>
-                    </form>
-                  </div>
+                      </form>
+                    </div>
+                  @endif
                   @yield('content')
                 </div>
               </div>

@@ -93,9 +93,9 @@ class ProductsController extends Controller
 	    	if ($contents['txt'] == 0) {
 	    		switch ($type) {
 		    		case 'functionality':
-		    			$name = $contents['functionality']['name'];
+		    			$name = str_replace(' ', '', ucwords(strtolower($contents['functionality']['name'])));
 		    			if (!file_exists('../modules/'.$name.'/')) {
-		    				$result = $this->extractZipFile($contents['functionality']['file_route'], '../modules');
+		    				$result = $this->extractZipFile($name, '../modules');
 		    				if ($result['error']) {
 		    					return back()->with('error', $result['menssage']);
 		    				}

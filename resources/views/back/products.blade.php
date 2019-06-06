@@ -131,9 +131,9 @@
                                   <div class="mb-4">
                                     <p class="text-secondary">{{$functionality['description']}}</p>
                                   </div>
-                              @if($softwareFunctionality && in_array($functionality['name'], array_column($softwareFunctionality->toArray(), 'name')))
+                              @if($softwareFunctionality && in_array($name = str_replace(' ', '', ucwords(strtolower($functionality['name']))), array_column($softwareFunctionality->toArray(), 'name')))
                                 @foreach($softwareFunctionality as $soft)
-                                  @if($soft['name'] === $functionality['name'])
+                                  @if($soft['name'] === $name)
                                     @if($soft['active'] === 0)
                                     <div class="d-flex align-items-center">
 
@@ -154,7 +154,7 @@
                                     </div>
 
                                     <div class="u-ver-divider pr-3 mr-3">
-                                      <a href="{{ route(strtolower($functionality['name']).'.configuration') }}" class="btn btn-secondary" role="button" aria-pressed="true">Configurate</a>
+                                      <a href="{{ route(strtolower($name).'.configuration') }}" class="btn btn-secondary" role="button" aria-pressed="true">Configurate</a>
                                     </div>
 
                                     </div>

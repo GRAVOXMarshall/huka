@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePagesTable extends Migration
+class CreateLayoutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('layouts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 255);
-            $table->text('title');
-            $table->text('description');
-            $table->string('link', 191)->unique();
-            $table->enum('type', ['B', 'F']);
-            $table->integer('parent_layout')->nullable();
+            $table->string('name', 150)->unique();
             $table->boolean('active');
             $table->longtext('components')->nullable();
             $table->longtext('styles')->nullable();
@@ -37,6 +32,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('layouts');
     }
 }
