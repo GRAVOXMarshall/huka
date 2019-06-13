@@ -140,3 +140,26 @@ Route::get('/sign', function () {
     return view('front/sign');
 });
 
+
+/*
+* Installer route
+*/
+
+Route::get('/install', 'InstallController@index');
+
+Route::post('/install/terms', 'InstallController@agreeTerms')->name('agree.terms');
+
+Route::get('/install/requirements', 'InstallController@requirements');
+
+Route::get('/install/information', 'InstallController@information');
+
+Route::post('/install/information', 'InstallController@setWebInformation')->name('set.information');
+
+Route::get('/install/configuration', 'InstallController@configuration');
+
+Route::post('/install/configuration', 'InstallController@setConfiguration')->name('set.configuration');
+
+Route::get('/install/finish', 'InstallController@finish');
+
+Route::post('/install/finish/configuration', 'InstallController@ajaxProcessSetConfiguration')->name('ajax.set.configuration');
+

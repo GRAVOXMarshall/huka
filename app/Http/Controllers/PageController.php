@@ -155,7 +155,9 @@ class PageController extends Controller
                 $result = $components;
                 $css = $page->css;
             }
-     
+        
+            
+
             return view('index', [
             	'page' => $page,
             	'components' => $result,
