@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use App\Admin;
 
 class InstallController extends Controller
 {
@@ -99,12 +100,12 @@ class InstallController extends Controller
 			    	]]);
 			    	$contents = json_decode($response->getBody()->getContents(), true);
 
-			    	$this->setEnv('APP_ADMIN_USER', json_encode([
+			    	$this->setEnv('APP_ADMIN_USER', json_encode(array(
 			    		'firstname' => $request->firstname,
 						'lastname' => $request->lastname,
 						'email' => $request->email,
 						'password' => $request->password,
-			    	]));
+			    	)));
 
         			break;
         		
@@ -202,7 +203,17 @@ class InstallController extends Controller
 	    				break;
 
 	    			case 'mainuser':
-	    				
+	    				$user = json_decode(env('APP_ADMIN_USER'));
+	 
+	    				Admin::create([
+				            'firstname' => $user->firstname,
+				            'lastname' => $user->lastname,
+				            'email' => $user->email,
+				            'password' => bcrypt($user->password),
+				            'is_admin' => 2,
+				            'group_id' => 1
+				        ]);
+
 	    				break;
 
 	    			default:
@@ -210,7 +221,7 @@ class InstallController extends Controller
 	    				break;
 	    		}
 
-	    		return ['status' => 'success', 'message' => 'Your Page was successfully saved!'];
+	    		return ['status' => 'success', 'message' => 'Successful configuration'];
     		}catch(Exception $e){
     			return json_encode($e);
     		}
@@ -332,5 +343,5 @@ class InstallController extends Controller
 	        
 	    }
 	}
-	
+
 }
