@@ -21,6 +21,8 @@ Route::prefix('module/authentication')->group(function() {
 	Route::post('/configuration/page', 'ConfiguratesController@processConfigurationPage')->name('authentication.configuration.page');
 
 	Route::post('/configuration/design/login', 'ConfiguratesController@processConfigurationDesignLogin')->name('authentication.configuration.design');
+
+	Route::post('/configuration/user/information', 'ConfiguratesController@processConfigurationUserInformation')->name('authentication.configuration.user.information');
 	
 	Route::post('/login', 'AuthenticationController@login')->name('authentication.login');
 

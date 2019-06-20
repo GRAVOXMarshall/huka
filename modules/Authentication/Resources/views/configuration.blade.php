@@ -82,12 +82,90 @@
         </div>
       </form>
     </div>
+    <div class="tab-pane fade" id="user-information" role="tabpanel">
+      <form action="{{ route('authentication.configuration.user.information') }}" method="post">
+        @csrf
+        <input type="hidden" name="configuration" value="0">
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label for="input-columns">1.- Set user information that will be displayed when they login</label>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <input id="variable-name" type="text" class="form-control" value="" placeholder="Name of variable">
+              </div>
+              <div class="form-group col-md-1">
+                <label class="form-control-plaintext text-center text-primary">
+                  <i class="fas fa-angle-double-right"></i>
+                  <i class="fas fa-angle-double-right"></i>
+                </label>
+              </div>
+              <div class="form-group col-md-4">
+                <select id="variable-value" class="form-control">
+                  <option value="">Value of variable</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <button id="add-variable" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-11">
+                <table class="table table-sm">
+                  <tbody id="tbody-variables">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="input-columns">2.- Select where to add this information</label>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label class="mr-2">Add content to: </label>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="page-information-option" class="custom-control-input content-information-page" name="content_option_information" value="page">
+                  <label class="custom-control-label" for="page-information-option">Page</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="layout-information-option" class="custom-control-input content-information-page" name="content_option_information" value="layout">
+                  <label class="custom-control-label" for="layout-information-option">Layout</label>
+                </div>
+              </div>
+            </div>
+            <div id="select-page-content-information" class="form-row">
+              <div class="form-group col-md-12">
+                <label for="select-page-input-information">Select page</label>
+                <select id="select-page-input-information" class="custom-select" name="page" size="8">
+                  @if(isset($pages) && count($pages) > 0)
+                    @foreach($pages as $page)
+                      <option value="{{ $page->id }}" type-page="{{ $page->type }}">{{ $page->name }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+            </div>
+            <div id="select-layout-content-information" class="form-row">
+              <div class="form-group col-md-12">
+                <label for="select-layout-input-information">Select layout</label>
+                <select id="select-layout-input-information" class="custom-select" name="layout" size="8">
+                  @if(isset($layouts) && count($layouts) > 0)
+                    @foreach($layouts as $layout)
+                      <option value="{{ $layout->id }}">{{ $layout->name }}</option>
+                    @endforeach
+                  @endif
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </form>
+    </div>
   @endif
 @endsection
 
 @push('scripts')
     <script type="text/javascript">
-      var page;
       $(document).ready(function() {
         // Set firts step configuration 
         nextStep(1);
@@ -110,6 +188,44 @@
           }
         });
 
+        $("#add-variable").click(function(event) {
+          /* Act on the event */
+          if ($("#variable-name").val() != '' && $("#variable-value").val() != '') {
+            $("#tbody-variables").append(`
+              <tr>
+                <th class="align-middle" style="width: 35%;">
+                  ${$("#variable-name").val()}
+                </th>
+                <th class="align-middle text-center text-primary" style="width: 12%;">
+                  <i class="fas fa-equals"></i>
+                </th>
+                <th class="align-middle" style="width: 35%;">
+                  <input type="text" readonly class="form-control-plaintext" name="${$("#variable-name").val()}"  value="${$("#variable-value").val()}">
+                </th>
+                <th class="align-middle" style="width: 18%;">
+                  <button type="button" class="btn btn-outline-danger ml-1"><i class="fas fa-trash-alt"></i></button>
+                </th>
+              </tr>
+            `);
+          }
+          
+        });
+
+
+        $(document).on('change', '.content-information-page', function(e) {
+
+          var value = $('input:radio[name=content_option_information]:checked').val();
+          if (value == 'page') {
+            $('#select-layout-content-information').hide('slow/400/fast');
+            $('#select-page-content-information').show('slow/400/fast');
+          }else if(value == 'layout'){
+            $('#select-page-content-information').hide('slow/400/fast');
+            $('#select-layout-content-information').show('slow/400/fast');
+          }
+
+        });
+
+
         $("#btn-next").click(function(event) {
           /* Act on the event */
           var current_step = $(".status-steps.current").children('.list-steps');
@@ -124,7 +240,34 @@
             return false;
           }          
 
+          // Validate that a page or a layout has been selected
+          if (step == 3 || step == 5 || step == 7) {
+            var option = $('input:radio[name=content_option]:checked').val();
+            if (option == 'page' && !$('#select-page-input').val()) {
+              alert('You must select a page to continue');
+              return false;
+            }
+            if (option == 'layout' && !$('#select-layout-input').val()) {
+              alert('You must select a layout to continue');
+              return false;
+            }
+          }
+
+          // Validate that a page or a layout has been selected
+          if (step == 9) {
+            var option = $('input:radio[name=content_option_information]:checked').val();
+            if (option == 'page' && !$('#select-page-input-information').val()) {
+              alert('You must select a page to continue');
+              return false;
+            }
+            if (option == 'layout' && !$('#select-layout-input-information').val()) {
+              alert('You must select a layout to continue');
+              return false;
+            }
+          } 
+
           ajaxProcess(url, data, function(output){
+            console.log(output);
             if (output.is_error) {
               alert(output.result);
             }else{
@@ -141,17 +284,67 @@
                   case 5:
                   case 7:
                     // Select page selected
-                    $(`#select-page-input option[value=${step_config.page}]`).attr('selected', 'selected');
+                    $(`#${step_config.option}-option`).attr('checked', true);
+                    var content_hide = (step_config.option == 'page') ? 'layout' : 'page';
+                    $(`#select-${content_hide}-content`).hide();
+                    $(`#select-${step_config.option}-content`).show();
+                    $(`#select-${step_config.option}-input option[value=${step_config.value}]`).attr('selected', 'selected');
+                  break;
+
+                  case 9:
+                    // Select page selected
+                    $(`#${step_config.content_option_information}-information-option`).attr('checked', true);
+                    var content_hide = (step_config.content_option_information == 'page') ? 'layout' : 'page';
+                    var value_content = (step_config.page) ? step_config.page : step_config.layout;
+                    $(`#select-${content_hide}-content-information`).hide();
+                    $(`#select-${step_config.content_option_information}-content-information`).show();
+                    $(`#select-${step_config.content_option_information}-input-information option[value=${value_content}]`).attr('selected', 'selected');
+                    
+                  break;
+
+                }
+              }else{
+                switch (step+1){
+                  case 2:
+                    //
+                  break;
+
+                  case 3:
+                  case 5:
+                  case 7:
+                    // Select option page and hide layout content
+                    $('#page-option').attr('checked', true);
+                    $('#select-layout-content').hide();
+                    $('#select-page-content').show();
+                  break;
+
+                  case 9:
+
+                    $('#page-information-option').attr('checked', true);
+                    $('#select-layout-content-information').hide();
+                    $('#select-page-content-information').show();
+
                   break;
 
                 }
               }
 
+              if (step == 1) {
+                var data = JSON.parse(output.result.value);
+                $('#variable-value').empty();
+                $('#variable-value').append('<option value="">Value of variable</option>');
+                $.each(data.columns, function(index, column) {
+                   $('#variable-value').append(`<option value="${column}">${column}</option>`);
+                });
+              }
+
+
               // Add elements to view 
               if (step == 3 || step == 5 || step == 7) {
-                page = (output.result.value) ? JSON.parse(output.result.value).page : null;
-                if (page != null && page > 0) {
-                  loadEditor(page);
+                
+                if (output.result.value) {
+                  var data = JSON.parse(output.result.value);
+                  loadEditor(data.value, data.option);
 
                   editor.on('storage:load', function(e) {
                     switch (step) {
@@ -442,14 +635,60 @@
                     
 
                   });
+                }
+                page = (output.result.value) ? JSON.parse(output.result.value).page : null;
+                if (page != null && page > 0) {
+                  
 
                 }
               }
 
               // Save view in database
-              if (step == 4 || step == 6 || step == 8) {
+              if (step == 4 || step == 6 || step == 8 || step == 10) {
                 editor.store();
               }
+
+               // Add elements to view 
+              if (step == 9) {
+                
+                if (output.result.value) {
+                  var data = JSON.parse(output.result.value);
+                  var value = (data.content_option_information == 'page') ? data.page : data.layout;
+                  loadEditor(value, data.content_option_information);
+                  
+                  editor.on('storage:load', function(e) {
+                    var domComponents = editor.DomComponents;
+                    var user_information = domComponents.addComponent({
+                      type: 'module',
+                      module: 'Authentication',
+                      tagName: 'div',
+                      removable: false, // Can't remove it
+                      draggable: true, // Can't move it
+                      copyable: false, // Disable copy/past
+                      style: {
+                        'padding': '1rem'
+                      }
+                    });
+              
+                    Object.entries(data).forEach(([key, column]) => {
+                      if (key != 'content_option_information' && key != 'page' && key != 'layout') {
+                        label = key.toLowerCase();
+                        user_information.get('components').add({
+                          type: 'variable',
+                          tagName: 'label',
+                          content: '${'+label+'}',
+                          removable: false,
+                          copyable: false,
+                        });
+                      }
+                      
+                    });
+                    
+                  });
+                }
+              }
+
+
 
               nextStep(step+1);
 

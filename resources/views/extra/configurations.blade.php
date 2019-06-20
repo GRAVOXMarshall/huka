@@ -282,11 +282,36 @@
                         @csrf
                         <div class="form-row">
                           <div class="form-group col-md-12">
+                            <label class="mr-3">Add content to: </label>
+                            <div class="custom-control custom-radio custom-control-inline">
+                              <input type="radio" id="page-option" class="custom-control-input content-page" name="content_option" value="page">
+                              <label class="custom-control-label" for="page-option">Page</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                              <input type="radio" id="layout-option" class="custom-control-input content-page" name="content_option" value="layout">
+                              <label class="custom-control-label" for="layout-option">Layout</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="select-page-content" class="form-row">
+                          <div class="form-group col-md-12">
                             <label for="select-page-input">Select page</label>
                             <select id="select-page-input" class="custom-select" name="page" size="8">
                               @if(isset($pages) && count($pages) > 0)
                                 @foreach($pages as $page)
                                   <option value="{{ $page->id }}" type-page="{{ $page->type }}">{{ $page->name }}</option>
+                                @endforeach
+                              @endif
+                            </select>
+                          </div>
+                        </div>
+                        <div id="select-layout-content" class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="select-layout-input">Select layout</label>
+                            <select id="select-layout-input" class="custom-select" name="layout" size="8">
+                              @if(isset($layouts) && count($layouts) > 0)
+                                @foreach($layouts as $layout)
+                                  <option value="{{ $layout->id }}">{{ $layout->name }}</option>
                                 @endforeach
                               @endif
                             </select>
@@ -467,7 +492,20 @@
         
       };
 
-      function loadEditor(page){
+      function loadEditor(page, option = 'page'){
+        var urlStore = '';
+        var urlLoad = '';
+        switch(option){
+          case 'page':
+            urlStore = '/admin/editor/store/' + page;
+            urlLoad = '/admin/editor/' + page + '/load';
+          break;
+
+          case 'layout':
+            urlStore = '/admin/dashboard/layouts/edit/design/store/' + page;
+            urlLoad = '/admin/dashboard/layouts/edit/design/' + page + '/load';
+          break;
+        }
         if (!editor) {
           // grapesjs.init will load the editor with the corresponding configuration
           editor = grapesjs.init({
@@ -483,12 +521,13 @@
             // Select container of editor
             container  : '.editor',
             // Config the storege and load page
+
             storageManager: {
               autosave: false,
               setStepsBeforeSave: 1,
               type: 'remote',
-              urlStore: '/admin/editor/store/' + page, // Url where we storage page in db
-              urlLoad: '/admin/editor/' + page + '/load', // Url where we load page
+              urlStore: urlStore, // Url where we storage page in db
+              urlLoad: urlLoad, // Url where we load page
               contentTypeJson: true,
               params: { _token:token },
             },
@@ -854,8 +893,8 @@
           if (page != current_page) {
             // Change urls to load and store
             editor.StorageManager.get('remote').set({
-              urlStore: '/admin/editor/store/' + page, 
-              urlLoad: '/admin/editor/' + page + '/load'
+              urlStore: urlStore, 
+              urlLoad: urlLoad
             });
             // Load page to editor
             editor.load();  
@@ -889,6 +928,20 @@
           }
         }
         
+      });
+
+      $(document).on('change', '.content-page', function(e) {
+
+        var value = $('input:radio[name=content_option]:checked').val();
+
+        if (value == 'page') {
+          $('#select-layout-content').hide('slow/400/fast');
+          $('#select-page-content').show('slow/400/fast');
+        }else if(value == 'layout'){
+          $('#select-page-content').hide('slow/400/fast');
+          $('#select-layout-content').show('slow/400/fast');
+        }
+
       });
 
     </script>

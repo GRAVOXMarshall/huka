@@ -3,6 +3,8 @@
 namespace Modules\Authentication;
 
 use App\Http\Classes\Module;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Classes\ModuleConfigure;
 
 class Authentication extends Module
 {
@@ -13,6 +15,7 @@ class Authentication extends Module
 
         $this->description = 'This module allow auth user in back and front end';
 
+        $this->has_variable = true;
         //parent::__construct();
     }
 
@@ -40,6 +43,10 @@ class Authentication extends Module
 
         parent::updateConfiguration($this->name, 'Design Register', 'Configurate Design of register', 'design-page', 8);
 
+        parent::updateConfiguration($this->name, 'Set User Information', 'Set user information', 'user-information', 9);
+
+        parent::updateConfiguration($this->name, 'Design User Information', 'Configurate Design of user information', 'design-page', 10);
+
         if (empty($this->error)) {
             return true;
         }
@@ -57,5 +64,27 @@ class Authentication extends Module
         return true;
     }
 
+
+    /**
+     * Validate if a module is already registered in database
+     * @param string
+     * @return bool result
+     */
+    public function getVariable()
+    {
+        $variables = array();
+        if ($user = Auth::guard('front')->user()) {
+            if (!is_null($module = $this->getByName($this->name))) {
+                $configuration = ModuleConfigure::where('module_id', $module->id)
+                                ->where('step', 9)
+                                ->firstOrFail();
+                foreach (json_decode($configuration->value) as $key => $value) {
+                    $variables[strtolower($key)] = $user->$value;
+                }
+            }
+        }
+
+        return $variables;
+    }
 
 }

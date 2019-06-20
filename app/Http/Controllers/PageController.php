@@ -129,26 +129,14 @@ class PageController extends Controller
             $components = json_decode(json_decode($page->components, true));
             foreach ($components as $component) {
                 if ($component->type == 'module') {
-                    $className = 'Modules\\'.$component->module.'\\'.$component->module;
-                    $module = new $className;
-                    if (!is_null($module->has_variable) && $module->has_variable) {
-                        $variables = $module->getVariable();
-                        if (!empty($variables)) {
-                            $this->setVariable($component->components, $variables);
-                        }
-                    }
+                    $this->loadModuleComponents($component);
                 }
             }
 
             if (!is_null($page->parent_layout) && $page->parent_layout > 0) {
                 $layout = Layout::findOrFail($page->parent_layout);
                 $parent_components = json_decode(json_decode($layout->components, true));
-                foreach ($parent_components as $component) {
-                    if ($component->type == 'childContainer') {
-                        $component->content = '';
-                        $component->components = $components;
-                    }
-                }
+                $this->setLayout($parent_components, $components);
                 $css = $layout->css.' '.$page->css;
                 $result = $parent_components;
             }else{
@@ -170,6 +158,21 @@ class PageController extends Controller
     }
 
 
+    public function loadModuleComponents($component = null)
+    {
+        if (!is_null($component)) {
+            $className = 'Modules\\'.$component->module.'\\'.$component->module;
+            $module = new $className;
+            if (!is_null($module->has_variable) && $module->has_variable) {
+                $variables = $module->getVariable();
+                if (!empty($variables)) {
+                    $this->setVariable($component->components, $variables);
+                }
+            }
+        }
+    }
+
+
     public function setVariable($components, $variables)
     {
         foreach ($components as $component) {
@@ -179,6 +182,22 @@ class PageController extends Controller
             }
             if (!empty($component->components)) {
                 $this->setVariable($component->components, $variables);
+            }
+        }
+    }
+
+    public function setLayout($components, $child)
+    {
+        foreach ($components as $component) {
+            if ($component->type == 'module') {
+                $this->loadModuleComponents($component);
+            }
+            if ($component->type == 'childContainer') {
+                $component->content = '';
+                $component->components = $child;
+            }
+            if (!empty($component->components)) {
+                $this->setLayout($component->components, $child);
             }
         }
     }

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Authentication\Authentication;
 use App\Http\Classes\Image;
 use App\Http\Classes\Page;
+use App\Http\Classes\Layout;
 use App\Http\Classes\Element;
 use App\Http\Classes\ModuleConfigure;
 use App\Http\Classes\Configuration;
@@ -35,9 +36,10 @@ class ConfiguratesController extends Controller
         }
         $images = Image::all();
         $pages = Page::all();
+        $layouts = Layout::all();
         // Get active elements in db 
         $elements = Element::where('active', 1)->get();
-        return view('authentication::configuration', compact('module', 'columns', 'configurations', 'steps', 'pages', 'elements', 'images'));
+        return view('authentication::configuration', compact('module', 'columns', 'configurations', 'steps', 'pages', 'layouts', 'elements', 'images'));
     }
     
     /**
@@ -103,12 +105,13 @@ class ConfiguratesController extends Controller
     {
         $inputs = [
             'configuration' => 'required|exists:module_configuration,id',
-            'page' => 'required|exists:pages,id',
+            'content_option' => 'required|in:page,layout',
         ];
         $validator = ModuleConfigure::validateRequest($request, $inputs);
         if (!is_null($validator) && !$validator->fails()) {
             $value = json_encode(array(
-                'page' => $request->page,
+                'option' => $request->content_option,
+                'value' => ($request->content_option == 'page') ? $request->page : $request->layout,
             ));
             return response()->json(ModuleConfigure::saveConfiguration((int)$request->configuration, $value));
         }
@@ -142,5 +145,38 @@ class ConfiguratesController extends Controller
         ]);
 
     }
+
+    /**
+     * Save configuration dssign login through ajax process 
+     * @param Request
+     * @return Response
+     */
+    public function processConfigurationUserInformation(Request $request)
+    {
+        $inputs = [
+            'configuration' => 'required|exists:module_configuration,id',
+            'content_option_information' => 'required|in:page,layout',
+        ];
+
+        $values = array();
+        foreach ($request->all() as $key => $value) {
+            if ($key != 'configuration' && $key != '_token') {
+                $inputs[$key] = 'required|string';
+                $values[$key] = $value;
+            }
+        }
+        
+        $validator = ModuleConfigure::validateRequest($request, $inputs);
+        if (!is_null($validator) && !$validator->fails()) {
+            $value = json_encode($values);
+            return response()->json(ModuleConfigure::saveConfiguration((int)$request->configuration, $value));
+        }
+        return response()->json([
+            'is_error' => true,
+            'result' => (!is_null($validator)) ? $validator->errors() : 'Request is invalidate.',
+        ]);
+
+    }
+    
 
 }

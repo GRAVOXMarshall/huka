@@ -17,7 +17,7 @@ class PagesSeeder extends Seeder
         DB::table('pages')->truncate();
 
         DB::table('pages')->insert([
-            'name' => 'Sign in',
+            'name' => 'Home',
             'title' => Str::random(10),
             'description' => Str::random(10),
             'link' => Str::random(10),
