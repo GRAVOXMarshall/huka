@@ -1,13 +1,12 @@
 <?php
 
-namespace Modules\Contact\Http\Controllers;
+namespace Modules\Forum\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use App\Http\Classes\Page;
 
-class ContactController extends Controller
+class ForumController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,28 +14,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contact::index');
-    }
-
-    public function sendMails(Request $request){
-        $page = Page::find(3);
-        $components = json_decode(json_decode($page->components, true));
-        $result = $components;
-        $css = $page->css;
-        $data = ['firstname' => 'Sebastian', 'page' => $page, 'components' => $result, 'css' => $css, 'template' => 'css/bootstrap-new.css'];
-        
-         return view('mail', ['message' => $request->Message,'page' => $page, 'components' => $result, 'css' => $css, 'template' => 'css/bootstrap-new.css']);
-         
-        \Mail::send('mail', $data, function ($message) {
-
-            $message->from('email@styde.net', 'Styde.Net');
-
-            $message->to('user@example.com')->subject('Notificación');
-
-        });
-
-        return "Se envío el email";
-         
+        return view('forum::index');
     }
 
     /**
@@ -45,7 +23,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('contact::create');
+        return view('forum::create');
     }
 
     /**
@@ -65,7 +43,7 @@ class ContactController extends Controller
      */
     public function show($id)
     {
-        return view('contact::show');
+        return view('forum::show');
     }
 
     /**
@@ -75,7 +53,7 @@ class ContactController extends Controller
      */
     public function edit($id)
     {
-        return view('contact::edit');
+        return view('forum::edit');
     }
 
     /**
