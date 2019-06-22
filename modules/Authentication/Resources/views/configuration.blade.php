@@ -508,12 +508,18 @@
                         if (!steps[6]) {
                           var domComponents = editor.DomComponents;
                           var logout = domComponents.addComponent({
+                            type: 'module',
+                            module: 'Authentication',
+                            sentence : {
+                              'type': 'if',
+                              'option': 'userNotLogin',
+                              'value': '!Auth::guard("front")->user()',
+                            },
                             tagName: 'div',
                             removable: false, // Can't remove it
                             draggable: true, // Can't move it
                             copyable: false, // Disable copy/past
                             style: {
-                              'width': '50%',
                               'padding': '1rem'
                             }
                           });
@@ -661,6 +667,11 @@
                     var user_information = domComponents.addComponent({
                       type: 'module',
                       module: 'Authentication',
+                      sentence : {
+                        'type': 'if',
+                        'option': 'userNotLogin',
+                        'value': '!Auth::guard("front")->user()',
+                      },
                       tagName: 'div',
                       removable: false, // Can't remove it
                       draggable: true, // Can't move it

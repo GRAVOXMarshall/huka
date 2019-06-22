@@ -87,4 +87,36 @@ class Authentication extends Module
         return $variables;
     }
 
+    /**
+     * Validate if a module is already registered in database
+     * @param string
+     * @return bool result
+     */
+    public function executeSentence($component, $sentence)
+    {
+        if (!is_null($component) && !is_null($sentence)) {
+            switch ($sentence->type) {
+                case 'if':
+
+                    if(eval('return '.$sentence->value.';')){
+                        switch ($sentence->option) {
+                            case 'userNotLogin':
+                                $component->components = array();
+                                break;
+                            
+                            default:
+                                # code...
+                                break;
+                        }
+                    }
+                    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }
+    }
+
 }

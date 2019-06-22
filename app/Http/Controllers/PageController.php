@@ -163,6 +163,9 @@ class PageController extends Controller
         if (!is_null($component)) {
             $className = 'Modules\\'.$component->module.'\\'.$component->module;
             $module = new $className;
+            if (isset($component->sentence) && !is_null($component->sentence)) {
+                $module->executeSentence($component, $component->sentence);
+            }
             if (!is_null($module->has_variable) && $module->has_variable) {
                 $variables = $module->getVariable();
                 if (!empty($variables)) {
