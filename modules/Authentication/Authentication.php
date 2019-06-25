@@ -35,17 +35,21 @@ class Authentication extends Module
 
         parent::updateConfiguration($this->name, 'Design Login', 'Configurate Design of login', 'design-page', 4);
 
-        parent::updateConfiguration($this->name, 'Page Logout', 'Select Page to logout ', 'select-page', 5);
+        parent::updateConfiguration($this->name, 'Add login trigger', 'Select where you want to add the button that redirect to the login', 'select-page', 5);
 
-        parent::updateConfiguration($this->name, 'Logout Button', 'Add logout button ', 'design-page', 6);
+        parent::updateConfiguration($this->name, 'Design login trigger', 'Configurate Design of login trigger', 'design-page', 6);
 
-        parent::updateConfiguration($this->name, 'Page Register', 'Select Page to register ', 'select-page', 7);
+        parent::updateConfiguration($this->name, 'Page Logout', 'Select Page to logout ', 'select-page', 7);
 
-        parent::updateConfiguration($this->name, 'Design Register', 'Configurate Design of register', 'design-page', 8);
+        parent::updateConfiguration($this->name, 'Logout Button', 'Add logout button ', 'design-page', 8);
 
-        parent::updateConfiguration($this->name, 'Set User Information', 'Set user information', 'user-information', 9);
+        parent::updateConfiguration($this->name, 'Page Register', 'Select Page to register ', 'select-page', 9);
 
-        parent::updateConfiguration($this->name, 'Design User Information', 'Configurate Design of user information', 'design-page', 10);
+        parent::updateConfiguration($this->name, 'Design Register', 'Configurate Design of register', 'design-page', 10);
+
+        parent::updateConfiguration($this->name, 'Set User Information', 'Set user information', 'user-information', 11);
+
+        parent::updateConfiguration($this->name, 'Design User Information', 'Configurate Design of user information', 'design-page', 12);
 
         if (empty($this->error)) {
             return true;
@@ -76,7 +80,7 @@ class Authentication extends Module
         if ($user = Auth::guard('front')->user()) {
             if (!is_null($module = $this->getByName($this->name))) {
                 $configuration = ModuleConfigure::where('module_id', $module->id)
-                                ->where('step', 9)
+                                ->where('step', 11)
                                 ->firstOrFail();
                 foreach (json_decode($configuration->value) as $key => $value) {
                     $variables[strtolower($key)] = $user->$value;
@@ -101,11 +105,8 @@ class Authentication extends Module
                     if(eval('return '.$sentence->value.';')){
                         switch ($sentence->option) {
                             case 'userNotLogin':
+                            case 'userLogin':
                                 $component->components = array();
-                                break;
-                            
-                            default:
-                                # code...
                                 break;
                         }
                     }

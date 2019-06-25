@@ -166,6 +166,7 @@
 
 @push('scripts')
     <script type="text/javascript">
+
       $(document).ready(function() {
         // Set firts step configuration 
         nextStep(1);
@@ -283,6 +284,7 @@
                   case 3:
                   case 5:
                   case 7:
+                  case 9:
                     // Select page selected
                     $(`#${step_config.option}-option`).attr('checked', true);
                     var content_hide = (step_config.option == 'page') ? 'layout' : 'page';
@@ -291,7 +293,7 @@
                     $(`#select-${step_config.option}-input option[value=${step_config.value}]`).attr('selected', 'selected');
                   break;
 
-                  case 9:
+                  case 11:
                     // Select page selected
                     $(`#${step_config.content_option_information}-information-option`).attr('checked', true);
                     var content_hide = (step_config.content_option_information == 'page') ? 'layout' : 'page';
@@ -312,13 +314,14 @@
                   case 3:
                   case 5:
                   case 7:
+                  case 9:
                     // Select option page and hide layout content
                     $('#page-option').attr('checked', true);
                     $('#select-layout-content').hide();
                     $('#select-page-content').show();
                   break;
 
-                  case 9:
+                  case 11:
 
                     $('#page-information-option').attr('checked', true);
                     $('#select-layout-content-information').hide();
@@ -340,18 +343,71 @@
 
 
               // Add elements to view 
-              if (step == 3 || step == 5 || step == 7) {
+              if (step == 3 || step == 5 || step == 7 || step == 9 || step == 11) {
                 
                 if (output.result.value) {
                   var data = JSON.parse(output.result.value);
                   loadEditor(data.value, data.option);
 
                   editor.on('storage:load', function(e) {
+
+                    // Add button to login user in the top panel
+                    var user_btn = editor.Panels.getButton('panel-options','btn-login-user');
+
+                    if (!user_btn) {
+                      editor.Panels.addButton('panel-options', {
+                        id: 'btn-login-user',
+                        label: '<i class="fas fa-user-alt"></i>',
+                        attributes: { title: 'Login user'},
+                        command: 'sw-login',
+                      });
+
+                      editor.Commands.add('sw-login', {
+                        run(editor, sender) {
+                          var component = editor.DomComponents.getWrapper();
+
+                          var login_btn = component.find('#login_btn')[0];
+                          var logout_btn = component.find('#logout_btn')[0];
+                          var user_info = component.find('#user_info')[0];
+                          
+                          if (logout_btn) {
+                            $(logout_btn.getEl()).show();
+                          }
+                          if (user_info) {
+                            $(user_info.getEl()).show();
+                          }
+                          if (login_btn) {
+                            $(login_btn.getEl()).hide();
+                          }
+                          sender.set('active', true);
+                        },
+
+                        stop(edit, sender) {
+                          var component = editor.DomComponents.getWrapper();
+
+                          var login_btn = component.find('#login_btn')[0];
+                          var logout_btn = component.find('#logout_btn')[0];
+                          var user_info = component.find('#user_info')[0];
+                          
+                          if (logout_btn) {
+                            $(logout_btn.getEl()).hide();
+                          }
+                          if (user_info) {
+                            $(user_info.getEl()).hide();
+                          }
+                          if (login_btn) {
+                            $(login_btn.getEl()).show();
+                          }
+                          sender.set('active', false);
+                        }
+                      });
+                    }                  
+
                     switch (step) {
                       case 3:
                         // Add login element if not exit
                         if (!steps[4]) {
-                          var domComponents = editor.DomComponents;
+  
                           var login = domComponents.addComponent({
                             tagName: 'div',
                             removable: false, // Can't remove it
@@ -505,8 +561,50 @@
 
                       case 5:
                         // Add login element if not exit
-                        if (!steps[6]) {
-                          var domComponents = editor.DomComponents;
+                        var login_step = JSON.parse(steps[3]);
+                        if (!steps[6] && login_step.option == 'page') {
+  
+                          var login_trigger = domComponents.addComponent({
+                            type: 'module',
+                            module: 'Authentication',
+                            sentence : {
+                              'type': 'if',
+                              'option': 'userLogin',
+                              'value': 'Auth::guard("front")->user()',
+                            },
+                            tagName: 'div',
+                            attributes: {
+                              id: 'login_btn',
+                            },
+                            removable: false, // Can't remove it
+                            draggable: true, // Can't move it
+                            copyable: false, // Disable copy/past
+                            style: {
+                              'padding': '1rem'
+                            }
+                          });
+        
+                          var login_btn = login_trigger.get('components').add({
+                            tagName: 'a',
+                            type: 'link',
+                            attributes: {
+                              href: `{{ url('page') }}/${login_step.value}`,
+                            },
+                            classes: ['btn', 'btn-outline-warning'],
+                            content: 'Sign in',
+                            removable: false, // Can't remove it
+                          });
+
+                          //login_btn.setClass('btn');
+
+                        }
+                        // End if validate
+                      break;
+
+                      case 7:
+                        // Add login element if not exit
+                        if (!steps[8]) {
+  
                           var logout = domComponents.addComponent({
                             type: 'module',
                             module: 'Authentication',
@@ -516,6 +614,9 @@
                               'value': '!Auth::guard("front")->user()',
                             },
                             tagName: 'div',
+                            attributes: {
+                              id: 'logout_btn',
+                            },
                             removable: false, // Can't remove it
                             draggable: true, // Can't move it
                             copyable: false, // Disable copy/past
@@ -523,6 +624,8 @@
                               'padding': '1rem'
                             }
                           });
+
+
 
                           var formLogout = logout.get('components').add({
                             type: 'form',
@@ -549,10 +652,10 @@
                         // End if validate
                       break;
 
-                      case 7:
+                      case 9:
                         // Add login element if not exit
-                        if (!steps[8]) {
-                          var domComponents = editor.DomComponents;
+                        if (!steps[10]) {
+  
                           var register = domComponents.addComponent({
                             tagName: 'div',
                             removable: false, // Can't remove it
@@ -637,11 +740,13 @@
                         }
                         // End if validate
                       break;
+
                     }
                     
 
                   });
                 }
+
                 page = (output.result.value) ? JSON.parse(output.result.value).page : null;
                 if (page != null && page > 0) {
                   
@@ -649,57 +754,61 @@
                 }
               }
 
-              // Save view in database
-              if (step == 4 || step == 6 || step == 8 || step == 10) {
-                editor.store();
-              }
+              if (step == 11) {
 
-               // Add elements to view 
-              if (step == 9) {
-                
                 if (output.result.value) {
                   var data = JSON.parse(output.result.value);
-                  var value = (data.content_option_information == 'page') ? data.page : data.layout;
-                  loadEditor(value, data.content_option_information);
+                  var id_value = (data.content_option_information == 'page') ? data.page : data.layout;
                   
+                  loadEditor(id_value, data.content_option_information);
+
                   editor.on('storage:load', function(e) {
-                    var domComponents = editor.DomComponents;
-                    var user_information = domComponents.addComponent({
-                      type: 'module',
-                      module: 'Authentication',
-                      sentence : {
-                        'type': 'if',
-                        'option': 'userNotLogin',
-                        'value': '!Auth::guard("front")->user()',
-                      },
-                      tagName: 'div',
-                      removable: false, // Can't remove it
-                      draggable: true, // Can't move it
-                      copyable: false, // Disable copy/past
-                      style: {
-                        'padding': '1rem'
-                      }
-                    });
-              
-                    Object.entries(data).forEach(([key, column]) => {
-                      if (key != 'content_option_information' && key != 'page' && key != 'layout') {
-                        label = key.toLowerCase();
-                        user_information.get('components').add({
-                          type: 'variable',
-                          tagName: 'label',
-                          content: '${'+label+'}',
-                          removable: false,
-                          copyable: false,
-                        });
-                      }
-                      
-                    });
-                    
+                    // Add login element if not exit
+                    if (!steps[12]) {
+                      var user_information = domComponents.addComponent({
+                        type: 'module',
+                        module: 'Authentication',
+                        sentence : {
+                          'type': 'if',
+                          'option': 'userNotLogin',
+                          'value': '!Auth::guard("front")->user()',
+                        },
+                        tagName: 'div',
+                        attributes: {
+                          id: 'user_info',
+                        },
+                        removable: false, // Can't remove it
+                        draggable: true, // Can't move it
+                        copyable: false, // Disable copy/past
+                        style: {
+                          'padding': '1rem'
+                        }
+                      });
+                
+                      Object.entries(data).forEach(([key, column]) => {
+                        if (key != 'content_option_information' && key != 'page' && key != 'layout') {
+                          label = key.toLowerCase();
+                          user_information.get('components').add({
+                            type: 'variable',
+                            tagName: 'label',
+                            content: '${'+label+'}',
+                            removable: false,
+                            copyable: false,
+                          });
+                        }
+                        
+                      });
+
+                    }
+                    // End if validate
                   });
                 }
               }
 
-
+              // Save view in database
+              if (step == 4 || step == 6 || step == 8 || step == 10 || step == 12) {
+                editor.store();
+              }
 
               nextStep(step+1);
 

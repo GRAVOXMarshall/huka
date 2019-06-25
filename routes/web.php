@@ -110,6 +110,9 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('admin/dashboard/pages/delete/{page}', 'PageController@deletePage')->name('delete.page');
 
+
+	
+
 	Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
 
 	/*

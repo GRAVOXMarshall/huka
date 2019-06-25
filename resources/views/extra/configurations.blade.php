@@ -363,6 +363,7 @@
     </div>
     <script type="text/javascript">
       var editor;
+      var domComponents;
       let steps = @json($steps);
       let configurations = @json($configurations);
       // These pages are getting through the controller and only get pages corresponding to selected type are set
@@ -728,7 +729,8 @@
             },
 
           }); // End editor init
-
+          
+          domComponents = editor.DomComponents;
           var pn = editor.Panels;
           var modal = editor.Modal;
           var cmdm = editor.Commands;
