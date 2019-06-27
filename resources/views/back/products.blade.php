@@ -1,8 +1,7 @@
 @extends('back.index')
 
 @section('dash-content')
-  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Products</h1>
         @if(Auth::guard('admins')->user())
           {{ Auth::guard('admins')->user()->email }}
@@ -38,60 +37,6 @@
             </div>
         @endif
       </div>
-
-     
-          <!--<div class="card mb-3">
-            <div class="card-body p-4">
-             
-              <div class="media d-block d-sm-flex">
-                <div class="u-avatar mb-3 mb-sm-0 mr-3">
-                  <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
-                </div>
-
-                <div class="media-body">
-          
-                  <div class="mb-4">
-                    <h3 class="h5 mb-0">
-                      <a href="#">Google Inc.</a>
-                    </h3>
-
-  
-                    <a class="d-inline-block small" href="#">
-                      <span class="text-warning">
-                        <span class="fas fa-star"></span>
-                        <span class="fas fa-star"></span>
-                        <span class="fas fa-star"></span>
-                        <span class="far fa-star"></span>
-                        <span class="far fa-star"></span>
-                      </span>
-                      <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
-                      <span class="text-muted">(780k+ reviews)</span>
-                    </a>
-     
-                  </div>
- 
-
-                  <div class="mb-4">
-                    <p>Regular exposure to business stakeholders and executive management, as well as the authority.</p>
-                  </div>
- 
-                  <div class="d-flex align-items-center">
-                    <div class="u-ver-divider pr-3 mr-3">
-                      <a class="font-size-1 text-secondary font-weight-medium" href="#">Salaries</a>
-                    </div>
-
-                    <div class="u-ver-divider pr-3 mr-3">
-                      <a class="font-size-1 text-secondary font-weight-medium" href="#">Q&A</a>
-                    </div>
-
-                    <a class="font-size-1 font-weight-medium" href="#">Open jobs - 451</a>
-                  </div>
-                 </div>
-              </div>
-   
-            </div>
-          </div>-->
- 
               @foreach($data as $functionality)
                 @foreach($dataWeb as $infoWeb)
                   @if($functionality['id'] === $infoWeb->id && $infoWeb->domain === $web->domain)
@@ -531,5 +476,4 @@
       @endif
 
       <!-- End Templates -->
-  </main>
  @endsection
