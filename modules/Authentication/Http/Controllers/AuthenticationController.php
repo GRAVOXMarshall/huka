@@ -3,6 +3,7 @@
 namespace Modules\Authentication\Http\Controllers;
 
 use App\Http\Classes\User;
+use App\Http\Classes\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -57,7 +58,7 @@ class AuthenticationController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return redirect('/');
+        return redirect(Page::getMainPage('front'));
     }
 
     /**
@@ -91,7 +92,7 @@ class AuthenticationController extends Controller
 
         //$request->session()->invalidate();
 
-        return redirect('/');
+        return redirect(Page::getMainPage('front'));
     }
 
 
@@ -118,7 +119,7 @@ class AuthenticationController extends Controller
 
         $this->guard()->login($user);
 
-        return redirect('/');
+        return redirect(Page::getMainPage('front'));
         
     }
 

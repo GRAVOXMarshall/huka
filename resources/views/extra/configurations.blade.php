@@ -916,6 +916,7 @@
           }
         })
         .fail(function(jqXHR, textStatus, errorThrown ){
+          console.log(jqXHR);
           alert(textStatus);
           //$("#alert-error-login").append('<p class="text-danger">'+textStatus+'</p>');
         });

@@ -13,9 +13,19 @@
 			@if(isset($page) && $page->id > 0)
 				<input type="hidden" name="page" value="{{ $page->id }}">
 			@endif
-			<div class="custom-control custom-switch mb-3">
-				<input type="checkbox" class="custom-control-input" id="active-page" name="active" {{ (isset($page) && $page->active || old('active') == 'on') ? 'checked' : '' }}>
-				<label class="custom-control-label" for="active-page">Active Page</label>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<div class="custom-control custom-switch mb-3">
+						<input type="checkbox" class="custom-control-input" id="active-page" name="active" {{ (isset($page) && $page->active || old('active') == 'on') ? 'checked' : '' }}>
+						<label class="custom-control-label" for="active-page">Active Page</label>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<div class="custom-control custom-checkbox">
+						<input class="custom-control-input" id="main_page" type="checkbox" name="main_page" {{ (isset($page) && $page->main || old('main_page') == 'on') ? 'checked' : '' }}>
+						<label class="custom-control-label" for="main_page">Set as main page</label>
+					</div>
+				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">

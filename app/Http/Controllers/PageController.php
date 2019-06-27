@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Classes\Page;
 use App\Http\Classes\Layout;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Validator;
 
@@ -60,6 +61,8 @@ class PageController extends Controller
             $page->link = $request->link;
             $page->active = (isset($request->active)) ? true : false;
             $page->description = $request->description;
+            $page->main = false;
+            $page->user_page = false;
             if ($page->save()) {
                 return redirect('admin/dashboard/pages');
             }
@@ -93,6 +96,10 @@ class PageController extends Controller
             $page->parent_layout = ($request->layout > 0) ? $request->layout : null;
             $page->link = $request->link;
             $page->active = (isset($request->active)) ? true : false;
+            if (isset($request->main_page)) {
+                Page::removeMainPage($page->type);
+                $page->main = true;
+            }
             $page->description = $request->description;
             if ($page->save()) {
                 return redirect('admin/dashboard/pages');
@@ -123,38 +130,42 @@ class PageController extends Controller
      */
     public function loadFrontEnd(Page $page)
     {
+        $type_page = null;
+
         if (!empty($page)) {
-            $result;
-            $css;
-            $components = json_decode(json_decode($page->components, true));
-            foreach ($components as $component) {
-                if ($component->type == 'module') {
-                    $this->loadModuleComponents($component);
+            $type_page = ($page->type == 'F') ? 'front' : 'back';
+            if ($page->user_page && Auth::guard($type_page)->user() || !$page->user_page) {
+                $result;
+                $css;
+                $components = json_decode(json_decode($page->components, true));
+                foreach ($components as $component) {
+                    if ($component->type == 'module') {
+                        $this->loadModuleComponents($component);
+                    }
                 }
-            }
 
-            if (!is_null($page->parent_layout) && $page->parent_layout > 0) {
-                $layout = Layout::findOrFail($page->parent_layout);
-                $parent_components = json_decode(json_decode($layout->components, true));
-                $this->setLayout($parent_components, $components);
-                $css = $layout->css.' '.$page->css;
-                $result = $parent_components;
-            }else{
-                $result = $components;
-                $css = $page->css;
-            }
-        
+                if (!is_null($page->parent_layout) && $page->parent_layout > 0) {
+                    $layout = Layout::findOrFail($page->parent_layout);
+                    $parent_components = json_decode(json_decode($layout->components, true));
+                    $this->setLayout($parent_components, $components);
+                    $css = $layout->css.' '.$page->css;
+                    $result = $parent_components;
+                }else{
+                    $result = $components;
+                    $css = $page->css;
+                }
             
-
-            return view('index', [
-            	'page' => $page,
-            	'components' => $result,
-            	'css' => $css,
-                'template' => 'css/bootstrap-new.css'
-            ]);
+                return view('index', [
+                    'page' => $page,
+                    'components' => $result,
+                    'css' => $css,
+                    'template' => 'css/bootstrap-new.css'
+                ]);
+            }
         }
 
-        return redirect('/');
+        return redirect(Page::getMainPage($type_page));
+
     }
 
 

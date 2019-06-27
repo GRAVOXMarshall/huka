@@ -22,6 +22,8 @@ class CreatePagesTable extends Migration
             $table->enum('type', ['B', 'F']);
             $table->integer('parent_layout')->nullable();
             $table->boolean('active');
+            $table->boolean('main');
+            $table->boolean('user_page');
             $table->longtext('components')->nullable();
             $table->longtext('styles')->nullable();
             $table->longtext('assets')->nullable();

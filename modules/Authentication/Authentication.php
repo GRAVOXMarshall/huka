@@ -51,6 +51,8 @@ class Authentication extends Module
 
         parent::updateConfiguration($this->name, 'Design User Information', 'Configurate Design of user information', 'design-page', 12);
 
+        parent::updateConfiguration($this->name, 'User pages', 'Select the pages to which only logged users can enter', 'user-page', 13);
+
         if (empty($this->error)) {
             return true;
         }

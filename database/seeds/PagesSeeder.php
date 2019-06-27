@@ -23,6 +23,8 @@ class PagesSeeder extends Seeder
             'link' => Str::random(10),
             'type' => 'F',
             'active' => true,
+            'main' => true, 
+            'user_page' => false
         ]);
     }
 }

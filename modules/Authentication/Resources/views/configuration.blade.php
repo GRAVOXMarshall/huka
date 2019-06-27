@@ -158,7 +158,23 @@
             </div>
           </div>
         </div>
-        
+      </form>
+    </div>
+    <div class="tab-pane fade" id="user-page" role="tabpanel">
+      <form action="{{ route('authentication.configuration.user.pages') }}" method="post">
+        @csrf
+        <input type="hidden" name="configuration" value="0">
+        <label for="input-columns">Select the pages to which only logged users can enter</label>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            @foreach($pages as $page)
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="column-check custom-control-input" name="pages[]" id="page-{{ $page->id }}" value="{{ $page->id }}" {{ ($page->user_page) ? 'checked' : '' }}>
+                <label class="custom-control-label" for="page-{{ $page->id }}">{{ $page->name }}</label>
+              </div>
+            @endforeach
+          </div>
+        </div>            
       </form>
     </div>
   @endif
