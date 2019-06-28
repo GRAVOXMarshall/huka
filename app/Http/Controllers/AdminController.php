@@ -2,25 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Route;
+use App\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Admin;
 use App\Http\Classes\Groups;
 use App\Http\Classes\PermitGroups;
 use App\Http\Classes\Permit;
-use Route;
-use Auth;
 
 class AdminController extends Controller
 {
     //
     public function __invoke(){
-    	$admin = Admin::all();
-        $group = Groups::where('name', '!=', 'Super Admin')->get()->toArray();
-        $access = PermitGroups::where(['permit_id' => 1, 'groups_id' => Auth::guard('admins')->user()->group_id])->exists();
-         return view('back/admins',  compact('admin','group', 'access'));
+    	
+        $admins = DB::table('admins')
+                ->join('groups', 'groups.id', '=', 'admins.group_id')
+                ->select('admins.id', 'admins.firstname' , 'admins.lastname', 'admins.email', 'groups.name')
+                ->get();
+        return view('back/content',  compact('admins'));
     }
+
     public function permits(){
          
         $group = Groups::where('name', '!=', 'Super Admin')->get();

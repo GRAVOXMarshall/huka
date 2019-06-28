@@ -28,9 +28,7 @@ Route::post('/logout-admin', 'Admin\LoginController@logout')->name('admin.logout
 * Admin route
 */
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('/admin/dashboard', function () {
-	    return view('back/content');
-	})->name('dash.init');
+    Route::get('/admin/dashboard', 'AdminController')->name('dash.init');
 
 	Route::get('admin/dashboard/products/modules', 'ProductsController')->name('dash.products');
 
