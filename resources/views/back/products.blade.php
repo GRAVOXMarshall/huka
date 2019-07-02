@@ -7,9 +7,9 @@
           {{ Auth::guard('admins')->user()->email }}
         @endif
       </div>
-      <a href="{{ route('dash.products') }}">Modules</a>
+      <!--<a href="{{ route('dash.products') }}">Modules</a>
       <a href="{{ route('dash.products.templates') }}">Templates</a>
-      <br><br>
+      <br><br>-->
       <!-- Star Modules -->
 
       @if(request()->is('admin/dashboard/products/modules'))
@@ -40,105 +40,104 @@
               @foreach($data as $functionality)
                 @foreach($dataWeb as $infoWeb)
                   @if($functionality['id'] === $infoWeb->id && $infoWeb->domain === $web->domain)
-                    <div class="col-md-6" align="center">
-                       <div class="card mb-3">
+                    <div class="col-md-12" align="center">
+                       <div class="card border-primary mb-3" style="max-height: 6rem;">
 
                             <div class="card-body p-4">
                               <!-- Details -->
-                              <div class="media d-block d-sm-flex">
-                                <div class="u-avatar mb-3 mb-sm-0 mr-3">
-                                  <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
-                                </div>
+                              <div class="media d-block d-sm-flex row">
+                                
 
-                                <div class="media-body">
-                                  <!-- Header -->
-                                  <div class="mb-4">
-                                    <h3 class="h5 mb-0">
-                                      <a href="#">{{$functionality['name']}}</a>
-                                    </h3>
-
-                                    <!-- Review -->
-                                    <a class="d-inline-block small" href="#">
-                                      <span class="text-warning">
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="far fa-star"></span>
-                                        <span class="far fa-star"></span>
-                                      </span>
-                                      <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
-                                      <span class="text-muted">(780k+ reviews)</span>
-                                    </a>
-                                    <!-- End Review -->
+                                  <div class="col-md-2">
+                                    <div class="u-avatar mb-3 mb-sm-0 mr-3">
+                                      <img class="img-fluid" src="{{ url($functionality['icon']) }}" alt="Image Description">
+                                    </div>
                                   </div>
-                                  <!-- End Header -->
 
-                                  <div class="mb-4">
-                                    <p class="text-secondary">{{$functionality['description']}}</p>
-                                  </div>
-                              @if($softwareFunctionality && in_array($name = str_replace(' ', '', ucwords(strtolower($functionality['name']))), array_column($softwareFunctionality->toArray(), 'name')))
-                                @foreach($softwareFunctionality as $soft)
-                                  @if($soft['name'] === $name)
-                                    @if($soft['active'] === 0)
-                                    <div class="d-flex align-items-center">
+                                  <div class="col-md-8" align="left">
+                                    <div class="media-body">
+                                        <!-- Header -->
+                                        <div  >
+                                          <h3 class="h5 mb-0">
+                                            <a href="#">{{$functionality['name']}}</a>
+                                          </h3>
 
-                                    <div class="u-ver-divider pr-3 mr-3">
-                                      <form action="{{ route('update.products') }}" method="post">
-                                      @csrf
-                                      <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="func_id">
-                                      <button class="btn btn-danger" style="width: 112px;">Deactivate</button>
-                                    </form>
-                                    </div>
+                                          <!-- Review -->
+                                          <!--<a class="d-inline-block small" href="#">
+                                            <span class="text-warning">
+                                              <span class="fas fa-star"></span>
+                                              <span class="fas fa-star"></span>
+                                              <span class="fas fa-star"></span>
+                                              <span class="far fa-star"></span>
+                                              <span class="far fa-star"></span>
+                                            </span>
+                                            <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
+                                            <span class="text-muted">(780k+ reviews)</span>
+                                          </a>-->
+                                          <!-- End Review -->
+                                        </div>
+                                        <!-- End Header -->
 
-                                    <div class="u-ver-divider pr-3 mr-3">
-                                     <form action="{{ route('delete.products') }}" method="post">
-                                      @csrf
-                                      <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="delete_func_id">
-                                      <button class="btn btn-primary" style="width: 112px;">Uninstall</button>
-                                    </form>
-                                    </div>
-
-                                    <div class="u-ver-divider pr-3 mr-3">
-                                      <a href="{{ route(strtolower($name).'.configuration') }}" class="btn btn-secondary" role="button" aria-pressed="true">Configurate</a>
-                                    </div>
-
-                                    </div>
+                                        <div class="mb-4">
+                                          <p class="text-secondary">{{$functionality['description']}}</p>
+                                        </div>
                                     
-                                    @endif
-                                    @if($soft['active'] === 1)
-                                    <div class="d-flex align-items-center">
+                                    </div>
+                                  </div>
 
-                                    <div class="u-ver-divider pr-3 mr-3">
-                                      <form action="{{ route('update.products') }}" method="post">
-                                        @csrf
-                                        <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="func_id">
-                                        <button class="btn btn-success" style="width: 112px;">Activate</button>
+                                  <div class="col-md-2" align="center">
+                                      @if($softwareFunctionality && in_array($name = str_replace(' ', '', ucwords(strtolower($functionality['name']))), array_column($softwareFunctionality->toArray(), 'name')))
+                                      @foreach($softwareFunctionality as $soft)
+                                        @if($soft['name'] === $name)
+                                        <div class="d-flex">
+                                          <div class="btn-group">
+                                            <a href="{{ route(strtolower($name).'.configuration') }}" class="btn btn-outline-primary" style="width: 135px;">Configurate</a>
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                              <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                           
+                                          <div class="dropdown-menu" align="center"  aria-labelledby="dropdownMenuReference">  
+                                           
+                                          @if($soft['active'] === 0)
+                                            <form action="{{ route('update.products') }}" method="post">
+                                              @csrf
+                                              <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="func_id">
+                                              <button class="dropdown-item btn btn-danger text-danger">Deactivate</button>
+                                            </form>                                          
+                                          @endif
+                                          @if($soft['active'] === 1)
+                                            <form action="{{ route('update.products') }}" method="post">
+                                              @csrf
+                                              <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="func_id">
+                                              <button class="dropdown-item btn btn-success text-success">Activate</button>
+                                            </form>
+                                          @endif
+                                          <form action="{{ route('delete.products') }}" method="post">
+                                              @csrf
+                                            <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="delete_func_id">
+                                            <button class="dropdown-item btn btn-primary text-primary">Uninstall</button>
+                                          </form>
+                                           
+                                          </div>
+                                         
+                                        </div>
+                                      </div>
+                                        @endif
+                                      @endforeach
+                                    @else
+                                      <form action="{{ route('install.products') }}" method="post">
+                                          @csrf
+                                          <input type="hidden" name="type" value="functionality">
+                                          <input type="hidden" name="product_id" value="{{ Crypt::encrypt($functionality['id']) }}" >
+                                          <button class="btn btn-primary" style="width: 100%;">Install</button>
                                       </form>
-                                    </div>
-
-                                    <div class="u-ver-divider pr-3 mr-3">
-                                     <form action="{{ route('delete.products') }}" method="post">
-                                        @csrf
-                                        <input type="text" hidden value="{{ Crypt::encrypt($soft->id) }}" name="delete_func_id">
-                                        <button class="btn btn-primary" style="width: 112px;">Uninstall</button>
-                                      </form>
-                                    </div>
-
-                                    </div>
-                                      
-                                      
                                     @endif
-                                  @endif
-                                @endforeach
-                              @else
-                                <form action="{{ route('install.products') }}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="type" value="functionality">
-                                    <input type="hidden" name="product_id" value="{{ Crypt::encrypt($functionality['id']) }}" >
-                                    <button class="btn btn-primary" style="width: 112px;">Install</button>
-                                </form>
-                              @endif
-                              </div>
+                                  </div>
+                                
+                                
+
+                                
+                              
                             </div>
                             <!-- End Details -->
                           </div>

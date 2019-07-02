@@ -19,4 +19,6 @@ Route::prefix('module/forum')->group(function() {
 	Route::post('/configuration/design', 'ConfiguratesController@processConfigurationDesignLogin')->name('forum.configuration.design');
 
 	Route::post('/configuration/testing', 'ConfiguratesController@testing')->name('forum.configuration.testing');
+
+	Route::post('/create/comments', 'ConfiguratesController@createComments')->name('create.comments');
 });

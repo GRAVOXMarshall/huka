@@ -106,65 +106,154 @@
                   			 if (!steps[3]) {
                   			 	//alert("Paso 2");
 		                         var domComponents = editor.DomComponents;
-		                         var account = domComponents.addComponent({
-			                        type: 'module',
-			                        module: 'Forum',
-			                        tagName: 'div',
-			                        removable: false, // Can't remove it
-			                        draggable: true, // Can't move it
-			                        copyable: false, // Disable copy/past
-			                        style: {
-			                          'padding': '1rem'
-			                        }
-			                      });
+		                         var container = domComponents.addComponent({
+		                         	type: 'module',
+		                            module: 'Forum',
+		                            sentence : {
+		                              'type': 'if',
+		                              'option': 'testingMode',
+		                              'value': 'Auth::guard("admins")->user()',
+		                            },
+		                            removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                          });
 
-			                      var row = account.get('components').add({
-			                        tagName: 'div',
-			                        style: {
-			                          'padding': '1rem'
-			                        }
-			                      });
+		                         container.addClass('container-fluid');
 
-			                      row.addClass('row');
+		                         var row = container.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                         });
 
-			                      var leftColumn = row.get('components').add({
-			                        tagName: 'div',
-			                        style: {
-			                          'padding': '1rem',
-			                          'border-radius': '0.25rem',
-			                          'border': '1px solid #dee2e6'
-			                        }
-			                      });
+		                         row.addClass('row');
 
-			                      leftColumn.addClass('hk-md-3 hk-lg-3');
+		                         var rowhk2l = row.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                         });
+
+		                         rowhk2l.addClass('hk-md-2');
+
+		                         var rowhk8 = row.get('components').add({
+		                         	
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'
+
+		                         });
+
+		                         rowhk8.addClass('hk-md-8');
+
+		                         var card = rowhk8.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                         });
+
+		                         card.addClass('card');
+
+		                         var cardBody = card.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                         });
+
+		                         cardBody.addClass('card-body');
+
+		                         var h5 = cardBody.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            type: 'text',
+		                            tagName: 'h5',
+		                            content: "Titulo"  
+		                         });
+
+		                         h5.addClass('card-title');
+
+		                         var p = cardBody.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'p',
+		                            type: "text",
+		                            content: "Some quick example text to build on the card title and make up the bulk of the card's content."  
+		                         });
+
+		                         p.addClass('card-text');
+
+		                         var a = cardBody.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'a',
+		                            type: "link",
+		                            content: "Responder",
+		                            attributes: {
+		                            	href: "#",
+		                            }
+		                         });
+
+		                         a.addClass('card-link');
+
+		                         var rowhk2r = row.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                         });
+
+		                         rowhk2r.addClass('hk-md-2');
 
 
-			                      leftColumn.get('components').add({
-			                        tagName: 'br'
-			                      });
 
-			                      var userImage = leftColumn.get('components').add({
-			                        tagName: 'div',
-			                        style: {
-			                          'padding': '1rem',
-			                          'text-align': 'center',
-			                          'margin-bottom': '1.5rem'
-			                        }
-			                      });
+		                         /*var logout = domComponents.addComponent({
+		                            type: 'module',
+		                            module: 'Forum',
+		                            sentence : {
+		                              'type': 'if',
+		                              'option': 'testingMode',
+		                              'value': 'Auth::guard("admins")->user()',
+		                            },
+		                            tagName: 'div',
+		                            removable: false, // Can't remove it
+		                            draggable: true, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            style: {
+		                              'padding': '1rem'
+		                            }
+		                          });
 
-			                      userImage.get('components').add({
-			                        type: 'image',
-			                        tagName: 'img',
-			                        attributes: {
-			                          'src': 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/512/user-male-icon.png'
-			                        },
-			                        style: {
-			                          'width': '80px',
-			                          'height': '80px',
-			                          'border-radius': '50%',
-			                          'border': '1px solid #6c757d',
-			                        }
-			                      });
+		                         var formLogout = logout.get('components').add({
+		                            type: 'form',
+		                            tagName: 'form',
+		                            attributes: {
+		                              action: '{{ route('authentication.logout') }}',
+		                              method: 'post',
+		                            },
+		                            removable: false, // Can't remove it
+		                            draggable: true, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                          });
+
+		                          formLogout.get('components').add({
+		                            tagName: 'button',
+		                            type: 'submit',
+		                            attributes: {
+		                            	name: 'testing',
+		                              	type: 'submit',
+		                            },
+		                            content: 'Logout',
+		                          });*/
 
 			                       
 
@@ -175,276 +264,197 @@
 	                      	if (!steps[5]) {
                   			//alert("paso 4");
                   			var domComponents = editor.DomComponents;
-	                           var table = domComponents.addComponent({
-	                            tagName: 'table',
+                  			
+                  			var form = domComponents.addComponent({
 	                            removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
 	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'width': '600px',
-	                              'padding': '10px',
-	                              'margin': '0 auto',
-	                              'border-collapse': 'collapse'
-	                            }
-	                          });
-	                           var tr = table.get('components').add({
-	                            tagName: 'tr',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
+	                            type: 'form',
+		                            tagName: 'form',
+		                            attributes: {
+		                              action: '{{route("create.comments")}}',
+		                              method: 'post',
+		                            }    
 	                          });
 
-	                           var td = tr.get('components').add({
-	                            tagName: 'td',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'background-color': '#ecf0f1',
-	                              'text-align': 'left',
-	                              'padding': '0'
-	                            }
-	                          });
-
-	                          td.get('components').add({
-	                          	type: "image",
-	                          	tagName: 'img',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            attributes: {
-	                              src: '',
-	                              width: '10%',
-	                            },
-	                            style: {
-	                              'margin': ' 1.5% 3%',
-	                              'display' : 'block'
-	                            }
-	                          });
-
-	                          var tr2 = table.get('components').add({
-	                            tagName: 'tr',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                          });
-
-	                          var td2 = tr2.get('components').add({
-	                            tagName: 'td',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            attributes: {
-	                              align: 'center',
-	                            },
-	                            style: {
-	                              'padding': '0'
-	                            }
-	                          });
-
-	                          td2.get('components').add({
-	                            type: "image",
-	                          	tagName: 'img',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            attributes: {
-	                              src: '',
-	                              width: '80%',
-	                            },
-	                            style: {
-	                              'padding': ' 0',
-	                              'display' : 'block'
-	                            }
-	                          });
-
-	                          var tr3 = table.get('components').add({
-	                            tagName: 'tr',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                          });
-
-	                          var td3 = tr3.get('components').add({
-	                            tagName: 'td',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'background-color': '#ecf0f1'
-	                            }
-	                          });
-	                          var div = td3.get('components').add({
+	                        var container = form.get('components').add({
 	                            tagName: 'div',
 	                            removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'color': '#34495e',
-	                              'margin': '4% 10% 2%',
-	                              'text-align': 'justify',
-	                              'font-family': 'sans-serif'
-	                            }
+	                            copyable: false // Disable copy/past    
 	                          });
 
-	                          var dataStep = JSON.parse(steps[1]);
-	                          /*var label;
-	                           $.each(dataStep.dataTwo, function(index, val){
-					              	$.each(val, function(index, val) {
-					              		label = val.toLowerCase();
-					              		div.get('components').add({
-				                          tagName: 'label',
-				                          content: label+' :',
-				                        });
-				                        div.get('components').add({
-				                          type: 'variable',
-				                          content: '${'+label+'}',
-				                          removable: false,
-				                          copyable: false,
-				                        });
-					              	console.log("label: "+label);
-					              		  iterate through array or object  
-					              	});
+	                         container.addClass('container-fluid');
 
-					              });*/
-				               div.get('components').add({
-				              		type: "text",
-		                            tagName: 'h2',
-		                            removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            content: 'User: ${Usuario}!',
-		                            style: {
-		                              'color': '#e67e22',
-		                              'margin': '0 0 7px' 
-		                            }
-	                          }); 
-
-				             div.get('components').add({
-				              		type: "text",
-		                            tagName: 'p',
-		                            removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            content: "Message:  @if(isset($message)) $message @else ${message} @endif",
-		                            style: {
-		                              'margin': '2px',
-		                              'font-size': '15px' 
-		                            }
-		                          }); 
-
-	                          var ul = div.get('components').add({
-	                            tagName: 'ul',
-	                            removable: false, // Can't remove it
+	                         var divtitle = container.get('components').add({
+		                        tagName: 'div',
+		                        removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'font-size': '15px',
-	                              'margin': '10px 0' 
-	                            }
-	                          });
+	                            copyable: false
+		                      });
 
-	                          ul.get('components').add({
-	                          	type: "text",
-	                            tagName: 'li',
-	                            removable: false, // Can't remove it
+	                         divtitle.addClass('row');
+
+	                         var divtitlehk = divtitle.get('components').add({
+		                        tagName: 'div',
+		                        removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            content: 'Options Texts.' 
-	                          });
+	                            copyable: false,
+		                        attributes: {'align': 'center'}
+		                      });
 
-	                          ul.get('components').add({
-	                          	type: "text",
-	                            tagName: 'li',
-	                            removable: false, // Can't remove it
+	                          divtitlehk.addClass('hk-md-12');
+
+	                          var divtitleh3 = divtitlehk.get('components').add({
+		                        tagName: 'h3',
+		                        type: 'text',
+		                        removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            content: 'Options Texts.' 
-	                          });
-
-	                          ul.get('components').add({
-	                          	type: "text",
-	                            tagName: 'li',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            content: 'Options Texts.' 
-	                          });
-
-	                          ul.get('components').add({
-	                          	type: "text",
-	                            tagName: 'li',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            content: 'Options Texts.' 
-	                          });
-
-	                          ul.get('components').add({
-	                          	type: "text",
-	                            tagName: 'li',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            content: 'Options Texts.' 
-	                          });
-
-	                          var div2 = div.get('components').add({
-	                            tagName: 'div',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'width': '100%',
-	                              'margin': '20px 0',
-	                              'display': 'inline-block',
-	                              'text-align': 'center'
-	                            }
-	                          });
-
-	                          var div3 = div.get('components').add({
-	                            tagName: 'div',
-	                            removable: false, // Can't remove it
-	                            draggable: false, // Can't move it
-	                            copyable: false, // Disable copy/past
-	                            style: {
-	                              'width': '100%',
-	                              'text-align': 'center'
-	                            }
-	                          });
-
-	                           if (dataStep.remitente != null) {
-	                           	div.get('components').add({
-		                          	type: "text",
-		                            tagName: 'p',
-		                            removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            content: dataStep.remitente+' Copyrigth!',
-		                            style: {
-		                              'color': '#b3b3b3',
-		                              'font-size': '12px',
-		                              'text-align': 'center',
-		                              'margin': '30px 0 0'  
-		                            }
-		                          });
-	                           }else{
-	                           	div.get('components').add({
-		                          	type: "text",
-		                            tagName: 'p',
-		                            removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            content: 'Sitio Web Copyrigth!',
-		                            style: {
-		                              'color': '#b3b3b3',
-		                              'font-size': '12px',
-		                              'text-align': 'center',
-		                              'margin': '30px 0 0'  
-		                            }
-		                          });
-	                           }
+	                            copyable: false,
+		                        content: 'Crear Comentario'
+		                      });
 	                          
+	                          divtitle.get('components').add({
+	                          	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divtitle.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divtitle.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      var divform = container.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divform.addClass('row');
+
+	                         var divformh4 = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4.addClass('hk-md-4');
+
+	                         var divformh4M  = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4M.addClass('hk-md-4');
+
+	                         divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'h5',
+		                        type: 'text',
+		                        content: 'Titulo'
+		                      });
+
+	                        var inputtitle = divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'input',
+		                        attributes: {
+		                        	'type':'text',
+		                        	'name': 'title'},
+		                        type: 'text'
+		                      });
+
+	                          inputtitle.addClass('form-control');
+
+	                          divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+	                          divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'h5',
+		                        type: 'text',
+		                        content: 'Comentario'
+		                      });
+
+		                      var inputcoment = divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'textarea',
+		                        attributes: {'name': 'comments'},
+		                        style: {
+		                        	'height':'250px'
+		                        },
+		                        type: 'text'
+		                      });
+
+	                          inputcoment.addClass('form-control');
+
+	                          divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      var btnpublish = divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'button',
+		                        content: 'Publicar!'
+		                      });
+
+		                      btnpublish.addClass('form-control btn-primary');
+
+
+	                         var divformh4R = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4R.addClass('hk-md-4');
+
 	                      	}
                   		break;
 
