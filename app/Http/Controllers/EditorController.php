@@ -23,10 +23,10 @@ class EditorController extends Controller
     {
         if (!empty($page)) {
             return json_encode([
-                'gjs-css' => json_decode($page->css, true),
-                'gjs-style' => json_decode($page->styles, true),
-                'gjs-assets' => json_decode($page->assets, true),
-                'gjs-components' => json_decode($page->components, true),
+                'gjs-css' => (!is_null($page->css)) ? json_decode($page->css, true) : [],
+                'gjs-style' => (!is_null($page->styles)) ? json_decode($page->styles, true) : [],
+                'gjs-assets' => (!is_null($page->assets)) ? json_decode($page->assets, true) : [],
+                'gjs-components' => (!is_null($page->components)) ? json_decode($page->components, true) : [],
             ]);
         }
 

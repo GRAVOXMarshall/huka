@@ -587,6 +587,11 @@
           urlStore: '/admin/editor/store/' + id_page, 
           urlLoad: '/admin/editor/' + id_page + '/load'
         });
+
+        editor.DomComponents.clear(); // Clear components
+        editor.CssComposer.clear();  // Clear styles
+        editor.UndoManager.clear(); // Clear undo history
+        
         // Load page to editor
         editor.load();  
       }

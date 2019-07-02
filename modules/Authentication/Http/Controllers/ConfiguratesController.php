@@ -188,27 +188,28 @@ class ConfiguratesController extends Controller
     {
         $inputs = [
             'configuration' => 'required|exists:module_configuration,id',
-            'pages' => 'required',
         ];
 
         $validator = ModuleConfigure::validateRequest($request, $inputs);
         if (!is_null($validator) && !$validator->fails()) {
-            // Remove user_page to page not select
-            $pages = Page::where('user_page', true)->get();
-            foreach ($pages as $page) {
-                if (!in_array($page->id, $request->pages)) {
-                    $page->user_page = false;
+            if (isset($request->pages) && !is_null($request->pages)) {
+                // Remove user_page to page not select
+                $pages = Page::where('user_page', true)->get();
+                foreach ($pages as $page) {
+                    if (!in_array($page->id, $request->pages)) {
+                        $page->user_page = false;
+                        $page->save();
+                    }
+                }
+                // Add user_page to page select
+                foreach ($request->pages as $id) {
+                    $page = Page::find((int)$id);
+                    $page->user_page = true;
                     $page->save();
                 }
             }
-            // Add user_page to page select
-            foreach ($request->pages as $id) {
-                $page = Page::find((int)$id);
-                $page->user_page = true;
-                $page->save();
-            }
             $value = json_encode(array(
-                'pages' => $request->pages,
+                'pages' => (isset($request->pages) && !is_null($request->pages)) ? $request->pages : null,
             ));
             return response()->json(ModuleConfigure::saveConfiguration((int)$request->configuration, $value));
         }
