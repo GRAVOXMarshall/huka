@@ -485,7 +485,7 @@
         }
 
         var next_button = document.getElementById('btn-next');
-        if (!steps[step+1]) {
+        if (Object.keys(steps).length == step) {
           next_button.innerHTML = 'Finish';
         }else if(next_button.innerHTML == 'Finish'){
           next_button.innerHTML = 'Next';
