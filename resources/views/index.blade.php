@@ -37,6 +37,7 @@
         var element;
         if (data.tagName != '') {
           element = document.createElement(data.tagName);
+          console.log(data);
           if (data.classes.length > 0) {
             data.classes.forEach(function(classElement) {
               element.classList.add(classElement.name);

@@ -13,8 +13,8 @@ use App\Http\Classes\Page;
 use App\Http\Classes\Element;
 use App\Http\Classes\ModuleConfigure;
 use App\Http\Classes\Configuration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Modules\Forum\Http\Classes\ForumComments;
+
 
 class ConfiguratesController extends Controller
 {
@@ -41,26 +41,6 @@ class ConfiguratesController extends Controller
         $elements = Element::where('active', 1)->get();
             
 
-        /** 
-            Code for create and delete a table in database
-        **/
-        /*if(Schema::hasTable('auto')){
-            Schema::dropIfExists('auto');
-
-            Schema::create('auto', function($table)
-            {
-                $table->increments('id');
-                $table->string('name');
-            });
-            
-        }else{
-            Schema::create('auto', function($table)
-            {
-                $table->increments('id');
-                $table->string('name');
-            });
-            
-        }*/
          
         return view('forum::index', compact('module', 'columns', 'configurations', 'steps', 'pages', 'elements', 'images'));
     }
@@ -131,6 +111,22 @@ class ConfiguratesController extends Controller
             'is_error' => true,
             'result' => (!is_null($validator)) ? $validator->errors() : 'Request is invalidate.',
         ]);
+    }
+
+    public function createComments(Request $request){
+        $title = $request->title;
+        $comments = $request->comments;
+
+        $comment = new ForumComments();
+
+        $comment->title = $title;
+        $comment->comments = $comments;
+
+        if ($comment->save()) {
+            echo 'Realizado con exito';
+        }else{
+            echo 'Fallo insert';
+        }
     }
    /* public function test(Request $request){
         $inputs = [
