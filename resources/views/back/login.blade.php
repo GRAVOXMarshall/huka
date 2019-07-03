@@ -78,8 +78,8 @@
     <body>
         <form class="form-signin" action="{{ route('admin.login') }}" method="post">
           @csrf
-          <div class="text-center mb-0">
-              <img  src="{{ asset('svg/brand/creativingx.svg') }}" alt="" width="240" height="100">
+          <div class="text-center mb-0" align="center">
+              <img  src="{{ asset('images/huka-logo.png') }}" alt=""   height="100">
           </div>
           <div class="text-center mb-4">Beta 1.0</div>
             <div class="card" style="width: 25rem;">
@@ -94,9 +94,12 @@
                     </label>
                     </div>
                     <button class="btn btn-lg btn-primary btn-block">Sign in</button>
+
+                    
+
                 </div>
             </div>
-            <p class="mt-5 mb-3 text-muted text-center">© Creativing X 2019 - All rights reserved</p>
+            <p class="mt-5 mb-3 text-muted text-center">© Huka 2019 - All rights reserved</p>
         </form>
     </body>
 </html>

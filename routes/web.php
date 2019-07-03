@@ -111,7 +111,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 	
 
-	Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
+	
 
 	/*
 	* Layouts to Back-end route
@@ -135,6 +135,8 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('admin/dashboard/layouts/edit/design/{layout}/load', 'LayoutController@loadLayout');
 
 });
+
+Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
 
 
 Route::get('/sign', function () {

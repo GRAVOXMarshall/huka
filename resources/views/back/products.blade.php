@@ -146,98 +146,118 @@
                   @endif
                 @endforeach
                 @if(!in_array($functionality['id'], array_column($dataWeb, 'id')) && $functionality['price'] == 0)
-                  <div class="col-md-6" align="center">
-                  <div class="card mb-3">
+                  <div class="col-md-12" align="center">
+                  <div class="card border-primary mb-3" style="max-height: 6rem;">
                   <div class="card-body p-4">
                    
-                    <div class="media d-block d-sm-flex">
-                      <div class="u-avatar mb-3 mb-sm-0 mr-3">
-                        <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
+                    <div class="media d-block d-sm-flex row">
+                      <div class="col-md-2">
+                        <div class="u-avatar mb-3 mb-sm-0 mr-3">
+                          <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
+                        </div>
                       </div>
+                      <div class="col-md-8" align="left">
+                        <div class="media-body">
+                  
+                          <div  >
+                            <h3 class="h5 mb-0">
+                              <a href="#">{{$functionality['name']}}</a>
+                            </h3>
 
-                      <div class="media-body">
-                
-                        <div class="mb-4">
-                          <h3 class="h5 mb-0">
-                            <a href="#">{{$functionality['name']}}</a>
-                          </h3>
+          
+                           <!-- <a class="d-inline-block small" href="#">
+                              <span class="text-warning">
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                              </span>
+                              <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
+                              <span class="text-muted">(780k+ reviews)</span>
+                            </a>-->
+             
+                          </div>
+         
 
-        
-                          <a class="d-inline-block small" href="#">
-                            <span class="text-warning">
-                              <span class="fas fa-star"></span>
-                              <span class="fas fa-star"></span>
-                              <span class="fas fa-star"></span>
-                              <span class="far fa-star"></span>
-                              <span class="far fa-star"></span>
-                            </span>
-                            <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
-                            <span class="text-muted">(780k+ reviews)</span>
-                          </a>
-           
+                          <div class="mb-4">
+                            <p class="text-secondary">{{$functionality['description']}}</p>
+                          </div>
                         </div>
-       
-
-                        <div class="mb-4">
-                          <p class="text-secondary">{{$functionality['description']}}</p>
-                        </div>
-       
+                      </div>
+                      <div class="col-md-2" align="center">
                         <form action="{{ route('install.products') }}" method="post">
                           @csrf
                           <input type="hidden" name="type" value="functionality">
                           <input type="hidden" name="product_id" value="{{ Crypt::encrypt($functionality['id']) }}" >
-                          <button class="btn btn-primary" style="width: 112px;">Download</button>
+                          <button class="btn btn-primary" style="width: 100%;">Download</button>
                         </form>
+                      </div>
+                      
+
+                      
+       
+                        
                        </div>
-                    </div>
+                     
          
                   </div>
                 </div>
                 </div>
                 @endif
                 @if(!in_array($functionality['id'], array_column($dataWeb, 'id')) && $functionality['price'] != 0)
-                <div class="col-md-6" align="center">
-                  <div class="card mb-3">
+                <div class="col-md-12" align="center">
+                  <div class="card border-primary mb-3" style="max-height: 6rem;">
                   <div class="card-body p-4">
                    
-                    <div class="media d-block d-sm-flex">
-                      <div class="u-avatar mb-3 mb-sm-0 mr-3">
-                        <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
+                    <div class="media d-block d-sm-flex row">
+                      <div class="col-md-2">
+                        <div class="u-avatar mb-3 mb-sm-0 mr-3">
+                          <img class="img-fluid" src="/img/160x160/img17.png" alt="Image Description">
+                        </div>
                       </div>
+                      <div class="col-md-8" align="left">
+                         <div class="media-body">
+                  
+                          <div class="mb-4">
+                            <h3 class="h5 mb-0">
+                              <a href="#">{{$functionality['name']}}</a>
+                            </h3>
 
-                      <div class="media-body">
-                
-                        <div class="mb-4">
-                          <h3 class="h5 mb-0">
-                            <a href="#">{{$functionality['name']}}</a>
-                          </h3>
+          
+                            <a class="d-inline-block small" href="#">
+                              <span class="text-warning">
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                              </span>
+                              <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
+                              <span class="text-muted">(780k+ reviews)</span>
+                            </a>
+             
+                          </div>
+         
 
-        
-                          <a class="d-inline-block small" href="#">
-                            <span class="text-warning">
-                              <span class="fas fa-star"></span>
-                              <span class="fas fa-star"></span>
-                              <span class="fas fa-star"></span>
-                              <span class="far fa-star"></span>
-                              <span class="far fa-star"></span>
-                            </span>
-                            <span class="text-dark font-weight-semi-bold ml-2">4.8</span>
-                            <span class="text-muted">(780k+ reviews)</span>
-                          </a>
-           
+                          <div class="mb-4">
+                            <p class="text-secondary">{{$functionality['description']}}</p>
+                          </div>
                         </div>
-       
-
-                        <div class="mb-4">
-                          <p class="text-secondary">{{$functionality['description']}}</p>
-                        </div>
-       
+                      </div>
+                      <div class="col-md-2" align="center">
                         <form action="http://localhost/webx/public/functionality/{{ $functionality['id'] }}">
                           @csrf
-                          <button class="btn btn-secondary" style="width: 112px;">Buy</button>
+                          <button class="btn btn-secondary" style="width: 100%;">Buy</button>
                         </form>
+                      </div>
+                      
+
+                     
+       
+                        
                        </div>
-                    </div>
+                     
          
                   </div>
                 </div>

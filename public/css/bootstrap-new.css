@@ -2395,22 +2395,22 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  button {
+  button, .btn {
     transition: none;
   }
 }
 
-button:hover {
+button:hover, .btn:hover {
   color: #212529;
   text-decoration: none;
 }
 
-button:focus {
+button:focus, .btn:focus {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-button:disabled {
+button:disabled, .btn:disabled {
   opacity: 0.65;
 }
 
