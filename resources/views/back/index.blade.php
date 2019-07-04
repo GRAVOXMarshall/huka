@@ -14,6 +14,234 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+
+    <style>
+      /* Theming */
+
+      /* Primary color for the background */
+      .gjs-one-bg {
+        background-color: #363E46;
+      }
+
+      /* Secondary color for the text color */
+      .gjs-two-color {
+        color: rgba(246, 246, 246, 1);
+      }
+
+      /* Tertiary color for the background */
+      .gjs-three-bg {
+        background-color: #FC9627;
+        color: white;
+      }
+
+      /* Quaternary color for the text color */
+      .gjs-four-color,
+      .gjs-four-color-h:hover {
+        color: #FC9627;
+      }
+
+      /* Reset some default styling */
+      .gjs-cv-canvas {
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .panel__top {
+        padding: 0;
+        width: 100%;
+        height: 7%;
+        min-height: 43px;
+        max-height: 45px;
+        display: flex;
+        position: initial;
+        justify-content: center;
+        justify-content: space-between;
+      }
+      .panel__basic-actions {
+        width: 9%;
+        max-width: 126px;
+        position: initial;
+        border: 2px solid rgba(0,0,0,0.2);
+      }
+
+      .panel__devices {
+        margin-left: 38%;
+        position: initial;
+      }
+
+      .panel__options {
+        margin-left: 20%;
+        position: initial;
+      }
+
+      .panel__switcher {
+        width: 20%;
+        max-width: 200px;
+        border: 2px solid rgba(0,0,0,0.2);
+        position: initial;
+      }
+
+      .editor-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        height: 100%;
+      }
+
+      .editor-canvas {
+        flex-grow: 1;
+      }
+
+      .panel__right {
+        flex-basis: 190px;
+        position: relative;
+        overflow-y: auto;
+        height: 400px;
+      }
+
+      .pages-btn{
+        width: 100%; 
+        background: rgba(0,0,0,0.1); 
+        color: white; 
+        padding-right: 10px;
+        outline: none; 
+        border: 1px solid rgba(0,0,0,0.25);
+      }
+      .pages-btn:focus{
+        background: rgba(255,255,255,0.1);
+      }
+
+
+
+      .step-vertical-menu {
+        border-right: 1px solid #eaecf1;
+      }
+
+      .step-vertical-menu ul {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      .step-vertical-menu ul>li {
+        display: block;
+        position: relative;
+      }
+
+      .step-vertical-menu ul>li>a {
+        display: block;
+        padding: 10px 5px 5px 35px;
+        color: #333c4e;
+        font-size: 17px;
+      }
+
+      .step-vertical-menu ul>li>a:before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: calc(100% - 25px);
+        background-color: #bdc2ce;
+        left: 13px;
+        bottom: -9px;
+        z-index: 3;
+      }
+
+      .step-vertical-menu ul>li>a .ico {
+        font-size: 14px;
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        z-index: 2;
+      }
+
+      .step-vertical-menu ul>li>a:after {
+        content: '';
+        position: absolute;
+        border: 2px solid #3490dc;
+        border-radius: 50%;
+        top: 14px;
+        left: 6px;
+        width: 16px;
+        height: 16px;
+        z-index: 3;
+      }
+
+      .step-vertical-menu ul>li>a .desc {
+        display: block;
+        color: #bdc2ce;
+        font-size: 11px;
+        letter-spacing: .9px;
+      }
+
+      .step-vertical-menu ul>li.complete>a:before {
+        background-color: #5cb85c;
+        opacity: 1;
+        height: calc(100% - 25px);
+        bottom: -9px;
+      }
+
+      .step-vertical-menu ul>li.complete>a:after {
+        display:none;
+      }
+      .step-vertical-menu ul>li.locked>a:after {
+        display:none;
+      }
+      .step-vertical-menu ul>li:last-child>a:before {
+        display:none;
+      }
+
+      .step-vertical-menu ul>li.complete>a .ico {
+        left: 8px;
+      }
+
+      .step-vertical-menu ul>li>a .ico.ico-green {
+        color: #5cb85c;
+      }
+
+      .step-vertical-menu ul>li>a .ico.ico-muted {
+        color: #bdc2ce;
+      }
+
+      .step-vertical-menu ul>li.current {
+        background-color: #fff;
+      }
+
+      .step-vertical-menu ul>li.current>a:before {
+        background-color: #3490dc;
+        opacity: 1;
+      }
+
+      .step-vertical-menu ul>li.current>a:after {
+        border-color: #3490dc;
+        background-color: #3490dc;
+        opacity: 1;
+      }
+
+      .step-vertical-menu ul>li.current:after, .step-vertical-menu ul>li.current:before {
+        left: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+      }
+
+      .step-vertical-menu ul>li.current:after {
+        border-color: rgba(255,255,255,0);
+        border-left-color: #fff;
+        border-width: 10px;
+        margin-top: -10px;
+      }
+
+      .step-vertical-menu ul>li.current:before {
+        border-color: rgba(234,236,241,0);
+        border-left-color: #eaecf1;
+        border-width: 11px;
+        margin-top: -11px;
+      }
+      
+    </style>
   </head>
   <body id="page-top"  >
     <!-- Page Wrapper -->
@@ -289,5 +517,8 @@
       });
 
     </script>
+
+    @stack('extra_scripts')
+
   </body>
 </html>
