@@ -114,7 +114,7 @@
 			var data = $(form).serialize();        
 
 			// Validate that a page or a layout has been selected
-			if (step == 3 || step == 5 || step == 7) {
+			if (step == 2 || step == 4 || step == 6) {
 				var option = $('input:radio[name=content_option]:checked').val();
 				if (option == 'page' && !$('#select-page-input').val()) {
 				alert('You must select a page to continue');
@@ -136,18 +136,6 @@
 
               if (steps[step+1]) {
                 var step_config = JSON.parse(steps[step+1]);
-                switch (step+1){
-                  case 1:
-                    //
-                  break;
-
-                  case 2:
-                  case 4:
-                    // Select page selected
-                    $(`#select-page-input option[value=${step_config.page}]`).attr('selected', 'selected');
-                  break;
-
-                }
               }
               
 
@@ -155,9 +143,6 @@
               // Add elements to view 
               if (step == 2 || step == 4 ) {
               	page = (output.result.value) ? JSON.parse(output.result.value).page : null;
-              	//var step_config = JSON.parse(steps[5]);
-              	//console.log("page: "+Object.values(steps));
-              	//alert("Paso: "+step);
               	if (page != null && page > 0) {
                   loadEditor(page);
                  // alert("beforeStep: "+step);
@@ -166,6 +151,86 @@
                   	switch (step) {
                   		case 2:
                   			 if (!steps[3]) {
+                  			 	var dataStep = JSON.parse(steps[1]);
+                  			 	console.log(dataStep);
+		                         var domComponents = editor.DomComponents;
+		                         var container = domComponents.addComponent({
+		                         	type: 'module',
+		                            module: 'Forum',
+		                            removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div'  
+		                          });
+
+		                         container.get('components').add({
+		                            type: 'text',
+		                            tagName: 'h4',
+		                            content: "Topics"
+		                         });
+
+		                         var container_topic = container.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div',
+		                            classes: ['shadow', 'p-3', 'mb-5', 'bg-white rounded'],
+		                         });
+
+
+		                         var row = container_topic.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div',
+		                            sentence : {
+		                              'type': 'foreach',
+		                              'option': 'topics',
+		                            },
+		                            classes: ['row', 'd-flex', 'align-items-center'],
+		                         });
+
+		                        var column_link = row.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div',
+		                            classes: ['hk-8'],
+		                         });
+
+								column_link.get('components').add({
+									tagName: 'a',
+									type: 'link',
+									attributes: {
+										href: '#',
+									},
+									classes: ['btn', 'btn-outline-warning'],
+									content: '${'+dataStep.topic_column+'}',
+									removable: false, // Can't remove it
+								});
+
+								var column_name = row.get('components').add({
+		                         	removable: false, // Can't remove it
+		                            copyable: false, // Disable copy/past
+		                            tagName: 'div',
+		                            attributes: {
+		                            	align: "right",
+		                            },
+		                            classes: ['hk-4'],
+		                         });
+
+								$.each(dataStep.users, function(index, column) {
+				                   column_name.get('components').add({
+										type: 'variable',
+			                            tagName: 'label',
+			                            content: '${'+column+'}',
+			                            removable: false,
+			                            copyable: false,
+									});
+				                });
+
+		                      }
+                  		break;
+
+                  		case 4:
+                  			 if (!steps[5]) {
                   			 	//alert("Paso 2");
 		                         var domComponents = editor.DomComponents;
 		                         var container = domComponents.addComponent({
@@ -275,55 +340,13 @@
 		                         });
 
 		                         rowhk2r.addClass('hk-md-2');
-
-
-
-		                         /*var logout = domComponents.addComponent({
-		                            type: 'module',
-		                            module: 'Forum',
-		                            sentence : {
-		                              'type': 'if',
-		                              'option': 'testingMode',
-		                              'value': 'Auth::guard("admins")->user()',
-		                            },
-		                            tagName: 'div',
-		                            removable: false, // Can't remove it
-		                            draggable: true, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            style: {
-		                              'padding': '1rem'
-		                            }
-		                          });
-
-		                         var formLogout = logout.get('components').add({
-		                            type: 'form',
-		                            tagName: 'form',
-		                            attributes: {
-		                              action: '{{ route('authentication.logout') }}',
-		                              method: 'post',
-		                            },
-		                            removable: false, // Can't remove it
-		                            draggable: true, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                          });
-
-		                          formLogout.get('components').add({
-		                            tagName: 'button',
-		                            type: 'submit',
-		                            attributes: {
-		                            	name: 'testing',
-		                              	type: 'submit',
-		                            },
-		                            content: 'Logout',
-		                          });*/
-
 			                       
 
 		                      }
                   		break;
 
-                  		case 4:
-	                      	if (!steps[5]) {
+                  		case 6:
+	                      	if (!steps[7]) {
                   			//alert("paso 4");
                   			var domComponents = editor.DomComponents;
                   			

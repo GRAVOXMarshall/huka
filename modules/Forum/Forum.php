@@ -42,9 +42,9 @@ class Forum extends Module
 
         parent::updateConfiguration($this->name, 'Design form to add topic', 'Customize design of the form to add topic', 'design-page', 5);
 
-        parent::updateConfiguration($this->name, 'View of topic', 'Select where you want to add the view of topic', 'select-page', 4);
+        parent::updateConfiguration($this->name, 'View of topic', 'Select where you want to add the view of topic', 'select-page', 6);
 
-        parent::updateConfiguration($this->name, 'Design view of topic', 'Customize design of the view of topic', 'design-page', 5);
+        parent::updateConfiguration($this->name, 'Design view of topic', 'Customize design of the view of topic', 'design-page', 7);
 
         /** 
             Code for create and delete a table in database

@@ -120,7 +120,7 @@ class ConfiguratesController extends Controller
      * @param Request
      * @return Response
      */
-    public function processConfigurationDesignLogin(Request $request)
+    public function processConfigurationDesign(Request $request)
     {
 
         $inputs = [
