@@ -13,12 +13,12 @@
 
 Route::prefix('module/forum')->group(function() {
     Route::get('/', 'ConfiguratesController@displayConfigurations')->name('forum.configuration');
+
+    Route::post('/configuration/database', 'ConfiguratesController@processConfigurationDataBase')->name('forum.configuration.database');
     
     Route::post('/configuration/page', 'ConfiguratesController@processConfigurationPage')->name('forum.configuration.page');
 
 	Route::post('/configuration/design', 'ConfiguratesController@processConfigurationDesignLogin')->name('forum.configuration.design');
-
-	Route::post('/configuration/testing', 'ConfiguratesController@testing')->name('forum.configuration.testing');
 
 	Route::post('/create/comments', 'ConfiguratesController@createComments')->name('create.comments');
 });

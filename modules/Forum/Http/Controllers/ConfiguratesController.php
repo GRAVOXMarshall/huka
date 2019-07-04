@@ -24,11 +24,24 @@ class ConfiguratesController extends Controller
      */
     public function displayConfigurations()
     {
-        $columns = array();
-        $result = DB::select('SHOW COLUMNS FROM users');
-        foreach ($result as $value) {
-            array_push($columns, $value->Field);
+        $columns_users = array();
+        $users = DB::select('SHOW COLUMNS FROM users');
+        foreach ($users as $value) {
+            array_push($columns_users, $value->Field);
         }
+
+        $columns_topics = array();
+        $topics = DB::select('SHOW COLUMNS FROM forum_topics');
+        foreach ($topics as $value) {
+            array_push($columns_topics, $value->Field);
+        }
+
+        $columns_comments = array();
+        $comments = DB::select('SHOW COLUMNS FROM forum_comments');
+        foreach ($comments as $value) {
+            array_push($columns_comments, $value->Field);
+        }
+
         $module = new Forum();
         $configurations = $module->getConfigurations();
         $steps = array();
@@ -40,11 +53,42 @@ class ConfiguratesController extends Controller
         // Get active elements in db 
         $elements = Element::where('active', 1)->get();
             
-
-         
-        return view('forum::index', compact('module', 'columns', 'configurations', 'steps', 'pages', 'elements', 'images'));
+        return view('forum::index', compact('module', 'columns_users', 'columns_topics', 'columns_comments', 'configurations', 'steps', 'pages', 'elements', 'images'));
     }
     
+
+    /**
+     * Save configuration database through ajax process
+     * @param Request
+     * @return Response
+     */
+    public function processConfigurationDataBase(Request $request)
+    {
+        $inputs = [
+            'configuration' => 'required|exists:module_configuration,id',
+            'columns_users' => 'required',
+            'columns_topics' => 'required',
+            'columns_comments' => 'required',
+            'topic_column' => 'required|string',
+        ];
+        $validator = ModuleConfigure::validateRequest($request, $inputs);
+        if (!is_null($validator) && !$validator->fails()) {
+            $value = json_encode(array(
+                'users' => $request->columns_users,
+                'topics' => $request->columns_topics,
+                'comments' => $request->columns_comments,
+                'topic_column' => $request->topic_column,
+                'replys' => (isset($request->reply_comments)) ? true : false,
+                'anonymous' => (isset($request->anonymous_user)) ? true : false,
+            ));
+            return response()->json(ModuleConfigure::saveConfiguration((int)$request->configuration, $value));
+        }
+        return response()->json([
+            'is_error' => true,
+            'result' => (!is_null($validator)) ? $validator->errors() : 'Request is invalidate.',
+        ]);
+    }
+
     /**
      * Save configuration type login through ajax process
      * @param Request
@@ -96,22 +140,6 @@ class ConfiguratesController extends Controller
 
     }
 
-    public function testing(Request $request){
-         $inputs = [
-            'configuration' => 'required|exists:module_configuration,id',
-        ];
-        $validator = ModuleConfigure::validateRequest($request, $inputs);
-        if (!is_null($validator) && !$validator->fails()) {
-            $value = json_encode(array(
-                'test' => 'hola',
-            ));
-            return response()->json(ModuleConfigure::saveConfiguration((int)$request->configuration, $value));
-        }
-        return response()->json([
-            'is_error' => true,
-            'result' => (!is_null($validator)) ? $validator->errors() : 'Request is invalidate.',
-        ]);
-    }
 
     public function createComments(Request $request){
         $title = $request->title;

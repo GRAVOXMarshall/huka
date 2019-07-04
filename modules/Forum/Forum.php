@@ -32,29 +32,47 @@ class Forum extends Module
         if (!parent::install()) {
             return false;
         }
-        parent::updateConfiguration($this->name, 'Home', 'Home View', 'home-view', 1);
+        parent::updateConfiguration($this->name, 'Database', 'Configurate Database', 'config-database', 1);
 
-        parent::updateConfiguration($this->name, 'Comments View', 'Comments View', 'select-page', 2);
+        parent::updateConfiguration($this->name, 'List of topics', 'Select where you want to add the list of topics', 'select-page', 2);
 
-        parent::updateConfiguration($this->name, 'Comment View Layout', 'Comment View Layout', 'design-page', 3);
+        parent::updateConfiguration($this->name, 'Design list of topics', 'Customize design of the list of topics', 'design-page', 3);
 
-        parent::updateConfiguration($this->name, 'Comment Creation View', 'Comment Creation View', 'select-page', 4);
+        parent::updateConfiguration($this->name, 'Form to add topic', 'Select where you want to add the form topic', 'select-page', 4);
 
-        parent::updateConfiguration($this->name, 'Comment Creation View Design', 'Comment Creation View Design', 'design-page', 5);
+        parent::updateConfiguration($this->name, 'Design form to add topic', 'Customize design of the form to add topic', 'design-page', 5);
+
+        parent::updateConfiguration($this->name, 'View of topic', 'Select where you want to add the view of topic', 'select-page', 4);
+
+        parent::updateConfiguration($this->name, 'Design view of topic', 'Customize design of the view of topic', 'design-page', 5);
 
         /** 
             Code for create and delete a table in database
         **/
+        if(Schema::hasTable('forum_topics')){
+            Schema::dropIfExists('forum_topics'); 
+        }
+
         if(Schema::hasTable('forum_comments')){
             Schema::dropIfExists('forum_comments'); 
-        } 
-            Schema::create('forum_comments', function(Blueprint $table)
-            {
-                $table->increments('id');
-                $table->string('title');
-                $table->string('comments');
-                $table->timestamps();
-            });
+        }
+
+        Schema::create('forum_topics', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('title');
+            $table->string('content');
+            $table->timestamps();
+        });
+
+        Schema::create('forum_comments', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('topic_id');
+            $table->foreign('topic_id')->references('id')->on('forum_topics')->onDelete('cascade');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('content');
+            $table->timestamps();
+        });
             
       
 

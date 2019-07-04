@@ -2,16 +2,60 @@
 
 @section('content')
   @if(!is_null($configurations) && count($configurations) > 0)
-    <div class="tab-pane fade" id="home-view" role="tabpanel">
-    	<h1>Forum Settings!</h1>
-    	<form action="{{ route('forum.configuration.testing') }}" method="post">
-    		@csrf
-    	<div class="custom-control custom-switch">
-    		<input type="hidden" name="configuration" value="0">
-		  <input type="checkbox" class="custom-control-input checkBtn" id="customSwitch1">
-		  <label class="custom-control-label" for="customSwitch1">¿Desea permitir los comentarios anonimos?</label>
-		</div>
-    	</form>
+    <div class="tab-pane fade" id="config-database" role="tabpanel">
+      <form action="{{ route('forum.configuration.database') }}" method="post">
+        @csrf
+        <input type="hidden" name="configuration" value="0">
+        <h4>1.- Select the values of the tables you want to use</h4>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="input-columns">Users</label>
+            @foreach($columns_users as $column)
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="columns_users[]" id="user-column-{{ $column }}" value="{{ $column }}">
+                <label class="custom-control-label" for="user-column-{{ $column }}">{{ $column }}</label>
+              </div>
+            @endforeach
+          </div>
+          <div class="form-group col-md-4">
+            <label for="input-columns">Topics</label>
+            @foreach($columns_topics as $column)
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="topic-column-check custom-control-input" name="columns_topics[]" id="topic-column-{{ $column }}" value="{{ $column }}">
+                <label class="custom-control-label" for="topic-column-{{ $column }}">{{ $column }}</label>
+              </div>
+            @endforeach
+          </div>
+          <div class="form-group col-md-4">
+            <label for="input-columns">Coments</label>
+            @foreach($columns_comments as $column)
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="columns_comments[]" id="comment-column-{{ $column }}" value="{{ $column }}">
+                <label class="custom-control-label" for="comment-column-{{ $column }}">{{ $column }}</label>
+              </div>
+            @endforeach
+          </div>
+        </div>
+        <h4>2.- Select the extra options</h4>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+			<label>Select the value of topic that you want to show in the list of these</label>
+				<select id="topic-column" class="form-control column-select" name="topic_column">
+			</select>
+          </div>
+          <div class="form-group col-md-5 offset-md-1">
+          	<label>Activate functions to</label>
+			<div class="custom-control custom-checkbox">
+				<input id="reply_comments" class="custom-control-input" type="checkbox" name="reply_comments">
+				<label class="custom-control-label" for="reply_comments">Allow reply comments</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input id="anonymous_user" class="custom-control-input" type="checkbox" name="anonymous_user">
+				<label class="custom-control-label" for="anonymous_user">Allow use of anonymous users</label>
+			</div>
+          </div>
+        </div>
+      </form>
     </div>
  
   @endif
@@ -21,48 +65,66 @@
     <script type="text/javascript">
       var page;
       $(document).ready(function() {
-      	
-      	$(".checkBtn").change(function(event) {
-      		if($(this).prop('checked')){
-      			alert("activo");
-      		}else{
-      			alert("desactivado");
-      		}
-      	});
-        // Set firts step configuration 
-        nextStep(1);
-        var first_step = (configurations[0].value) ? JSON.parse(configurations[0].value) : null;
-        if (first_step) {
-         /* first_step.columns.forEach(function(column) {
-            $(`#column-${column}`).prop('checked', true);
-            $('.column-select').append(`<option value="${column}">${column}</option>`);
-          });
-          $(`#primary-column option[value=${first_step.username}]`).attr('selected', 'selected');
-          $(`#password-column option[value=${first_step.password}]`).attr('selected', 'selected');*/
-        }
       
+        // Set firts step configuration 
+		nextStep(1);
+		var first_step = (configurations[0].value) ? JSON.parse(configurations[0].value) : null;
+		if (first_step) {
+			console.log(first_step);
+			first_step.users.forEach(function(column) {
+				$(`#user-column-${column}`).prop('checked', true);
+			});
 
-        /*$('.column-check').change(function(event) {
-          if( $(this).prop('checked') ) {
-              $('.column-select').append(`<option value="${$(this).val()}">${$(this).val()}</option>`);
-          }else{
-            $(`option[value="${$(this).val()}"]`).remove();
-          }
-        });*/
+			first_step.topics.forEach(function(column) {
+				$(`#topic-column-${column}`).prop('checked', true);
+				$('#topic-column').append(`<option value="${column}">${column}</option>`);
+			});
 
-        $("#btn-next").click(function(event) {
-          /* Act on the event */
-          //alert("datos: "+str);
-          var current_step = $(".status-steps.current").children('.list-steps');
-          var panel = $($(current_step).attr('href'));
-          var form = $(panel).children('form');
-          var step =  parseInt($(current_step).attr('data-step'));
-          var url = $(form).attr("action");
-          var data = $(form).serialize();
-          /*if (step == 1 && $('#primary-column').val() == $('#password-column').val()) {
-            alert('The primary columns can not be the same');
-            return false;
-          }  */        
+			first_step.comments.forEach(function(column) {
+				$(`#comment-column-${column}`).prop('checked', true);
+			});
+
+			if (first_step.replys) {
+				$('#reply_comments').prop('checked', true);
+			}
+
+			if (first_step.anonymous) {
+				$('#anonymous_user').prop('checked', true);
+			}
+
+		}
+
+
+		$('.topic-column-check').change(function(event) {
+			if( $(this).prop('checked') ) {
+				$('#topic-column').append(`<option value="${$(this).val()}">${$(this).val()}</option>`);
+			}else{
+				$(`option[value="${$(this).val()}"]`).remove();
+			}
+		});
+
+
+		$("#btn-next").click(function(event) {
+			/* Act on the event */
+			var current_step = $(".status-steps.current").children('.list-steps');
+			var panel = $($(current_step).attr('href'));
+			var form = $(panel).children('form');
+			var step =  parseInt($(current_step).attr('data-step'));
+			var url = $(form).attr("action");
+			var data = $(form).serialize();        
+
+			// Validate that a page or a layout has been selected
+			if (step == 3 || step == 5 || step == 7) {
+				var option = $('input:radio[name=content_option]:checked').val();
+				if (option == 'page' && !$('#select-page-input').val()) {
+				alert('You must select a page to continue');
+				return false;
+				}
+				if (option == 'layout' && !$('#select-layout-input').val()) {
+				alert('You must select a layout to continue');
+				return false;
+				}
+			}
 
           ajaxProcess(url, data, function(output){
             if (output.is_error) {
