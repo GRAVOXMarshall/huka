@@ -244,14 +244,14 @@
     <div class="mb-5">
       <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
-        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        <!--<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
           <li class="nav-item">
             <a class="nav-link p-2" href="/admin/editor" target="_blank" rel="noopener" aria-label="GitHub">Edit Web</a>
           </li>
           <li class="nav-item">
             <a class="nav-link p-2" href="#" target="_blank" rel="noopener" aria-label="GitHub">View Web</a>
           </li>
-        </ul>
+        </ul>-->
       </nav>
     </div>
     <div class="container-fluid">

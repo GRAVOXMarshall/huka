@@ -15,6 +15,13 @@ Route::get('/', function () {
 	    return view('front/home');
 });
 
+Route::get('/log', function () {
+	    return view('front/sign');
+});
+
+Route::get('/reg', function () {
+	    return view('front/signUp');
+});
 
 Auth::routes();
 
@@ -135,7 +142,9 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('admin/dashboard/layouts/edit/design/{layout}/load', 'LayoutController@loadLayout');
 
 });
-
+/** 
+Route for View a Page
+**/
 Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
 
 

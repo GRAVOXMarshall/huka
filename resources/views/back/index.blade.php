@@ -15,13 +15,13 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
   </head>
-  <body id="page-top">
+  <body id="page-top"  >
     <!-- Page Wrapper -->
     <div id="wrapper">
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dash.init') }}">
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="icon-fa-huka"></i>
           </div>
@@ -104,7 +104,10 @@
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+              <i class="fa fa-bars"></i>
+            </button>
+           <!--<button class="rounded-circle border-0" id="sidebarToggle"></button> -->
         </div>
       </ul>
       <!-- End of Sidebar -->
@@ -117,7 +120,7 @@
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <!-- Sidebar Toggle (Topbar) -->
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <button id="sidebarToggleTop" class="btn btn-secondary rounded-circle mr-3">
               <i class="fa fa-bars"></i>
             </button>
 
