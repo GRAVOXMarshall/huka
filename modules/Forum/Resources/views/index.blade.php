@@ -359,7 +359,7 @@
 		                        tagName: 'input',
 		                        attributes: {
 		                        	'type':'text',
-		                        	'name': 'title'},
+		                        	'name': val},
 		                        type: 'text'
 		                      });
 
