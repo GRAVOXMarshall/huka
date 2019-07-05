@@ -241,113 +241,159 @@
                   			 if (!steps[5]) {
                   			 	//alert("Paso 2");
 		                         var domComponents = editor.DomComponents;
-		                         var container = domComponents.addComponent({
-		                         	type: 'module',
-		                            module: 'Forum',
-		                            sentence : {
-		                              'type': 'if',
-		                              'option': 'testingMode',
-		                              'value': 'Auth::guard("admins")->user()',
-		                            },
-		                            removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                          });
-
-		                         container.addClass('container-fluid');
-
-		                         var row = container.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                         });
-
-		                         row.addClass('row');
-
-		                         var rowhk2l = row.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                         });
-
-		                         rowhk2l.addClass('hk-md-2');
-
-		                         var rowhk8 = row.get('components').add({
-		                         	
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'
-
-		                         });
-
-		                         rowhk8.addClass('hk-md-8');
-
-		                         var card = rowhk8.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                         });
-
-		                         card.addClass('card');
-
-		                         var cardBody = card.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                         });
-
-		                         cardBody.addClass('card-body');
-
-		                         var h5 = cardBody.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            type: 'text',
-		                            tagName: 'h5',
-		                            content: "Titulo"  
-		                         });
-
-		                         h5.addClass('card-title');
-
-		                         var p = cardBody.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'p',
-		                            type: "text",
-		                            content: "Some quick example text to build on the card title and make up the bulk of the card's content."  
-		                         });
-
-		                         p.addClass('card-text');
-
-		                         var a = cardBody.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'a',
-		                            type: "link",
-		                            content: "Responder",
+		                         var dataStep = JSON.parse(steps[1]);
+                  			 	console.log(dataStep.topics);
+                  			 	//alert("Paso 2");
+		                         var domComponents = editor.DomComponents;
+		                         var form = domComponents.addComponent({
+	                            removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false, // Disable copy/past
+	                            type: 'form',
+		                            tagName: 'form',
 		                            attributes: {
-		                            	href: "#",
-		                            }
-		                         });
+		                              action: '#',
+		                              method: 'post',
+		                            }    
+	                          });
 
-		                         a.addClass('card-link');
+	                        var container = form.get('components').add({
+	                            tagName: 'div',
+	                            removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false // Disable copy/past    
+	                          });
 
-		                         var rowhk2r = row.get('components').add({
-		                         	removable: false, // Can't remove it
-		                            draggable: false, // Can't move it
-		                            copyable: false, // Disable copy/past
-		                            tagName: 'div'  
-		                         });
+	                         container.addClass('container-fluid');
 
-		                         rowhk2r.addClass('hk-md-2');
+	                         var divtitle = container.get('components').add({
+		                        tagName: 'div',
+		                        removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false
+		                      });
+
+	                         divtitle.addClass('row');
+
+	                         var divtitlehk = divtitle.get('components').add({
+		                        tagName: 'div',
+		                        removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        attributes: {'align': 'center'}
+		                      });
+
+	                          divtitlehk.addClass('hk-md-12');
+
+	                          var divtitleh3 = divtitlehk.get('components').add({
+		                        tagName: 'h3',
+		                        type: 'text',
+		                        removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        content: 'Add Topic!'
+		                      });
+	                          
+	                          divtitle.get('components').add({
+	                          	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divtitle.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      divtitle.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                      var divform = container.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divform.addClass('row');
+
+	                         var divformh4 = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4.addClass('hk-md-4');
+
+	                         var divformh4M  = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4M.addClass('hk-md-4');
+	                         
+	                         $.each(dataStep.topics, function(index, val) {
+	                         	divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'h5',
+		                        type: 'text',
+		                        content: val
+		                      });
+
+	                        var inputtitle = divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'input',
+		                        attributes: {
+		                        	'type':'text',
+		                        	'name': 'title'},
+		                        type: 'text'
+		                      });
+
+	                          inputtitle.addClass('form-control');
+
+	                          divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+		                      });
+
+		                       
+	                         });
+ 
+		                      var btnpublish = divformh4M.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'button',
+		                        content: 'Submit!'
+		                      });
+
+		                      btnpublish.addClass('form-control btn-primary');
+
+
+	                         var divformh4R = divform.get('components').add({
+		                      	removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div'
+		                      });
+
+	                         divformh4R.addClass('hk-md-4');
 			                       
 
 		                      }

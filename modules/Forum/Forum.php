@@ -51,6 +51,7 @@ class Forum extends Module
         /** 
             Code for create and delete a table in database
         **/
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
         if(Schema::hasTable('forum_topics')){
             Schema::dropIfExists('forum_topics'); 
         }
