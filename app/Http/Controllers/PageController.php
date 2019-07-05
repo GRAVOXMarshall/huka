@@ -176,6 +176,8 @@ class PageController extends Controller
             $module = new $className;
             if (isset($component->sentence) && !is_null($component->sentence)) {
                 $module->executeSentence($component, $component->sentence);
+            }elseif(!empty($component->components)){
+                $this->setSentences($component->components, $module);
             }
             if (!is_null($module->has_variable) && $module->has_variable) {
                 $variables = $module->getVariable();
@@ -212,6 +214,19 @@ class PageController extends Controller
             }
             if (!empty($component->components)) {
                 $this->setLayout($component->components, $child);
+            }
+        }
+    }
+
+    public function setSentences($components, $module)
+    {
+        foreach ($components as $component) {
+            if (isset($component->sentence) && !is_null($component->sentence)) {
+                $module->executeSentence($component, $component->sentence);
+            }
+        
+            if (!empty($component->components)) {
+                $this->setSentences($component->components, $module);
             }
         }
     }

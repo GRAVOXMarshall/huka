@@ -4,15 +4,15 @@ namespace Modules\Forum\Http\Classes;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ForumComments extends Model
+class ForumTopics extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'forum_comments';
+    protected $table = 'forum_topics';
 
-    protected $fillable = ['topic_id', 'user_id', 'content'];
+    protected $fillable = ['user_id', 'title', 'content'];
 
 }

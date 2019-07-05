@@ -173,6 +173,10 @@
 		                         	removable: false, // Can't remove it
 		                            copyable: false, // Disable copy/past
 		                            tagName: 'div',
+		                            sentence : {
+		                              'type': 'foreach',
+		                              'option': 'topics',
+		                            },
 		                            classes: ['shadow', 'p-3', 'mb-5', 'bg-white rounded'],
 		                         });
 
@@ -181,10 +185,6 @@
 		                         	removable: false, // Can't remove it
 		                            copyable: false, // Disable copy/past
 		                            tagName: 'div',
-		                            sentence : {
-		                              'type': 'foreach',
-		                              'option': 'topics',
-		                            },
 		                            classes: ['row', 'd-flex', 'align-items-center'],
 		                         });
 
@@ -195,15 +195,23 @@
 		                            classes: ['hk-8'],
 		                         });
 
-								column_link.get('components').add({
+								var btn_link = column_link.get('components').add({
 									tagName: 'a',
 									type: 'link',
+									editable: false,
 									attributes: {
+										reference: 'topic',
 										href: '#',
 									},
-									classes: ['btn', 'btn-outline-warning'],
-									content: '${'+dataStep.topic_column+'}',
 									removable: false, // Can't remove it
+								});
+
+								btn_link.get('components').add({
+									tagName: 'label',
+									type: 'variable',
+		                            content: '${'+dataStep.topic_column+'}',
+		                            removable: false,
+		                            copyable: false,
 								});
 
 								var column_name = row.get('components').add({
