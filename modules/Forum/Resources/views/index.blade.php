@@ -141,7 +141,7 @@
 
 	                          
               // Add elements to view 
-              if (step == 2 || step == 4 ) {
+              if (step == 2 || step == 4 || step == 6 ) {
               	page = (output.result.value) ? JSON.parse(output.result.value).page : null;
               	if (page != null && page > 0) {
                   loadEditor(page);
@@ -402,9 +402,404 @@
                   		case 6:
 	                      	if (!steps[7]) {
                   			//alert("paso 4");
+							var options = JSON.parse(steps[1]);
                   			var domComponents = editor.DomComponents;
+                  			var container = domComponents.addComponent({
+	                            removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false, // Disable copy/past
+	                            tagName: 'div',
+	                            classes: ['container-fluid']   
+	                          });
+
+                  			var rowTitle = container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["row"]
+                  			});
+
+                  			var colTitle = rowTitle.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        attributes: {
+		                        	align: "center"
+		                        },
+		                        classes: ["hk-md-12"]
+                  			});
+
+                  			$.each(options.topics, function(index, val) {
+                  				 /* iterate through array or object */
+                  				 if (val === "title") {
+                  				 	var title = colTitle.get('components').add({
+		                  				removable: false, // Can't remove it
+			                            draggable: false, // Can't move it
+			                            copyable: false,
+				                        tagName: 'h3',
+				                        type: "variable",
+				                        content: '${'+val+'}'
+				                        
+		                  			});
+                  				 }
+                  			});
                   			
-                  			var form = domComponents.addComponent({
+
+                  			container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+                  			});
+
+                  			var rowOptions = container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["row"]
+                  			});
+
+                  			rowOptions.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
+
+                  			var colOptions = rowOptions.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-8"]
+                  			});
+
+                  			$.each(options.topics, function(index, val) {
+                  				 /* iterate through array or object */
+                  				 if (val != "title") {
+                  				 	colOptions.get('components').add({
+		                  				removable: false, // Can't remove it
+			                            draggable: false, // Can't move it
+			                            copyable: false,
+				                        tagName: 'strong',
+				                        type: "text",
+				                        content: val+": "
+		                  			});
+
+		                  			colOptions.get('components').add({
+		                  				removable: false, // Can't remove it
+			                            draggable: false, // Can't move it
+			                            copyable: false,
+				                        tagName: 'label',
+				                        type: "variable",
+				                        content: '${'+val+'}'
+		                  			});
+
+		                  			colOptions.get('components').add({
+		                  				removable: false, // Can't remove it
+			                            draggable: false, // Can't move it
+			                            copyable: false,
+				                        tagName: 'br' 
+		                  			});
+                  				 }
+                  			});
+
+                  			
+
+                  			rowOptions.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
+
+                  			container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br' 
+                  			});
+
+                  			var rowComent = container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["row"]
+                  			});
+
+                  			rowComent.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
+
+                  			var textComent = rowComent.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-8"]
+                  			});
+
+                  			var con = textComent.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'strong' 
+		                         
+                  			});
+
+                  			con.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'h4',
+		                        type: "text",
+		                        content: "Comments" 
+		                         
+                  			});
+
+                  			rowComent.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
+
+                  			container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br' 
+                  			});
+
+                  			var rowUser = container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["row"] 
+                  			});
+
+                  			rowUser.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"] 
+                  			});
+
+                  			var colUser = rowUser.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-8"] 
+                  			});
+
+
+                  			/** 
+								Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
+                  			**/
+                  			var divUser = colUser.get('components').add({
+	                  				removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false,
+			                        tagName: 'div',
+			                        style: {
+			                        	'max-width' : '100%'
+			                        },
+			                        classes: ['card', 'bg-light', 'mb-3'] 
+	                  			});
+
+                  			 var nameUser = divUser.get('components').add({
+	                  				removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false,
+			                        tagName: 'div',
+			                        classes: ['card-header'] 
+	                  			});
+                  			$.each(options.users, function(index, data) {
+                  				 /* iterate through array or object */ 
+                  				 nameUser.get('components').add({
+	                  				removable: false, // Can't remove it
+		                            draggable: false, // Can't move it
+		                            copyable: false,
+			                        tagName: 'label',
+			                        type: "variable",
+			                        content: '${'+data+'}' 
+	                  			});
+
+                  			});
+
+              				var divConUser = divUser.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['card-body'] 
+                  			});
+
+                  			divConUser.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'p',
+		                        type: "text",
+		                        content: "Some quick example text to build on the card title and make up the bulk of the card's content.",
+		                        classes: ['card-text'] 
+                  			});
+                  		 
+
+                  			rowUser.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]  
+                  			});
+
+                  			container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br' 
+                  			});
+
+                  			var form = container.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'form',
+		                        attributes: {
+		                        	action: "#",
+		                        	method: "post",
+		                        } 
+                  			});
+
+
+                  			var divNewCom = form.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['row']
+                  			});
+
+                  			divNewCom.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['hk-md-2']
+                  			});
+
+                  			var colCom = divNewCom.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['hk-md-8']
+                  			});
+
+                  			var stroText = colCom.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'strong' 
+                  			});
+
+                  			stroText.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'h4',
+		                        type: "text",
+		                        content: "New Comment: "
+                  			});
+
+                  			colCom.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'textarea',
+		                        attributes: {
+		                        	name: "comment"
+		                        },
+		                        classes: ['form-control']
+                  			});
+
+
+                  			divNewCom.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['hk-md-2']
+                  			});
+
+                  			form.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'br'
+                  			});
+
+                  			var rowbtn = form.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['row']
+                  			});
+
+                  			rowbtn.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['hk-md-2']
+                  			});
+
+                  			var colBtn = rowbtn.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        attributes: {
+		                        	align: "right",
+		                        },
+		                        classes: ['hk-md-8']
+                  			});
+
+                  			colBtn.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'button',
+		                        type: "submit",
+		                        content: "Submit!",
+		                        classes: ['btn-primary']
+                  			});
+
+                  			rowbtn.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ['hk-md-2']
+                  			});
+
+                  			/*var form = domComponents.addComponent({
 	                            removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
 	                            copyable: false, // Disable copy/past
@@ -592,7 +987,7 @@
 		                        tagName: 'div'
 		                      });
 
-	                         divformh4R.addClass('hk-md-4');
+	                         divformh4R.addClass('hk-md-4');*/
 
 	                      	}
                   		break;
@@ -603,7 +998,7 @@
               	}
               }
         	     // Save view in database
-              if (step == 3 || step == 5) {
+              if (step == 3 || step == 5 || step == 7) {
                 editor.store();
                 //alert("Se guardo el paso: "+step);
               }
