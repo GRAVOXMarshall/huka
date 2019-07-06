@@ -420,15 +420,20 @@
 		                        classes: ["row"]
                   			});
 
+                  			rowTitle.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
+
                   			var colTitle = rowTitle.get('components').add({
                   				removable: false, // Can't remove it
 	                            draggable: false, // Can't move it
 	                            copyable: false,
 		                        tagName: 'div',
-		                        attributes: {
-		                        	align: "center"
-		                        },
-		                        classes: ["hk-md-12"]
+		                        classes: ["hk-md-8"]
                   			});
 
                   			$.each(options.topics, function(index, val) {
@@ -438,7 +443,7 @@
 		                  				removable: false, // Can't remove it
 			                            draggable: false, // Can't move it
 			                            copyable: false,
-				                        tagName: 'h3',
+				                        tagName: 'h2',
 				                        type: "variable",
 				                        content: '${'+val+'}'
 				                        
@@ -446,6 +451,13 @@
                   				 }
                   			});
                   			
+                  			rowTitle.get('components').add({
+                  				removable: false, // Can't remove it
+	                            draggable: false, // Can't move it
+	                            copyable: false,
+		                        tagName: 'div',
+		                        classes: ["hk-md-2"]
+                  			});
 
                   			container.get('components').add({
                   				removable: false, // Can't remove it
