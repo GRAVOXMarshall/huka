@@ -2,78 +2,58 @@
 
 namespace Modules\Forum\Http\Controllers;
 
+use App\Http\Classes\Page;
+use Modules\Forum\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Classes\ModuleConfigure;
+use Illuminate\Auth\Events\Registered;
+use Modules\Forum\Http\Classes\ForumTopics;
 
 class ForumController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('forum::index');
+    public function submitAddTopic(Request $request){
+        $user_id = 0;
+        if ($user = Auth::guard('front')->user()) {
+            $user_id = $user->id;
+        }
+        $request->request->add(['user_id' => $user_id]);
+        $inputs = $this->validateTopic($request);
+        event(new Registered($topic = ForumTopics::create($inputs)));
+        $forum = new Forum();
+
+        if (!is_null($module = $forum->getByName($forum->name))) {
+            $configuration = ModuleConfigure::where('module_id', $module->id)
+                            ->where('step', 2)
+                            ->firstOrFail();
+            $page = json_decode($configuration->value)->page;
+            return redirect(route('view.page', ['page' => $page]));
+        }
+
+        return redirect(Page::getMainPage('front'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
+     * Validate the user register request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function create()
+    protected function validateTopic(Request $request)
     {
-        return view('forum::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('forum::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('forum::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $inputs = array();
+        
+        foreach ($request->all() as $key => $value) {
+            if ($key != '_token' && $key != 'user_id') {
+                $inputs[$key] = 'required|string';
+            }elseif ($key == 'user_id') {
+                $inputs[$key] = 'required|exists:users,id';
+            }
+        }
+        return $request->validate($inputs);
     }
 }

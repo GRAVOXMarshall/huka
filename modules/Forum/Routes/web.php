@@ -20,5 +20,7 @@ Route::prefix('module/forum')->group(function() {
 
 	Route::post('/configuration/design', 'ConfiguratesController@processConfigurationDesign')->name('forum.configuration.design');
 
+	Route::post('/forum/add/topic', 'ForumController@submitAddTopic')->name('forum.add.topic');
+
 	Route::post('/create/comments', 'ConfiguratesController@createComments')->name('create.comments');
 });
