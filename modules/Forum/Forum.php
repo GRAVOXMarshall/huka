@@ -59,7 +59,7 @@ class Forum extends Module
         if(Schema::hasTable('forum_comments')){
             Schema::dropIfExists('forum_comments'); 
         }
-
+        
         Schema::create('forum_topics', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('user_id');

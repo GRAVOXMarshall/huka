@@ -162,19 +162,15 @@ class ConfiguratesController extends Controller
     public function addColumn(Request $request){
 
             $column = strtolower($request->column);
-            /*$type = "";
-            if (strtolower($request->type) == "integer") {
-                $type = "integer";
-            }else{
-                $type = "string";
-            }*/
+            $type = strtolower($request->type);
+
             if (!Schema::hasColumn('forum_topics', $column)) {
                 
 
-                Schema::table('forum_topics', function($table) use($column)
+                Schema::table('forum_topics', function($table) use($column, $type)
                 {
                      
-                    $table->string($column);
+                    $table->$type($column);
                 }); 
                 return response()->json(array('msg'=> 0));
                 
