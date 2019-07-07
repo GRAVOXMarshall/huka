@@ -23,4 +23,7 @@ Route::prefix('module/forum')->group(function() {
 	Route::post('/forum/add/topic', 'ForumController@submitAddTopic')->name('forum.add.topic');
 
 	Route::post('/create/comments', 'ConfiguratesController@createComments')->name('create.comments');
+
+	Route::post('/add/topic', 'ConfiguratesController@addColumn')->name('add.topic');
+
 });

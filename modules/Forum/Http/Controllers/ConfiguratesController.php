@@ -14,6 +14,8 @@ use App\Http\Classes\Element;
 use App\Http\Classes\ModuleConfigure;
 use App\Http\Classes\Configuration;
 use Modules\Forum\Http\Classes\ForumComments;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 
 class ConfiguratesController extends Controller
@@ -155,6 +157,53 @@ class ConfiguratesController extends Controller
         }else{
             echo 'Fallo insert';
         }
+    }
+
+    public function addColumn(Request $request){
+
+            $column = strtolower($request->column);
+            /*$type = "";
+            if (strtolower($request->type) == "integer") {
+                $type = "integer";
+            }else{
+                $type = "string";
+            }*/
+            if (!Schema::hasColumn('forum_topics', $column)) {
+                
+
+                Schema::table('forum_topics', function($table) use($column)
+                {
+                     
+                    $table->string($column);
+                }); 
+                return response()->json(array('msg'=> 0));
+                
+            }else{
+
+                return response()->json(array('msg'=> 1));
+            }
+
+              
+
+            
+
+
+            /*Schema::table('forum_topics', function(Blueprint $table) {
+                if (!Schema::hasColumn('testing')) {
+                    if ($table->string('testinga')) {
+                         return response()->json(array('msg'=> "LLegamos!"));
+                    }else{
+                         return response()->json(array('msg'=> "Fallamos!"));
+                    }
+                }else{
+                    return response()->json(array('msg'=> "Ya Existe!"));
+                }
+                
+                  
+            });*/
+                
+
+            
     }
    /* public function test(Request $request){
         $inputs = [

@@ -18,7 +18,7 @@
             @endforeach
           </div>
           <div class="form-group col-md-4">
-            <label for="input-columns">Topics</label>
+            <label for="input-columns">Topics <a href="#" data-toggle="tooltip" data-placement="right" title="Add Column"><i class="fas fa-plus text-primary" data-toggle="modal" data-target="#exampleModal"></i></a></label>
             @foreach($columns_topics as $column)
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="topic-column-check custom-control-input" name="columns_topics[]" id="topic-column-{{ $column }}" value="{{ $column }}">
@@ -57,7 +57,31 @@
         </div>
       </form>
     </div>
- 
+
+ 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Add new column</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row">
+	      		<div class="col-md-12" align="center">
+	      			<h5>Name: </h5> 
+					<input type="text" class="column form-control">
+	      		</div>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	         
+	        <button type="button" class="btn btn-primary addTopic" >Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   @endif
 @endsection
 
@@ -65,7 +89,31 @@
 	<script type="text/javascript">
 		var page;
 		$(document).ready(function() {
-
+			$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
+			$(".addTopic").click(function(event) {
+				//var typeCol = $("input[name='exampleRadios']:checked").val();
+				var column = $(".column").val()
+				 
+				 $.ajax({
+		               type:'POST',
+		               url:'{{ route("add.topic") }}',
+		               data:{column: column ,"_token": $("meta[name='csrf-token']").attr("content")},
+		               success:function(data) {
+		               	if (data.msg == 0) {
+		               		location.reload();
+		               	}else{
+		               		alert("This column already exists!");
+		               		location.reload();
+		               	}
+		               	//console.log(data);
+		                  
+		               }
+		            }); 
+		       
+				//console.log("add topic");
+			});
 			// Set firts step configuration 
 			nextStep(1);
 			var first_step = (configurations[0].value) ? JSON.parse(configurations[0].value) : null;
