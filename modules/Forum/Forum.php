@@ -3,6 +3,7 @@
 namespace Modules\Forum;
 
 use App\Http\Classes\Module;
+use App\Http\Classes\Page;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Classes\ModuleConfigure;
@@ -75,7 +76,7 @@ class Forum extends Module
             $table->foreign('topic_id')->references('id')->on('forum_topics')->onDelete('cascade');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('content');
+            $table->string('comment');
             $table->timestamps();
         });
             
@@ -108,11 +109,30 @@ class Forum extends Module
      */
 
     
-    public function executeSentence($component, $sentence)
+    public function executeSentence($component, $sentence, $option_value = null)
     {
         if (!is_null($component) && !is_null($sentence)) {
             switch ($sentence->type) {
                 case 'if':
+                    switch ($sentence->option) {
+                        case 'issetTopic':
+                            if (!is_null($option_value)) {
+                                $topic = ForumTopics::findOrFail((int)$option_value);
+                                if (!is_null($module = $this->getByName($this->name))) {
+                                    $configuration = ModuleConfigure::where('module_id', $module->id)
+                                                    ->where('step', 1)
+                                                    ->firstOrFail();
+                                    $values = json_decode($configuration->value);
+                                    foreach ($component->components as $value) {
+                                        $this->setVariablesToTopic($topic, $values->topics, $value);
+                                    }
+                                }    
+                            }else{
+                                //$component->components = array();
+                            }             
+                            break;
+                    }
+                    /*
                     if(eval('return '.$sentence->value.';')){
                         $data = $component->components[0];
                         $component->components = array();
@@ -142,13 +162,13 @@ class Forum extends Module
                                 break;
                         }
                     }
+                    */
                     
                 break;
                 
                 case 'foreach':
                     switch ($sentence->option) {
                         case 'topics':
-                            
                             $base_component = $component->components;
 
                             $component->components = array();
@@ -172,21 +192,60 @@ class Forum extends Module
                                     array_push($columns, $value->Field);
                                 }
                             }
-                            
+
                             foreach ($forum_topics as $topic) {
-                                $new_component = $base_component;
-                                $this->setVariablesToTopic($topic, $columns, $new_component);
-                                foreach ($new_component as $value) {
-                                    array_push($component->components, $value);
+                                foreach ($base_component as $value) {
+                                    $new_component = Page::cloneComponent($value);
+                                    $this->setVariablesToTopic($topic, $columns, $new_component);
+                                    array_push($component->components, $new_component);
                                 }
                                 
                             }
 
                             break;
                         
-                        default:
-                            # code...
-                            break;
+                        case 'comments':
+                            if (!is_null($option_value) && !is_null($module = $this->getByName($this->name))) {
+
+                                $base_component = $component->components;
+
+                                $component->components = array();
+
+                                $comments = DB::table('forum_comments')
+                                            ->join('users', 'users.id', '=', 'forum_comments.user_id')
+                                            ->where('topic_id', '=', $option_value)
+                                            ->get();
+
+                                $columns = array();
+                                $configuration = ModuleConfigure::where('module_id', $module->id)
+                                                ->where('step', 1)
+                                                ->firstOrFail();
+                                $values = json_decode($configuration->value);
+
+                                foreach ($values->users as $value) {
+                                    if (!in_array($value, $columns)) {
+                                        array_push($columns, $value);
+                                    }
+                                }
+
+                                foreach ($values->comments as $value) {
+                                    if (!in_array($value, $columns)) {
+                                        array_push($columns, $value);
+                                    }
+                                }
+
+                                foreach ($comments as $comment) {
+                                    foreach ($base_component as $value) {
+                                        $new_component = Page::cloneComponent($value);
+                                        $this->setVariablesToComment($comment, $columns, $new_component);
+                                        array_push($component->components, $new_component);
+                                    }
+                                }
+
+                            }
+                            
+                        break;
+
                     }
                 break;
 
@@ -194,25 +253,59 @@ class Forum extends Module
                     # code...
                     break;
             }
+
+            if (isset($component->components) && !empty($component->components) && count($component->components) > 0) {
+                foreach ($component->components as $component) {
+                    if (isset($component->sentence) && !is_null($component->sentence)) {
+                        $this->executeSentence($component, $component->sentence, $option_value);
+                    }                    
+                }
+            }
+
         }
     }
 
 
-    public function setVariablesToTopic($topic, $variables, $components){
-        foreach ($components as $component) {
-            if ($component->type == 'variable') {
-                $value = str_replace(['$', '{', '}'], '', $component->content);
-                if (in_array($value, $variables)) {
-                    $component->content = $topic->$value;
-                }
+    public function setVariablesToTopic($topic, $variables, $component){
+        if ($component->type == 'variable') {
+            $value = str_replace(['$', '{', '}'], '', $component->content);
+            if (in_array($value, $variables)) {
+                $component->content = $topic->$value;
             }
+        }
 
-            if ($component->type == 'link' && isset($component->attributes->reference) && $component->attributes->reference == 'topic') {
-                $component->attributes->href = route('view.page', ['page' => 1]);
+        if (!empty($component->components)) {
+            foreach ($component->components as $value) {
+                $this->setVariablesToTopic($topic, $variables, $value);
             }
+        }
 
-            if (!empty($component->components)) {
-                $this->setVariablesToTopic($topic, $variables, $component->components);
+        if ($component->type == 'link' && isset($component->attributes->reference) && $component->attributes->reference == 'topic' && !is_null($module = $this->getByName($this->name))) {
+
+            $configuration = ModuleConfigure::where('module_id', $module->id)
+                            ->where('step', 6)
+                            ->firstOrFail();
+            $id_page = json_decode($configuration->value)->page;
+            $component->attributes->href = route('view.page', ['page' => $id_page, 'value' => $topic->id]);
+        }
+
+        if ($component->type == 'input' && isset($component->attributes->reference) && $component->attributes->reference == 'topic') {
+            $component->attributes->value = $topic->id;
+        }
+
+    }
+
+    public function setVariablesToComment($comment, $variables, $component){
+        if ($component->type == 'variable') {
+            $value = str_replace(['$', '{', '}'], '', $component->content);
+            if (in_array($value, $variables)) {
+                $component->content = $comment->$value;
+            }
+        }
+
+        if (!empty($component->components)) {
+            foreach ($component->components as $value) {
+                $this->setVariablesToComment($comment, $variables, $value);
             }
         }
     }

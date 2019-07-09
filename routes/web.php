@@ -145,7 +145,7 @@ Route::group(['middleware' => 'admin'], function () {
 /** 
 Route for View a Page
 **/
-Route::get('/page/{page}', 'PageController@loadFrontEnd')->name('view.page');
+Route::get('/page/{page}/{value?}', 'PageController@loadFrontEnd')->name('view.page');
 
 
 Route::get('/sign', function () {

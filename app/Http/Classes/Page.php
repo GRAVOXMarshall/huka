@@ -37,4 +37,20 @@ class Page extends Model
         return route('view.page', ['page' => $page->id]);
 
     }
+
+
+    public static function cloneComponent($component){
+        $clone_compont = clone $component;
+        $clone_compont->attributes = clone $component->attributes;
+        if (!empty($component->components)) {
+            $components = $component->components;
+            $component->components = array();
+            foreach ($components as $value) {
+                $new_component = self::cloneComponent($value);
+                array_push($component->components, $new_component);
+            }
+        }
+        return $clone_compont;
+    }
+
 }

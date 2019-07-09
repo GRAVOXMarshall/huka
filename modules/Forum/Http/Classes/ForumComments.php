@@ -13,6 +13,6 @@ class ForumComments extends Model
      */
     protected $table = 'forum_comments';
 
-    protected $fillable = ['topic_id', 'user_id', 'content'];
+    protected $fillable = ['topic_id', 'user_id', 'comment'];
 
 }

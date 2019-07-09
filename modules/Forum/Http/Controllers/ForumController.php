@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Classes\ModuleConfigure;
 use Illuminate\Auth\Events\Registered;
 use Modules\Forum\Http\Classes\ForumTopics;
+use Modules\Forum\Http\Classes\ForumComments;
 
 class ForumController extends Controller
 {
@@ -20,7 +21,7 @@ class ForumController extends Controller
             $user_id = $user->id;
         }
         $request->request->add(['user_id' => $user_id]);
-        $inputs = $this->validateTopic($request);
+        $inputs = $this->validateField($request);
         event(new Registered($topic = ForumTopics::create($inputs)));
         $forum = new Forum();
 
@@ -35,6 +36,30 @@ class ForumController extends Controller
         return redirect(Page::getMainPage('front'));
     }
 
+
+    public function submitAddComment(Request $request){
+        $user_id = 0;
+        if ($user = Auth::guard('front')->user()) {
+            $user_id = $user->id;
+        }
+        $request->request->add(['user_id' => $user_id]);
+        $inputs = $this->validateField($request);
+        event(new Registered($comment = ForumComments::create($inputs)));
+        $forum = new Forum();
+
+        if (!is_null($module = $forum->getByName($forum->name))) {
+            $configuration = ModuleConfigure::where('module_id', $module->id)
+                            ->where('step', 2)
+                            ->firstOrFail();
+            $page = json_decode($configuration->value)->page;
+            return redirect(route('view.page', ['page' => $page]));
+        }
+
+        return redirect(Page::getMainPage('front'));
+    }
+
+    
+
     /**
      * Validate the user register request.
      *
@@ -43,7 +68,7 @@ class ForumController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function validateTopic(Request $request)
+    protected function validateField(Request $request)
     {
         $inputs = array();
         

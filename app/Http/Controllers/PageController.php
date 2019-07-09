@@ -128,7 +128,7 @@ class PageController extends Controller
      *
      * @return view
      */
-    public function loadFrontEnd(Page $page)
+    public function loadFrontEnd(Page $page, $option_value = null)
     {
         $type_page = null;
 
@@ -140,7 +140,7 @@ class PageController extends Controller
                 $components = json_decode(json_decode($page->components, true));
                 foreach ($components as $component) {
                     if ($component->type == 'module') {
-                        $this->loadModuleComponents($component);
+                        $this->loadModuleComponents($component, $option_value);
                     }
                 }
 
@@ -154,7 +154,7 @@ class PageController extends Controller
                     $result = $components;
                     $css = $page->css;
                 }
-            
+
                 return view('index', [
                     'page' => $page,
                     'components' => $result,
@@ -169,27 +169,27 @@ class PageController extends Controller
     }
 
 
-    public function loadModuleComponents($component = null)
+    public function loadModuleComponents($component = null, $option_value = null)
     {
         if (!is_null($component)) {
             $className = 'Modules\\'.$component->module.'\\'.$component->module;
             $module = new $className;
             if (isset($component->sentence) && !is_null($component->sentence)) {
-                $module->executeSentence($component, $component->sentence);
+                $module->executeSentence($component, $component->sentence, $option_value);
             }elseif(!empty($component->components)){
-                $this->setSentences($component->components, $module);
+                $this->setSentences($component->components, $module, $option_value);
             }
             if (!is_null($module->has_variable) && $module->has_variable) {
                 $variables = $module->getVariable();
                 if (!empty($variables)) {
-                    $this->setVariable($component->components, $variables);
+                    $this->setVariable($component->components, $variables, $option_value);
                 }
             }
         }
     }
 
 
-    public function setVariable($components, $variables)
+    public function setVariable($components, $variables, $option_value = null)
     {
         foreach ($components as $component) {
             if ($component->type == 'variable') {
@@ -197,7 +197,7 @@ class PageController extends Controller
                 $component->content = $variables[$value];
             }
             if (!empty($component->components)) {
-                $this->setVariable($component->components, $variables);
+                $this->setVariable($component->components, $variables, $option_value);
             }
         }
     }
@@ -206,19 +206,28 @@ class PageController extends Controller
     {
         foreach ($components as $component) {
             if ($component->type == 'module') {
+                if ($component->module == 'Forum') {
+                    dd($components);
+                }
                 $this->loadModuleComponents($component);
             }
-            if ($component->type == 'childContainer') {
-                $component->content = '';
-                $component->components = $child;
-            }
+
             if (!empty($component->components)) {
                 $this->setLayout($component->components, $child);
+            }
+
+            if ($component->type == 'childContainer') {
+                $component->content = '';
+                $component->components = array();
+                foreach ($child as $value) {
+                   $child_component = Page::cloneComponent($value);
+                   array_push($component->components, $child_component);
+                }
             }
         }
     }
 
-    public function setSentences($components, $module)
+    public function setSentences($components, $module, $option_value)
     {
         foreach ($components as $component) {
             if (isset($component->sentence) && !is_null($component->sentence)) {
@@ -226,7 +235,7 @@ class PageController extends Controller
             }
         
             if (!empty($component->components)) {
-                $this->setSentences($component->components, $module);
+                $this->setSentences($component->components, $module, $option_value);
             }
         }
     }

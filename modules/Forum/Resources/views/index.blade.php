@@ -374,411 +374,168 @@
 												//alert("paso 4");
 												var options = JSON.parse(steps[1]);
 												var domComponents = editor.DomComponents;
-												var container = domComponents.addComponent({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false, // Disable copy/past
-												tagName: 'div',
-												classes: ['container-fluid']   
-												});
 
-												var rowTitle = container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["row"]
-												});
-
-												rowTitle.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
-												});
-
-												var colTitle = rowTitle.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-8"]
+												var topic = domComponents.addComponent({
+													type: 'module',
+													module: 'Forum',
+													tagName: 'div',
+						                            sentence : {
+						                              'type': 'if',
+						                              'option': 'issetTopic',
+						                            },
+													removable: false, // Can't remove it
+													draggable: true, // Can't move it
+													copyable: false, // Disable copy/past
+													style: {
+														'width': '100%',
+														'padding': '1rem'
+													}
 												});
 
 												$.each(options.topics, function(index, val) {
-												/* iterate through array or object */
-												if (val === "title") {
-												var title = colTitle.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'h2',
-												type: "variable",
-												content: '${'+val+'}'
-
-												});
-												}
+													topic.get('components').add({
+														removable: false, // Can't remove it
+														copyable: false,
+														tagName: 'p',
+														type: "variable",
+														content: '${'+val+'}'
+													});
 												});
 
-												rowTitle.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
-												});
-
-												container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br'
-												});
-
-												var rowOptions = container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["row"]
-												});
-
-												rowOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
-												});
-
-												var colOptions = rowOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-8"]
-												});
-
-												$.each(options.topics, function(index, val) {
-												/* iterate through array or object */
-												if (val != "title") {
-												colOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'strong',
-												type: "text",
-												content: val+": "
-												});
-
-												colOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'label',
-												type: "variable",
-												content: '${'+val+'}'
-												});
-
-												colOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br' 
-												});
-												}
+												topic.get('components').add({
+													tagName: 'h2',
+													type: "text",
+													content: "Comments"
 												});
 
 
-
-												rowOptions.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
+												var form = topic.get('components').add({
+													type: 'form',
+													tagName: 'form',
+													attributes: {
+														action: '{{ route('forum.add.comment') }}',
+														method: 'post',
+													},
+													removable: false, // Can't remove it
+													draggable: true, // Can't move it
+													copyable: false, // Disable copy/past
 												});
 
-												container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br' 
+												form.get('components').add({
+													tagName: 'h4',
+													type: "text",
+													content: "New Comment:"
 												});
 
-												var rowComent = container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["row"]
+												form.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'input',
+													type: 'input',
+													attributes: {
+														reference: 'topic',
+														type: 'hidden',
+														name: 'topic_id',
+														value: 0
+													},
 												});
 
-												rowComent.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
-												});
+												$.each(options.comments, function(index, val) {
 
-												var textComent = rowComent.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-8"]
-												});
+													var divinput = form.get('components').add({
+														removable: false, // Can't remove it
+														copyable: false,
+														tagName: 'div',
+														classes: ['form-group'],
+													});
 
-												var con = textComent.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'strong' 
+													divinput.get('components').add({
+														tagName: 'label',
+														content: val,
+														attributes: {
+															for: `input_${val}`
+														}
+													});
 
-												});
-
-												con.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'h4',
-												type: "text",
-												content: "Comments" 
+													divinput.get('components').add({
+														removable: false, // Can't remove it
+														copyable: false,
+														tagName: 'input',
+														type: 'input',
+														attributes: {
+															'type':'text',
+															'name': val
+														},
+														classes: ['form-control'],
+													});
 
 												});
 
-												rowComent.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]
+												form.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'button',
+													type: "submit",
+													content: "Submit!",
+													classes: ['btn-primary']
 												});
 
-												container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br' 
-												});
 
-												var rowUser = container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["row"] 
+												var container_comments = topic.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false, // Disable copy/past
+													tagName: 'div',
+													sentence : {
+														'type': 'foreach',
+														'option': 'comments',
+													},
 												});
-
-												rowUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"] 
-												});
-
-												var colUser = rowUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-8"] 
-												});
-
 
 												/** 
 												Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
 												**/
-												var divUser = colUser.get('components').add({
+												var divUser = container_comments.get('components').add({
 												removable: false, // Can't remove it
-												draggable: false, // Can't move it
 												copyable: false,
 												tagName: 'div',
-												style: {
-												'max-width' : '100%'
-												},
 												classes: ['card', 'bg-light', 'mb-3'] 
 												});
 
 												var nameUser = divUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['card-header'] 
-												});
-												$.each(options.users, function(index, data) {
-												/* iterate through array or object */ 
-												nameUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'label',
-												type: "variable",
-												content: '${'+data+'}' 
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'div',
+													classes: ['card-header'] 
 												});
 
+												$.each(options.users, function(index, val) {
+													/* iterate through array or object */ 
+													nameUser.get('components').add({
+														removable: false, // Can't remove it
+														copyable: false,
+														tagName: 'label',
+														type: "variable",
+														content: '${'+val+'}' 
+													});
 												});
 
 												var divConUser = divUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['card-body'] 
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'div',
+													classes: ['card-body'] 
 												});
 
-												divConUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'p',
-												type: "text",
-												content: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-												classes: ['card-text'] 
-												});
+												$.each(options.comments, function(index, val) {
+													divConUser.get('components').add({
+														removable: false, // Can't remove it
+														copyable: false,
+														tagName: 'p',
+														type: "variable",
+														content: '${'+val+'}',
+														classes: ['card-text'] 
+													});
 
-
-												rowUser.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ["hk-md-2"]  
-												});
-
-												container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br' 
-												});
-
-												var form = container.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'form',
-												attributes: {
-												action: "#",
-												method: "post",
-												} 
-												});
-
-
-												var divNewCom = form.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['row']
-												});
-
-												divNewCom.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['hk-md-2']
-												});
-
-												var colCom = divNewCom.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['hk-md-8']
-												});
-
-												var stroText = colCom.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'strong' 
-												});
-
-												stroText.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'h4',
-												type: "text",
-												content: "New Comment: "
-												});
-
-												colCom.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'textarea',
-												attributes: {
-												name: "comment"
-												},
-												classes: ['form-control']
-												});
-
-
-												divNewCom.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['hk-md-2']
-												});
-
-												form.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'br'
-												});
-
-												var rowbtn = form.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['row']
-												});
-
-												rowbtn.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['hk-md-2']
-												});
-
-												var colBtn = rowbtn.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												attributes: {
-												align: "right",
-												},
-												classes: ['hk-md-8']
-												});
-
-												colBtn.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'button',
-												type: "submit",
-												content: "Submit!",
-												classes: ['btn-primary']
-												});
-
-												rowbtn.get('components').add({
-												removable: false, // Can't remove it
-												draggable: false, // Can't move it
-												copyable: false,
-												tagName: 'div',
-												classes: ['hk-md-2']
 												});
 
 											}

@@ -98,7 +98,7 @@ class Authentication extends Module
      * @param string
      * @return bool result
      */
-    public function executeSentence($component, $sentence)
+    public function executeSentence($component, $sentence, $value = null)
     {
         if (!is_null($component) && !is_null($sentence)) {
             switch ($sentence->type) {
