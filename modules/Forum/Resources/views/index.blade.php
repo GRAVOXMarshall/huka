@@ -45,6 +45,7 @@
 				<select id="topic-column" class="form-control column-select" name="topic_column">
 			</select>
           </div>
+          <!--
           <div class="form-group col-md-5 offset-md-1">
           	<label>Activate functions to</label>
 			<div class="custom-control custom-checkbox">
@@ -56,6 +57,7 @@
 				<label class="custom-control-label" for="anonymous_user">Allow use of anonymous users</label>
 			</div>
           </div>
+      	  -->
         </div>
       </form>
     </div>
@@ -266,7 +268,7 @@
 					if (output.is_error) {
 						alert("error: "+output.result);
 					}else{
-
+						console.log(output);
 						steps[step] = output.result.value;
 						// Add configuration if it already exists
 
@@ -274,366 +276,393 @@
 							var step_config = JSON.parse(steps[step+1]);
 						}
 						// Add elements to view 
-						if (step == 2 || step == 4 || step == 6 ) {
-							page = (output.result.value) ? JSON.parse(output.result.value).page : null;
-							if (page != null && page > 0) {
-								loadEditor(page);
-								editor.on('storage:load', function(e){
-									switch (step) {
-										case 2:
-											if (!steps[3]) {
+						if (step == 2 || step == 4 || step == 6 || step == 8 || step == 10) {
+							var data = JSON.parse(output.result.value);
+                  			loadEditor(data.value, data.option);
+							editor.on('storage:load', function(e){
+								switch (step) {
+									case 2:
+										if (!steps[3]) {
 
-												var dataStep = JSON.parse(steps[1]);
-												var domComponents = editor.DomComponents;
-												var container = domComponents.addComponent({
-													type: 'module',
-													module: 'Forum',
-													removable: false, // Can't remove it
-													draggable: false, // Can't move it
-													copyable: false, // Disable copy/past
-													tagName: 'div'  
-												});
+											var dataStep = JSON.parse(steps[1]);
+											var container = domComponents.addComponent({
+												type: 'module',
+												module: 'Forum',
+												removable: false, // Can't remove it
+												draggable: false, // Can't move it
+												copyable: false, // Disable copy/past
+												tagName: 'div'  
+											});
 
-												container.get('components').add({
-													type: 'text',
-													tagName: 'h4',
-													content: "Topics"
-												});
+											container.get('components').add({
+												type: 'text',
+												tagName: 'h4',
+												content: "Topics"
+											});
 
-												var container_topic = container.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false, // Disable copy/past
-													tagName: 'div',
-													sentence : {
-														'type': 'foreach',
-														'option': 'topics',
-													},
-													classes: ['shadow', 'p-3', 'mb-5', 'bg-white rounded'],
-												});
+											var container_topic = container.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												sentence : {
+													'type': 'foreach',
+													'option': 'topics',
+												},
+												classes: ['shadow', 'p-3', 'mb-5', 'bg-white rounded'],
+											});
 
 
-												var row = container_topic.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false, // Disable copy/past
-													tagName: 'div',
-													classes: ['row', 'd-flex', 'align-items-center'],
-												});
+											var row = container_topic.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												classes: ['row', 'd-flex', 'align-items-center'],
+											});
 
-												var column_link = row.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false, // Disable copy/past
-													tagName: 'div',
-													classes: ['hk-8'],
-												});
+											var column_link = row.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												classes: ['hk-8'],
+											});
 
-												var btn_link = column_link.get('components').add({
-													tagName: 'a',
-													type: 'link',
-													editable: false,
-													attributes: {
-														reference: 'topic',
-														href: '#',
-													},
-													removable: false, // Can't remove it
-												});
+											var btn_link = column_link.get('components').add({
+												tagName: 'a',
+												type: 'link',
+												editable: false,
+												attributes: {
+													reference: 'topic',
+													href: '#',
+												},
+												removable: false, // Can't remove it
+											});
 
-												btn_link.get('components').add({
-													tagName: 'label',
+											btn_link.get('components').add({
+												tagName: 'label',
+												type: 'variable',
+												content: '${'+dataStep.topic_column+'}',
+												removable: false,
+												copyable: false,
+											});
+
+											var column_name = row.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												attributes: {
+													align: "right",
+												},
+												classes: ['hk-4'],
+											});
+
+											$.each(dataStep.users, function(index, column) {
+												column_name.get('components').add({
 													type: 'variable',
-													content: '${'+dataStep.topic_column+'}',
+													tagName: 'label',
+													content: '${'+column+'}',
 													removable: false,
 													copyable: false,
 												});
+											});
 
-												var column_name = row.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false, // Disable copy/past
-													tagName: 'div',
-													attributes: {
-														align: "right",
-													},
-													classes: ['hk-4'],
-												});
+										}
+									break;
 
-												$.each(dataStep.users, function(index, column) {
-													column_name.get('components').add({
-														type: 'variable',
-														tagName: 'label',
-														content: '${'+column+'}',
-														removable: false,
-														copyable: false,
-													});
-												});
+									case 4:
+										if (!steps[5]) {
+											var dataStep = JSON.parse(steps[1]);
+											var addTopic = domComponents.addComponent({
+												type: 'module',
+												module: 'Forum',
+												tagName: 'div',
+												removable: false, // Can't remove it
+												draggable: true, // Can't move it
+												copyable: false, // Disable copy/past
+												style: {
+													'width': '100%',
+													'padding': '1rem'
+												}
+											});
+											var form = addTopic.get('components').add({
+												type: 'form',
+												tagName: 'form',
+												attributes: {
+													action: '{{ route('forum.add.topic') }}',
+													method: 'post',
+												},
+												removable: false, // Can't remove it
+												draggable: true, // Can't move it
+												copyable: false, // Disable copy/past
+											});
 
-											}
-										break;
+											var title = form.get('components').add({
+												tagName: 'h3',
+												type: 'text',
+												content: 'Add Topic!'
+											});
 
-										case 4:
-											if (!steps[5]) {
-												var domComponents = editor.DomComponents;
-												var dataStep = JSON.parse(steps[1]);
-												var domComponents = editor.DomComponents;
-												var addTopic = domComponents.addComponent({
-													type: 'module',
-													module: 'Forum',
-													tagName: 'div',
-													removable: false, // Can't remove it
-													draggable: true, // Can't move it
-													copyable: false, // Disable copy/past
-													style: {
-														'width': '100%',
-														'padding': '1rem'
-													}
-												});
-												var form = addTopic.get('components').add({
-													type: 'form',
-													tagName: 'form',
-													attributes: {
-														action: '{{ route('forum.add.topic') }}',
-														method: 'post',
-													},
-													removable: false, // Can't remove it
-													draggable: true, // Can't move it
-													copyable: false, // Disable copy/past
-												});
-
-												var title = form.get('components').add({
-													tagName: 'h3',
-													type: 'text',
-													content: 'Add Topic!'
-												});
-
-												var divform = form.get('components').add({
-													removable: false, // Can't remove it
-													draggable: false, // Can't move it
-													copyable: false,
-													tagName: 'div',
-													classes: ['row'],
-												});
+											var divform = form.get('components').add({
+												removable: false, // Can't remove it
+												draggable: false, // Can't move it
+												copyable: false,
+												tagName: 'div',
+												classes: ['row'],
+											});
 
 
-												$.each(dataStep.topics, function(index, val) {
+											$.each(dataStep.topics, function(index, val) {
 
-													var divinput = divform.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'div',
-														classes: ['hk-md-12', 'form-group'],
-													});
-
-													divinput.get('components').add({
-														tagName: 'label',
-														content: val,
-														attributes: {
-															for: `input_${val}`
-														}
-													});
-
-													divinput.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'input',
-														type: 'input',
-														attributes: {
-															'type':'text',
-															'name': val
-														},
-														classes: ['form-control'],
-													});
-
-												});
-
-												divform.get('components').add({
+												var divinput = divform.get('components').add({
 													removable: false, // Can't remove it
 													copyable: false,
-													tagName: 'button',
-													attributes: {
-														'type':'submit',
-													},
-													classes: ['form-control', 'btn-primary'],
-													content: 'Send!'
+													tagName: 'div',
+													classes: ['hk-md-12', 'form-group'],
 												});
 
-											}
-										break;
-
-										case 6:
-											if (!steps[7]) {
-												//alert("paso 4");
-												var options = JSON.parse(steps[1]);
-												var domComponents = editor.DomComponents;
-
-												var topic = domComponents.addComponent({
-													type: 'module',
-													module: 'Forum',
-													tagName: 'div',
-						                            sentence : {
-						                              'type': 'if',
-						                              'option': 'issetTopic',
-						                            },
-													removable: false, // Can't remove it
-													draggable: true, // Can't move it
-													copyable: false, // Disable copy/past
-													style: {
-														'width': '100%',
-														'padding': '1rem'
+												divinput.get('components').add({
+													tagName: 'label',
+													content: val,
+													attributes: {
+														for: `input_${val}`
 													}
 												});
 
-												$.each(options.topics, function(index, val) {
-													topic.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'p',
-														type: "variable",
-														content: '${'+val+'}'
-													});
-												});
-
-												topic.get('components').add({
-													tagName: 'h2',
-													type: "text",
-													content: "Comments"
-												});
-
-
-												var form = topic.get('components').add({
-													type: 'form',
-													tagName: 'form',
-													attributes: {
-														action: '{{ route('forum.add.comment') }}',
-														method: 'post',
-													},
-													removable: false, // Can't remove it
-													draggable: true, // Can't move it
-													copyable: false, // Disable copy/past
-												});
-
-												form.get('components').add({
-													tagName: 'h4',
-													type: "text",
-													content: "New Comment:"
-												});
-
-												form.get('components').add({
+												divinput.get('components').add({
 													removable: false, // Can't remove it
 													copyable: false,
 													tagName: 'input',
 													type: 'input',
 													attributes: {
-														reference: 'topic',
-														type: 'hidden',
-														name: 'topic_id',
-														value: 0
+														'type':'text',
+														'name': val
 													},
+													classes: ['form-control'],
 												});
 
-												$.each(options.comments, function(index, val) {
+											});
 
-													var divinput = form.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'div',
-														classes: ['form-group'],
-													});
+											divform.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'button',
+												attributes: {
+													'type':'submit',
+												},
+												classes: ['form-control', 'btn-primary'],
+												content: 'Send!'
+											});
 
-													divinput.get('components').add({
-														tagName: 'label',
-														content: val,
-														attributes: {
-															for: `input_${val}`
-														}
-													});
+										}
+									break;
 
-													divinput.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'input',
-														type: 'input',
-														attributes: {
-															'type':'text',
-															'name': val
-														},
-														classes: ['form-control'],
-													});
+									case 6:
+										if (!steps[7]) {
+											//alert("paso 4");
+											var options = JSON.parse(steps[1]);
+											var topic = domComponents.addComponent({
+												type: 'module',
+												module: 'Forum',
+												tagName: 'div',
+					                            sentence : {
+					                              'type': 'if',
+					                              'option': 'issetTopic',
+					                            },
+												removable: false, // Can't remove it
+												draggable: true, // Can't move it
+												copyable: false, // Disable copy/past
+												style: {
+													'width': '100%',
+													'padding': '1rem'
+												}
+											});
 
-												});
-
-												form.get('components').add({
+											$.each(options.topics, function(index, val) {
+												topic.get('components').add({
 													removable: false, // Can't remove it
 													copyable: false,
-													tagName: 'button',
-													type: "submit",
-													content: "Submit!",
-													classes: ['btn-primary']
+													tagName: 'p',
+													type: "variable",
+													content: '${'+val+'}'
 												});
+											});
+
+											topic.get('components').add({
+												tagName: 'h2',
+												type: "text",
+												content: "Comments"
+											});
 
 
-												var container_comments = topic.get('components').add({
+											var form = topic.get('components').add({
+												type: 'form',
+												tagName: 'form',
+												attributes: {
+													action: '{{ route('forum.add.comment') }}',
+													method: 'post',
+												},
+												removable: false, // Can't remove it
+												draggable: true, // Can't move it
+												copyable: false, // Disable copy/past
+											});
+
+											form.get('components').add({
+												tagName: 'h4',
+												type: "text",
+												content: "New Comment:"
+											});
+
+											form.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'input',
+												type: 'input',
+												attributes: {
+													reference: 'topic',
+													type: 'hidden',
+													name: 'topic_id',
+													value: 0
+												},
+											});
+
+											$.each(options.comments, function(index, val) {
+
+												var divinput = form.get('components').add({
 													removable: false, // Can't remove it
-													copyable: false, // Disable copy/past
+													copyable: false,
 													tagName: 'div',
-													sentence : {
-														'type': 'foreach',
-														'option': 'comments',
-													},
+													classes: ['form-group'],
 												});
 
-												/** 
-												Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
-												**/
-												var divUser = container_comments.get('components').add({
+												divinput.get('components').add({
+													tagName: 'label',
+													content: val,
+													attributes: {
+														for: `input_${val}`
+													}
+												});
+
+												divinput.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'input',
+													type: 'input',
+													attributes: {
+														'type':'text',
+														'name': val
+													},
+													classes: ['form-control'],
+												});
+
+											});
+
+											form.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'button',
+												type: "submit",
+												content: "Submit!",
+												classes: ['btn-primary']
+											});
+
+
+											var container_comments = topic.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												sentence : {
+													'type': 'foreach',
+													'option': 'comments',
+												},
+											});
+
+											/** 
+											Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
+											**/
+											var divUser = container_comments.get('components').add({
 												removable: false, // Can't remove it
 												copyable: false,
 												tagName: 'div',
 												classes: ['card', 'bg-light', 'mb-3'] 
-												});
+											});
 
-												var nameUser = divUser.get('components').add({
+											var nameUser = divUser.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'div',
+												classes: ['card-header'] 
+											});
+
+											$.each(options.users, function(index, val) {
+												/* iterate through array or object */ 
+												nameUser.get('components').add({
 													removable: false, // Can't remove it
 													copyable: false,
-													tagName: 'div',
-													classes: ['card-header'] 
+													tagName: 'label',
+													type: "variable",
+													content: '${'+val+'}' 
 												});
+											});
 
-												$.each(options.users, function(index, val) {
-													/* iterate through array or object */ 
-													nameUser.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'label',
-														type: "variable",
-														content: '${'+val+'}' 
-													});
-												});
+											var divConUser = divUser.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'div',
+												classes: ['card-body'] 
+											});
 
-												var divConUser = divUser.get('components').add({
+											$.each(options.comments, function(index, val) {
+												divConUser.get('components').add({
 													removable: false, // Can't remove it
 													copyable: false,
-													tagName: 'div',
-													classes: ['card-body'] 
+													tagName: 'p',
+													type: "variable",
+													content: '${'+val+'}',
+													classes: ['card-text'] 
 												});
 
-												$.each(options.comments, function(index, val) {
-													divConUser.get('components').add({
-														removable: false, // Can't remove it
-														copyable: false,
-														tagName: 'p',
-														type: "variable",
-														content: '${'+val+'}',
-														classes: ['card-text'] 
-													});
+											});
 
-												});
+										}
+									break;
 
-											}
-										break;	
-									}
-								});
-							}
+									case 8:
+										if (!steps[9]) {
+											var option = JSON.parse(steps[2]);
+											var topic = domComponents.addComponent({
+												tagName: 'a',
+					                            type: 'link',
+					                            attributes: {
+					                              href: `{{ url('page') }}/${option.value}`,
+					                            },
+					                            classes: ['nav-link'],
+					                            content: 'Forum',
+					                            removable: false, // Can't remove it
+											});
+										}
+
+									break;
+
+									case 10:
+										if (!steps[11]) {
+											var option = JSON.parse(steps[4]);
+											var topic = domComponents.addComponent({
+												tagName: 'a',
+					                            type: 'link',
+					                            attributes: {
+					                              href: `{{ url('page') }}/${option.value}`,
+					                            },
+					                            classes: ['btn'],
+					                            content: 'Add topic',
+					                            removable: false, // Can't remove it
+											});
+										}
+
+									break;
+								}
+							});
 						}
 						// Save view in database
-						if (step == 3 || step == 5 || step == 7) {
+						if (step == 3 || step == 5 || step == 7 || step == 9 || step == 11) {
 							editor.store();
 							//alert("Se guardo el paso: "+step);
 						}

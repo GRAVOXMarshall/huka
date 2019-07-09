@@ -49,6 +49,14 @@ class Forum extends Module
 
         parent::updateConfiguration($this->name, 'Design view of topic', 'Customize design of the view of topic', 'design-page', 7);
 
+        parent::updateConfiguration($this->name, 'Add forum link', 'Select where you want to add the link that redirect to the forum', 'select-page', 8);
+
+        parent::updateConfiguration($this->name, 'Design forum link', 'Customize design of the button link', 'design-page', 9);
+
+        parent::updateConfiguration($this->name, 'Add trigger to create a topic', 'Select where you want to add the button', 'select-page', 10);
+
+        parent::updateConfiguration($this->name, 'Design trigger', 'Customize design of the button', 'design-page', 11);
+
         /** 
             Code for create and delete a table in database
         **/
@@ -285,7 +293,7 @@ class Forum extends Module
             $configuration = ModuleConfigure::where('module_id', $module->id)
                             ->where('step', 6)
                             ->firstOrFail();
-            $id_page = json_decode($configuration->value)->page;
+            $id_page = json_decode($configuration->value)->value;
             $component->attributes->href = route('view.page', ['page' => $id_page, 'value' => $topic->id]);
         }
 

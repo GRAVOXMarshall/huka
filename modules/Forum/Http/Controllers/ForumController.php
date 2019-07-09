@@ -29,7 +29,7 @@ class ForumController extends Controller
             $configuration = ModuleConfigure::where('module_id', $module->id)
                             ->where('step', 2)
                             ->firstOrFail();
-            $page = json_decode($configuration->value)->page;
+            $page = json_decode($configuration->value)->value;
             return redirect(route('view.page', ['page' => $page]));
         }
 
@@ -51,7 +51,8 @@ class ForumController extends Controller
             $configuration = ModuleConfigure::where('module_id', $module->id)
                             ->where('step', 2)
                             ->firstOrFail();
-            $page = json_decode($configuration->value)->page;
+
+            $page = json_decode($configuration->value)->value;
             return redirect(route('view.page', ['page' => $page]));
         }
 

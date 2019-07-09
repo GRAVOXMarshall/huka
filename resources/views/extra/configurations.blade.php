@@ -2,7 +2,7 @@
 
 @section('dash-content')
     <div class="row">
-      <div class="col-3 side-content">
+      <div class="col-2 side-content">
         <div class="step-vertical-menu" role="tablist">
           <ul>
             @if(!is_null($configurations) && count($configurations) > 0)
@@ -17,7 +17,7 @@
           </ul>
         </div>
       </div>
-      <div class="col-9">
+      <div class="col-10">
         <div id="configuration-content" style="min-height: 400px;">
           <div class="card mb-2">
             <div class="row card-body">
