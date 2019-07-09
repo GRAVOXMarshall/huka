@@ -11,14 +11,16 @@
           <div class="form-group col-md-4">
             <label for="input-columns">Users</label>
             @foreach($columns_users as $column)
+            @if($column != "password")
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" name="columns_users[]" id="user-column-{{ $column }}" value="{{ $column }}">
                 <label class="custom-control-label" for="user-column-{{ $column }}">{{ $column }}</label>
               </div>
+            @endif
             @endforeach
           </div>
           <div class="form-group col-md-4">
-            <label for="input-columns">Topics <a href="#" data-toggle="tooltip" data-placement="right" title="Add Column"><i class="fas fa-plus text-primary" data-toggle="modal" data-target="#exampleModal"></i></a></label>
+            <label for="input-columns">Topics <a href="#" data-toggle="tooltip" data-placement="top" title="Add Column"><i class="fas fa-plus text-primary" data-toggle="modal" data-target="#modalTopic"></i></a></label>
             @foreach($columns_topics as $column)
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="topic-column-check custom-control-input" name="columns_topics[]" id="topic-column-{{ $column }}" value="{{ $column }}">
@@ -27,7 +29,7 @@
             @endforeach
           </div>
           <div class="form-group col-md-4">
-            <label for="input-columns">Coments</label>
+            <label for="input-columns">Comments <a href="#" data-toggle="tooltip" data-placement="top" title="Add Column"><i class="fas fa-plus text-primary" data-toggle="modal" data-target="#modalComments"></i></a></label>
             @foreach($columns_comments as $column)
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" name="columns_comments[]" id="comment-column-{{ $column }}" value="{{ $column }}">
@@ -58,11 +60,11 @@
       </form>
     </div>
 
- 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ 	<div class="modal fade" id="modalTopic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Add new column</h5>
+	        <h5 class="modal-title" id="exampleModalLabel">Add new column to topics</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -100,6 +102,49 @@
 	    </div>
 	  </div>
 	</div>
+
+	<div class="modal fade" id="modalComments" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelCom" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabelCom">Add new column to comments</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row">
+	      		<div class="col-md-12" align="center">
+	      			<h5>Select the type: </h5>
+	      			<div class="btn-group btn-group-toggle" data-toggle="buttons">
+					  <label class="btn btn-outline-primary active">
+					    <input type="radio" name="options" id="String" value="String" checked> String
+					  </label>
+					  <label class="btn btn-outline-primary">
+					    <input type="radio" name="options" id="Integer" value="Integer"> Integer
+					  </label>
+					  <label class="btn btn-outline-primary">
+					    <input type="radio" name="options" id="LongText" value="LongText"> LongText
+					  </label>
+					  <label class="btn btn-outline-primary">
+					    <input type="radio" name="options" id="Float" value="Float"> Float
+					  </label>
+					  <label class="btn btn-outline-primary">
+					    <input type="radio" name="options" id="Text" value="Text"> Text
+					  </label>
+					</div><br><br>
+	      			<h5>Name: </h5> 
+					<input type="text" class="columnCom form-control"> 
+	      		</div>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	         
+	        <button type="button" class="btn btn-primary addComments" >Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   @endif
 @endsection
 
@@ -126,6 +171,30 @@
 		               		alert("This column already exists!");
 		               		location.reload();
 		               	}
+		               	//console.log(data);
+		                  
+		               }
+		            });  
+		       
+				//console.log("add topic");
+			});
+
+			$(".addComments").click(function(event) {
+				var typeCol = $("input[name='options']:checked").val();
+				var column = $(".columnCom").val()
+				console.log("type: "+typeCol);
+				  $.ajax({
+		               type:'POST',
+		               url:'{{ route("add.comments") }}',
+		               data:{column: column ,type: typeCol ,"_token": $("meta[name='csrf-token']").attr("content")},
+		               success:function(data) {
+		               	 console.log(data.msg);
+		               	 if (data.msg == 0) {
+		               		location.reload();
+		               	}else{
+		               		alert("This column already exists!");
+		               		location.reload();
+		               	} 
 		               	//console.log(data);
 		                  
 		               }
@@ -349,7 +418,7 @@
 														removable: false, // Can't remove it
 														copyable: false,
 														tagName: 'div',
-														classes: ['form-group'],
+														classes: ['hk-md-12', 'form-group'],
 													});
 
 													divinput.get('components').add({

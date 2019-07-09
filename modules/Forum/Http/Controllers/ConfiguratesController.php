@@ -159,7 +159,7 @@ class ConfiguratesController extends Controller
         }
     }
 
-    public function addColumn(Request $request){
+    public function addColumnTopic(Request $request){
 
             $column = strtolower($request->column);
             $type = strtolower($request->type);
@@ -178,28 +178,31 @@ class ConfiguratesController extends Controller
 
                 return response()->json(array('msg'=> 1));
             }
+    
+    }
 
-              
+    public function addColumnComments(Request $request){
 
-            
+            $column = strtolower($request->column);
+            $type = strtolower($request->type);
 
+           // return response()->json(array('msg'=> $request->column));
 
-            /*Schema::table('forum_topics', function(Blueprint $table) {
-                if (!Schema::hasColumn('testing')) {
-                    if ($table->string('testinga')) {
-                         return response()->json(array('msg'=> "LLegamos!"));
-                    }else{
-                         return response()->json(array('msg'=> "Fallamos!"));
-                    }
-                }else{
-                    return response()->json(array('msg'=> "Ya Existe!"));
-                }
-                
-                  
-            });*/
+            if (!Schema::hasColumn('forum_comments', $column)) {
                 
 
-            
+                Schema::table('forum_comments', function($table) use($column, $type)
+                {
+                     
+                    $table->$type($column);
+                }); 
+                return response()->json(array('msg'=> 0));
+                
+            }else{
+
+                return response()->json(array('msg'=> 1));
+            }
+    
     }
    /* public function test(Request $request){
         $inputs = [

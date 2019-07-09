@@ -26,6 +26,8 @@ Route::prefix('module/forum')->group(function() {
 
 	Route::post('/create/comments', 'ConfiguratesController@createComments')->name('create.comments');
 
-	Route::post('/add/topic', 'ConfiguratesController@addColumn')->name('add.topic');
+	Route::post('/add/topic', 'ConfiguratesController@addColumnTopic')->name('add.topic');
+
+	Route::post('/add/comments', 'ConfiguratesController@addColumnComments')->name('add.comments');
 
 });
