@@ -138,40 +138,15 @@ class Forum extends Module
                             }else{
                                 //$component->components = array();
                             }             
-                            break;
-                    }
-                    /*
-                    if(eval('return '.$sentence->value.';')){
-                        $data = $component->components[0];
-                        $component->components = array();
-                        switch ($sentence->option) {
-                            case 'testingMode':     
-                                $forum_comments = ForumComments::all();
-                                    
-                                foreach ($forum_comments as $values) {
-                                    $new_component = $data;
-                                    foreach ($new_component->components[1]->components[0]->components[0]->components as $value) {
-                                      if ($value->type == "variable") {
-                                        $str = str_replace(['$', '{', '}'], '', $value->content);
-                                        if ($str == "title") {
-                                           $value->content = $values->title;
-                                        }
-                                        array_push($component->components, $new_component);
-                                         
-                                      }
-                                       
-                                    }
-                                }      
+                        break;
 
-                                break;
-                            
-                            default:
-                                # code...
-                                break;
-                        }
+                        case 'userLogin':
+                            if(eval('return !'.$sentence->value.';')){
+                                $component->components = array();
+                            }
+                        break;
                     }
-                    */
-                    
+                     
                 break;
                 
                 case 'foreach':

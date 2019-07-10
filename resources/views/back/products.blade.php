@@ -1,12 +1,10 @@
 @extends('back.index')
 
 @section('dash-content')
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Products</h1>
-        @if(Auth::guard('admins')->user())
-          {{ Auth::guard('admins')->user()->email }}
-        @endif
-      </div>
+  <div class="col-md-8 pt-3 pb-2 mb-3">
+    <h1 class="h2 mb-0 text-gray-800">Products</h1>
+  </div>
+  
       <!--<a href="{{ route('dash.products') }}">Modules</a>
       <a href="{{ route('dash.products.templates') }}">Templates</a>
       <br><br>-->
@@ -48,13 +46,14 @@
                               <div class="media d-block d-sm-flex row">
                                 
 
-                                  <div class="col-md-2">
-                                    <div class="u-avatar mb-3 mb-sm-0 mr-3">
-                                      <img class="img-fluid" src="{{ url($functionality['icon']) }}" alt="Image Description">
+                                  <div class="col-md-1">
+
+                                    <div class="u-avatar mb-3 mb-sm-0 mr-1">
+                                      <i class="fas fa-puzzle-piece fa-3x text-primary"></i>
                                     </div>
                                   </div>
 
-                                  <div class="col-md-8" align="left">
+                                  <div class="col-md-9" align="left">
                                     <div class="media-body">
                                         <!-- Header -->
                                         <div  >

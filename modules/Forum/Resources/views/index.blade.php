@@ -289,7 +289,6 @@
 												type: 'module',
 												module: 'Forum',
 												removable: false, // Can't remove it
-												draggable: false, // Can't move it
 												copyable: false, // Disable copy/past
 												tagName: 'div'  
 											});
@@ -316,6 +315,10 @@
 												removable: false, // Can't remove it
 												copyable: false, // Disable copy/past
 												tagName: 'div',
+												style: {
+					                              'border-bottom': '1px solid #858796',
+					                              'margin-bottom': '1rem'
+					                            },
 												classes: ['row', 'd-flex', 'align-items-center'],
 											});
 
@@ -334,6 +337,7 @@
 													reference: 'topic',
 													href: '#',
 												},
+												copyable: false, // Disable copy/past
 												removable: false, // Can't remove it
 											});
 
@@ -492,6 +496,62 @@
 												content: "Comments"
 											});
 
+											var container_comments = topic.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false, // Disable copy/past
+												tagName: 'div',
+												sentence : {
+													'type': 'foreach',
+													'option': 'comments',
+												},
+											});
+
+											/** 
+											Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
+											**/
+											var divUser = container_comments.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'div',
+												classes: ['card', 'bg-light', 'mb-3'] 
+											});
+
+											var nameUser = divUser.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'div',
+												classes: ['card-header'] 
+											});
+
+											$.each(options.users, function(index, val) {
+												/* iterate through array or object */ 
+												nameUser.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'label',
+													type: "variable",
+													content: '${'+val+'}' 
+												});
+											});
+
+											var divConUser = divUser.get('components').add({
+												removable: false, // Can't remove it
+												copyable: false,
+												tagName: 'div',
+												classes: ['card-body'] 
+											});
+
+											$.each(options.comments, function(index, val) {
+												divConUser.get('components').add({
+													removable: false, // Can't remove it
+													copyable: false,
+													tagName: 'p',
+													type: "variable",
+													content: '${'+val+'}',
+													classes: ['card-text'] 
+												});
+
+											});
 
 											var form = topic.get('components').add({
 												type: 'form',
@@ -500,6 +560,11 @@
 													action: '{{ route('forum.add.comment') }}',
 													method: 'post',
 												},
+												sentence : {
+					                              'type': 'if',
+					                              'option': 'userLogin',
+					                              'value': 'Auth::guard("front")->user()',
+					                            },
 												removable: false, // Can't remove it
 												draggable: true, // Can't move it
 												copyable: false, // Disable copy/past
@@ -564,64 +629,6 @@
 												classes: ['btn-primary']
 											});
 
-
-											var container_comments = topic.get('components').add({
-												removable: false, // Can't remove it
-												copyable: false, // Disable copy/past
-												tagName: 'div',
-												sentence : {
-													'type': 'foreach',
-													'option': 'comments',
-												},
-											});
-
-											/** 
-											Aqui debes colocar el foreach para mostrar los comentarios que se han hecho a un topico.
-											**/
-											var divUser = container_comments.get('components').add({
-												removable: false, // Can't remove it
-												copyable: false,
-												tagName: 'div',
-												classes: ['card', 'bg-light', 'mb-3'] 
-											});
-
-											var nameUser = divUser.get('components').add({
-												removable: false, // Can't remove it
-												copyable: false,
-												tagName: 'div',
-												classes: ['card-header'] 
-											});
-
-											$.each(options.users, function(index, val) {
-												/* iterate through array or object */ 
-												nameUser.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false,
-													tagName: 'label',
-													type: "variable",
-													content: '${'+val+'}' 
-												});
-											});
-
-											var divConUser = divUser.get('components').add({
-												removable: false, // Can't remove it
-												copyable: false,
-												tagName: 'div',
-												classes: ['card-body'] 
-											});
-
-											$.each(options.comments, function(index, val) {
-												divConUser.get('components').add({
-													removable: false, // Can't remove it
-													copyable: false,
-													tagName: 'p',
-													type: "variable",
-													content: '${'+val+'}',
-													classes: ['card-text'] 
-												});
-
-											});
-
 										}
 									break;
 
@@ -637,6 +644,7 @@
 					                            classes: ['nav-link'],
 					                            content: 'Forum',
 					                            removable: false, // Can't remove it
+					                            copyable: false, // Disable copy/past
 											});
 										}
 
@@ -654,6 +662,7 @@
 					                            classes: ['btn'],
 					                            content: 'Add topic',
 					                            removable: false, // Can't remove it
+					                            copyable: false, // Disable copy/past
 											});
 										}
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Classes\ModuleConfigure;
 use Illuminate\Auth\Events\Registered;
 use Modules\Forum\Http\Classes\ForumTopics;
@@ -22,7 +23,8 @@ class ForumController extends Controller
         }
         $request->request->add(['user_id' => $user_id]);
         $inputs = $this->validateField($request);
-        event(new Registered($topic = ForumTopics::create($inputs)));
+
+        event(new Registered($topic = DB::table('forum_topics')->insert($inputs)));
         $forum = new Forum();
 
         if (!is_null($module = $forum->getByName($forum->name))) {
@@ -44,7 +46,7 @@ class ForumController extends Controller
         }
         $request->request->add(['user_id' => $user_id]);
         $inputs = $this->validateField($request);
-        event(new Registered($comment = ForumComments::create($inputs)));
+        event(new Registered($comment = DB::table('forum_comments')->insert($inputs)));
         $forum = new Forum();
 
         if (!is_null($module = $forum->getByName($forum->name))) {
