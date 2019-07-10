@@ -80,13 +80,7 @@
 					    <input type="radio" name="options" id="String" value="String" checked> String
 					  </label>
 					  <label class="btn btn-outline-primary">
-					    <input type="radio" name="options" id="Integer" value="Integer"> Integer
-					  </label>
-					  <label class="btn btn-outline-primary">
 					    <input type="radio" name="options" id="LongText" value="LongText"> LongText
-					  </label>
-					  <label class="btn btn-outline-primary">
-					    <input type="radio" name="options" id="Float" value="Float"> Float
 					  </label>
 					  <label class="btn btn-outline-primary">
 					    <input type="radio" name="options" id="Text" value="Text"> Text
@@ -123,13 +117,7 @@
 					    <input type="radio" name="options" id="String" value="String" checked> String
 					  </label>
 					  <label class="btn btn-outline-primary">
-					    <input type="radio" name="options" id="Integer" value="Integer"> Integer
-					  </label>
-					  <label class="btn btn-outline-primary">
 					    <input type="radio" name="options" id="LongText" value="LongText"> LongText
-					  </label>
-					  <label class="btn btn-outline-primary">
-					    <input type="radio" name="options" id="Float" value="Float"> Float
 					  </label>
 					  <label class="btn btn-outline-primary">
 					    <input type="radio" name="options" id="Text" value="Text"> Text
