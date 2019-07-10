@@ -174,7 +174,7 @@ class ConfiguratesController extends Controller
                 Schema::table('forum_topics', function($table) use($column, $type)
                 {
                      
-                    $table->$type($column);
+                    $table->$type($column)->nullable();
                 }); 
                 return response()->json(array('msg'=> 0));
                 
@@ -198,7 +198,7 @@ class ConfiguratesController extends Controller
                 Schema::table('forum_comments', function($table) use($column, $type)
                 {
                      
-                    $table->$type($column);
+                    $table->$type($column)->nullable();
                 }); 
                 return response()->json(array('msg'=> 0));
                 
