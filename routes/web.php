@@ -15,6 +15,10 @@ Route::get('/', function () {
 	    return view('front/home');
 });
 
+Route::get('/editor-prueba', function () {
+	    return view('pruebas/index');
+});
+
 Route::get('/log', function () {
 	    return view('front/sign');
 });
