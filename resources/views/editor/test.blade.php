@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
     <script src="{{ asset('js/app.js') }}"></script>
     <style>
-      body,
-
-      html {
+      body {
         height: 100%;
+        overflow: hidden;
         margin: 0;
       }
 
@@ -20,9 +19,11 @@
         vertical-align: middle;
         height: 100%;
       }
-      .container {
-         
-        height: 45px; 
+      .pattern {
+        position: fixed;
+        top: 0;
+        width: 100%;  
+        height: 30px; 
         white-space: nowrap; 
         line-height: 0px; 
         overflow: hidden;
@@ -30,8 +31,12 @@
         -moz-box-shadow: 0px 5px 13px -7px rgba(0,0,0,0.75);
         box-shadow: 0px 5px 13px -7px rgba(0,0,0,0.75);
       }
+
       a{
         color: black;
+      }
+      a:hover{
+        color: #F58A10;
       }
       .logo{
         width: 10%; 
@@ -56,11 +61,11 @@
     </style>
   </head>
   <body>
-    <div class="container"> 
+    <div class="pattern"> 
       <div class="child logo" >
-        <h4><strong>Huka</strong></h4>
+        <h4 style="margin-top: 5px;"><i class="icon-fa-huka" style="margin-right: 10px; color: #F58A10; "></i><strong>Huka</strong></h4>
       </div>
-      <div class="child" style="width: 10%;  text-align: center;">
+      <div class="child" style="width: 10%; margin-left: 5px;  text-align: center;">
         <select>
         <option>[Pages..]</option>
         <option>1</option>
@@ -68,19 +73,22 @@
         </select>
       </div>
       <div class="child" style="width: 6%; margin-left: 5px; border-right: #DBDBDB   1px solid; text-align: center;">
-        <a href="#"><i class="fas fa-laptop fa-lg" style="margin-top: 15px; margin-right: 10px; color: #F58A10;"></i></a> 
-        <a href="#"><i class="fas fa-user-cog fa-lg" style="margin-top: 15px; color: #F58A10;"></i></a>
+        <a href="#"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px; color: #F58A10;"></i></a> 
+        <a href="#"><i class="fas fa-user-cog fa-lg"></i></a>
       </div>
       <div class="child" style="width: 50%; text-align: center; border-right: #DBDBDB   1px solid;">
-        <a href="#"><i class="fas fa-desktop fa-2x" style="margin-top: 5px;  margin-right: 10px; color: #F58A10;"></i></a> 
-        <a href="#"><i class="fas fa-mobile-alt fa-2x" style="margin-top: 5px; color: #F58A10;"></i></a>  
+        <a href="#"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px; color: #F58A10;"></i></a> 
+        <a href="#"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;  "></i></a>  
       </div>
       <div class="child" style="width: 22%; text-align: center;">
-        <a href="#"><i class="far fa-save fa-2x" style="margin-top: 5px;  margin-right: 10px; color: #F58A10;"></i></a> 
-        <a href="#"><i class="fas fa-sign-out-alt fa-2x" style="margin-top: 5px; color: #F58A10;"></i></a>
+        <a href="#"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;  "></i></a>
+        <a href="#"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;  "></i></a>
+        <a href="#"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;  "></i></a>
+        <a href="#"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;  "></i></a> 
+        <a href="#"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;  "></i></a>
       </div>   
-    </div>
-    <div id="editor">
+    </div> 
+    <div id="editor" style="margin-top: 31px;">
       <h1>Hello World Component!</h1>
     </div>
     <script type="text/javascript">
