@@ -94,6 +94,9 @@ Route::group(['middleware' => 'admin'], function () {
 	    return view('back/selectEditor');
 	})->name('select.editor');
 
+	// Editor routes 
+	Route::get('/admin/test', 'EditorController@loadTest');
+
 	Route::post('/admin/editor/store/images', 'EditorController@builderStorageImage')->name('storage.images');
 
 	Route::get('/admin/editor/{type}', 'EditorController@loadEditor')->name('select.type.editor');
@@ -178,4 +181,7 @@ Route::post('/install/configuration', 'InstallController@setConfiguration')->nam
 Route::get('/install/finish', 'InstallController@finish');
 
 Route::post('/install/finish/configuration', 'InstallController@ajaxProcessSetConfiguration')->name('ajax.set.configuration');
+
+
+
 

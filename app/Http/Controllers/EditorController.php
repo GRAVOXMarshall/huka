@@ -66,6 +66,17 @@ class EditorController extends Controller
         return view('editor/index', compact('pages', 'elements', 'images'));
     }
 
+
+    public function loadTest(){
+        $pages = Page::all();
+        // Get active elements in db 
+        $elements = Element::where('active', 1)->get();
+        $images = Image::all();
+
+        return view('editor/test', compact('pages', 'elements', 'images'));
+    }
+
+
     /**
      * Save and remove image in page and storage directory
      * @param Object Request
