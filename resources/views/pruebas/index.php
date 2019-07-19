@@ -39,6 +39,11 @@
 			-webkit-border-radius: 6px 6px 6px 6px;
 			border: 1px solid #ccc4cc;
 		}
+		.testing{
+			position: relative;
+			margin-top: 50px;
+			margin-left: 60px;
+		}
 	</style>
 </head>
 <body>
@@ -66,77 +71,8 @@
 		<a href="#"><i class="fas fa-sign-out-alt fa-2x" style="margin-top: 5px; color: #F58A10;"></i></a>
 	</div>	 
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="testing">
+	<button>hola</button>
+</div>
 </body>
 </html>
