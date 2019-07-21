@@ -49,6 +49,11 @@
       button.btn-action:hover{
         color: #FF8045;
       }
+
+      button.btn-action:focus{
+        outline-color: transparent; 
+        outline-style: none;
+      }
       .logo{
         width: 10%; 
         text-align: center; 
@@ -204,8 +209,7 @@
       .option:focus{
         outline-color: transparent; 
         outline-style: none;
-        background: transparent;
-        border: transparent;
+         
       }
     </style>
   </head>
@@ -226,15 +230,15 @@
         <a href="#"><i class="fas fa-user-cog fa-lg"></i></a>
       </div>
       <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
-        <button class="btn-action btn-devices active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-devices option active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-devices  " device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
-        <a href="#"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></a>
-        <a href="#"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></a>
-        <a href="#"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></a>
-        <a href="#"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></a> 
-        <a href="#"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></a>
+        <button class="btn-action"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
+        <button class="btn-action"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>   
     </div> 
    
