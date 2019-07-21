@@ -44,6 +44,44 @@
 			margin-top: 50px;
 			margin-left: 60px;
 		}
+		.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
 	</style>
 </head>
 <body>
@@ -71,8 +109,11 @@
 		<a href="#"><i class="fas fa-sign-out-alt fa-2x" style="margin-top: 5px; color: #F58A10;"></i></a>
 	</div>	 
 </div>
-<div class="testing">
-	<button>hola</button>
+
+  <div class="tooltip" style="margin-top: 150px; margin-left: 500px;">Hover over me
+  <span class="tooltiptext">Tooltip text</span>
+</div>
+    
 </div>
 </body>
 </html>
