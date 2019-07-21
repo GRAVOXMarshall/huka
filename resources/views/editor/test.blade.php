@@ -34,10 +34,18 @@
         background: white;
       }
 
-      a{
+      button.btn-action{
         color: #A9A2A0;
+        justify-content: center;
+        background-color: #fff;
+        border: 0;
       }
-      a:hover{
+
+      button.btn-action.active{
+        color: #FF8045;
+      }
+
+      button.btn-action:hover{
         color: #FF8045;
       }
       .logo{
@@ -70,18 +78,18 @@
       </div>
       <div class="child" style="width: 10%; margin-left: 5px; text-align: center;">
         <select style="border: none; outline:none;">
-        <option>[Pages..]</option>
-        <option>1</option>
-        <option>2</option>
+          @foreach($pages as $page)
+            <option value="{{ $page->id }}">{{ $page->name }}</option>
+          @endforeach
         </select>
       </div>
       <div class="child" style="width: 6%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
         <a href="#"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px; color: #FF8045;"></i></a> 
         <a href="#"><i class="fas fa-user-cog fa-lg"></i></a>
       </div>
-      <div class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
-        <a href="#"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px; color: #FF8045;"></i></a> 
-        <a href="#"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></a>  
+      <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
+        <button class="btn-action btn-devices active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
         <a href="#"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></a>
@@ -92,20 +100,98 @@
       </div>   
     </div> 
     <div id="editor" style="margin-top: 45px;">
-      <h1>Hello World Component!</h1>
     </div>
     <script type="text/javascript">
+      const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
+      const pages = [
+      @foreach($pages as $page)
+        {
+          id: {{ $page->id }},
+          name: '{{ $page->name }}',
+          title: '{{ $page->title }}',
+          builder: {!! !empty($page->builder) ? $page->builder : '[]' !!},
+        },
+      @endforeach
+      ];
+      // Pages 0 will be the default page when loading the editor
+      var page = pages[0];
       const editor = grapesjs.init({
-        // Indicate where to init the editor. You can also pass an HTMLElement
-        container: '#editor',
-        // Get the content for the canvas directly from the element
-        // As an alternative we could use: `components: '<h1>Hello World Component!</h1>'`,
-        fromElement: true,
-        // Disable the storage manager for the moment
-        storageManager: { type: null },
+        // Set assigned template
+        canvas: {
+          styles: [
+            '{{ asset("css/bootstrap-new.css") }}',
+          ]
+        },
+        fromElement: 1,
+        clearOnRender: true,
+        // Select container of editor
+        container  : '#editor',
+        // Config the storege and load page
+        storageManager: {
+          autosave: false,
+          setStepsBeforeSave: 1,
+          type: 'remote',
+          urlStore: '/admin/editor/store/' + page.id, // Url where we storage page in db
+          urlLoad: '/admin/editor/' + page.id + '/load', // Url where we load page
+          contentTypeJson: true,
+          params: { _token:token },
+        },
+        // Config storage of images
+        assetManager: {
+          assets: [
+            @foreach($images as $image)
+              {
+                "type":"image",
+                "src":"{{ $image->src }}",
+                "unitDim":"px",
+                "height":350,
+                "width":250,
+                "name":["{{ $image->name }}"]
+              },
+            @endforeach
+          ],
+          storeOnChange : true,
+          storeAfterUpload : true,
+          upload: '{{ route('storage.images') }}', // Url where we load images
+          uploadName: 'images',
+          params: { _token:token, enctype:'multipart/form-data', action:'add' },
+          autoAdd: 1,
+        },
+
+        // Set default devices manager
+        deviceManager: {
+          devices: [
+            {
+              name: 'Desktop',
+              width: '', // default size
+            }, 
+
+            {
+              name: 'Mobile',
+              width: '320px', // this value will be used on canvas width
+              widthMedia: '480px', // this value will be used in CSS @media
+            }
+          ]
+        },
         // Avoid any default panel
         panels: { defaults: [] },
       });
+
+
+      $('.btn-devices').click(function(e) {
+        $('.btn-devices.active').removeClass('active');
+        $(this).addClass('active');
+        switch($(this).attr('device')){
+           case 'desktop':
+            editor.setDevice('Desktop');
+           break;
+
+           case 'mobile':
+            editor.setDevice('Mobile');
+           break;
+        }
+      });
+
     </script>
   </body>
 </html>
