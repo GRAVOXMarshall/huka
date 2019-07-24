@@ -236,15 +236,15 @@
         <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
-        <button class="btn-action"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
-        <button class="btn-action"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
+        <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>   
     </div> 
    
-    <div class="bubbler-wrapper" >
+    <div id="list-action" class="bubbler-wrapper" >
       <div class="bubbler-menu-loader" ><i class="fas fa-cog fa-lg"></i></div>
       <div class="bubbler-menu-item boxMod"><button class="option" title="Elementos" style="text-decoration: none; color: white; "><i class="fas fa-arrows-alt fa-lg"></i></button><span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hello Elements!</h3></span></div>
       <div class="bubbler-menu-item boxMod"><button class="option" href="#" title="Modulos" style="text-decoration: none; color: white;"><i class="icon fas fa-puzzle-piece fa-lg"></i></button> <span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hello Modules!</h3></span></div>
@@ -336,6 +336,11 @@
         panels: { defaults: [] },
       });
 
+      // Add delimiter to the elements
+      editor.Canvas.getBody().className = 'gjs-dashed';
+      const um = editor.UndoManager;
+
+
       /**
      * This function loads a page to be edited
      * @param Integer id_page
@@ -356,20 +361,6 @@
         editor.load();  
       }
 
-      $('.btn-devices').click(function(e) {
-        $('.btn-devices.active').removeClass('active');
-        $(this).addClass('active');
-        switch($(this).attr('device')){
-           case 'desktop':
-            editor.setDevice('Desktop');
-           break;
-
-           case 'mobile':
-            editor.setDevice('Mobile');
-           break;
-        }
-      });
-
       $('.btn-page-type').click(function(e) {
         $('.btn-page-type.active').removeClass('active');
         $(this).addClass('active');
@@ -388,6 +379,54 @@
       $('#select-page').change(function(e) {
         var id_page = parseInt($("#select-page option:selected").val());
         builderEditor(id_page);
+      });
+
+      $('.btn-devices').click(function(e) {
+        $('.btn-devices.active').removeClass('active');
+        $(this).addClass('active');
+        switch($(this).attr('device')){
+           case 'desktop':
+            editor.setDevice('Desktop');
+           break;
+
+           case 'mobile':
+            editor.setDevice('Mobile');
+           break;
+        }
+      });
+
+      $('.btn-main-action').click(function(e) {
+
+        switch($(this).attr('action')){
+           case 'view':
+            if ($(this).hasClass('active')) {
+              $(this).removeClass('active');
+              editor.Canvas.getBody().className = 'gjs-dashed';
+               $('#list-action').show();
+            }else{
+              $(this).addClass('active');
+              editor.Canvas.getBody().className = '';
+              $('#list-action').hide();
+            }
+           break;
+
+           case 'undo':
+            um.undo();
+           break;
+
+           case 'redo':
+            um.redo();
+           break;
+
+           case 'save':
+            editor.store();
+           break;
+
+           case 'exit':
+            window.location.replace("{{ route('dash.init') }}");
+           break;
+        }
+
       });
 
     </script>

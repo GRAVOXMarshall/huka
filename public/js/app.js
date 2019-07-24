@@ -66349,10 +66349,8 @@ module.exports = __webpack_require__(/*! backbone */ "./node_modules/backbone/ba
     complete && complete(res);
     clb && clb(res);
     em && em.trigger('storage:response', res);
-    console.log(res);
   },
   store: function store(data, clb, clbErr) {
-  	console.log(data);
     var body = {};
     for (var key in data) {
       body[key] = data[key];
