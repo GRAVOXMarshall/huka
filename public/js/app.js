@@ -51145,8 +51145,6 @@ module.exports = {
 			This line positions the element in the left of view.
 	*/
 	//var left = pos.left + badgeW < canvasLeft ? canvasLeft : pos.left;
-	console.log(pos);
-	console.log(bStyle.width);
 	var leftPos = (pos.width - 40) - pos.left;
 	var left = (leftPos < 0) ? 0 : leftPos;
 	bStyle.left = left + u;

@@ -219,19 +219,21 @@
         <h4 style="margin-top: 5px;"><i class="icon-fa-huka" style="margin-right: 10px; color: #FF8045; "></i><strong>Huka</strong></h4>
       </div>
       <div class="child" style="width: 10%; margin-left: 5px; text-align: center;">
-        <select style="border: none; outline:none;">
+        <select id="select-page" style="border: none; outline:none;">
           @foreach($pages as $page)
-            <option value="{{ $page->id }}">{{ $page->name }}</option>
+            @if($page->type != 'B')
+              <option class="page-option" value="{{ $page->id }}">{{ $page->name }}</option>
+            @endif
           @endforeach
         </select>
       </div>
       <div class="child" style="width: 6%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
-        <a href="#"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px; color: #FF8045;"></i></a> 
-        <a href="#"><i class="fas fa-user-cog fa-lg"></i></a>
+        <button class="btn-action btn-page-type option active" type="front"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
         <button class="btn-action btn-devices option active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-devices  " device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
         <button class="btn-action"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
@@ -264,6 +266,8 @@
           id: {{ $page->id }},
           name: '{{ $page->name }}',
           title: '{{ $page->title }}',
+          type: '{{ $page->type }}',
+          main: ({{ $page->main }} == 1) ? true : false,
           builder: {!! !empty($page->builder) ? $page->builder : '[]' !!},
         },
       @endforeach
@@ -332,6 +336,25 @@
         panels: { defaults: [] },
       });
 
+      /**
+     * This function loads a page to be edited
+     * @param Integer id_page
+     * @return void
+     */
+      function builderEditor(id_page){
+        // Change urls to load and store
+        editor.StorageManager.get('remote').set({
+          urlStore: '/admin/editor/store/' + id_page, 
+          urlLoad: '/admin/editor/' + id_page + '/load'
+        });
+
+        editor.DomComponents.clear(); // Clear components
+        editor.CssComposer.clear();  // Clear styles
+        editor.UndoManager.clear(); // Clear undo history
+        
+        // Load page to editor
+        editor.load();  
+      }
 
       $('.btn-devices').click(function(e) {
         $('.btn-devices.active').removeClass('active');
@@ -345,6 +368,26 @@
             editor.setDevice('Mobile');
            break;
         }
+      });
+
+      $('.btn-page-type').click(function(e) {
+        $('.btn-page-type.active').removeClass('active');
+        $(this).addClass('active');
+        var type = ($(this).attr('type') == 'front') ? 'F' : 'B';
+        $('#select-page').empty();
+        $.each(pages, function(index, page) {
+          if (page.type == type) {
+            $('#select-page').append(`<option class="page-option" value="${page.id}">${page.name}</option>`);
+            if (page.main) {
+              builderEditor(page.id);
+            }
+          }
+        });
+      });
+
+      $('#select-page').change(function(e) {
+        var id_page = parseInt($("#select-page option:selected").val());
+        builderEditor(id_page);
       });
 
     </script>
