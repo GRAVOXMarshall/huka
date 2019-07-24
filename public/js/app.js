@@ -51141,6 +51141,16 @@ module.exports = {
     var bStyle = badge.style;
     var u = 'px';
     bStyle.display = 'block';
+    /*
+			This line positions the element in the left of view.
+	*/
+	//var left = pos.left + badgeW < canvasLeft ? canvasLeft : pos.left;
+	console.log(pos);
+	console.log(bStyle.width);
+	var leftPos = (pos.width - 40) - pos.left;
+	var left = (leftPos < 0) ? 0 : leftPos;
+	bStyle.left = left + u;
+
     var canvasPos = this.getCanvasPosition();
 
     if (canvasPos) {
@@ -51149,9 +51159,7 @@ module.exports = {
       var posTop = pos.top - (badge ? badge.offsetHeight : 0);
       var badgeW = badge ? badge.offsetWidth : 0;
       var top = posTop < canvasTop ? canvasTop : posTop;
-      var left = pos.left + badgeW < canvasLeft ? canvasLeft : pos.left;
       bStyle.top = top + u;
-      bStyle.left = left + u;
     }
   },
 
@@ -51424,7 +51432,10 @@ module.exports = {
 
       var leftPos = pos.left + pos.elementWidth - pos.targetWidth;
       toolbarStyle.top = pos.top + unit;
-      toolbarStyle.left = (leftPos < 0 ? 0 : leftPos) + unit;
+      /*
+		This line positions the element in the right of view.
+      */
+      //toolbarStyle.left = (leftPos < 0 ? 0 : leftPos) + unit;
       toolbarStyle.opacity = '';
     }
   },
