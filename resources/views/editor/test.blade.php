@@ -80,7 +80,7 @@
           position: fixed;
           top: 60px;
           right: 0;
-          margin: 0 7em 3.5em 0;
+          margin: 0 1em 3.5em 0;
           cursor: pointer;
           -webkit-touch-callout: none;
           -webkit-user-select: none;
@@ -91,7 +91,7 @@
           z-index: 2;
       }
 
-          .bubbler-wrapper div {
+          .bubbler-wrapper .options {
               width: 1.7em;
               height: 1.7em;
               font-size: 2em;
@@ -107,9 +107,9 @@
           .bubbler-wrapper .bubbler-menu-loader {
               width: 70px;
               height: 70px;
-              background: rgba(0,0,0,0.2);
+              background:  lightgray ;
               border-radius: 50%;
-              box-shadow: 0 6px 10px 0 #666;
+              box-shadow: -1px 7px 17px -7px rgba(0,0,0,0.75);
               transition: all 0.2s ease-in-out;
               font-size: 25px;
               color: white;
@@ -132,9 +132,9 @@
               transition: opacity 0.2s,max-height 0s 0.2s;
               width: 70px;
               height: 70px;
-              background: rgba(0,0,0,0.2);
+              background:  #FF8045;
               border-radius: 50%;
-              box-shadow: 0 6px 10px 0 #666;
+              box-shadow: -1px 7px 17px -7px rgba(0,0,0,0.75);
               transition: all 0.1s ease-in-out;
               font-size: 25px;
               color: white;
@@ -175,6 +175,10 @@
         width: 500px;
         background-color: #fff;
         border: solid 1px black;
+        height: 250px;
+        max-height: 300px;
+        overflow: auto;
+        overflow-x: hidden;
         color: #fff;
         text-align: center;
         border-radius: 6px;
@@ -211,6 +215,15 @@
         outline-style: none;
          
       }
+      .contenido > .opt{
+        float: left;
+        margin: 10px;
+      }
+      .opt{
+        width: 220px; 
+        height:200px; 
+        border: orange 1px solid;
+      }
     </style>
   </head>
   <body>
@@ -245,14 +258,75 @@
     </div> 
    
     <div id="list-action" class="bubbler-wrapper" >
-      <div class="bubbler-menu-loader" ><i class="fas fa-cog fa-lg"></i></div>
-      <div class="bubbler-menu-item boxMod"><button class="option" title="Elementos" style="text-decoration: none; color: white; "><i class="fas fa-arrows-alt fa-lg"></i></button><span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hello Elements!</h3></span></div>
-      <div class="bubbler-menu-item boxMod"><button class="option" href="#" title="Modulos" style="text-decoration: none; color: white;"><i class="icon fas fa-puzzle-piece fa-lg"></i></button> <span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hello Modules!</h3></span></div>
-      <div class="bubbler-menu-item boxMod"><button class="option" href="#" title="Bloques" style="text-decoration: none; color: white;"><i class="fas fa-archive fa-lg"></i></button> <span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hell Blocks!</h3></span></div>
-      <div class="bubbler-menu-item boxMod"><button class="option" href="#" title="Ayuda" style="text-decoration: none; color: white;"><i class="fas fa-question fa-lg"></i></button> <span class="tooltiptext"><i class="icon-fa-huka fa-lg" style="margin-right: 10px; color: #FF8045; "></i><br><h3 style="color: black;">Hello Help!</h3></span></div>
-    </div>
+      <div class="bubbler-menu-loader" >
+        <i class="fas fa-cog fa-lg"></i>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <button class="option" title="Elementos" style="text-decoration: none; color: white; ">
+          <i class="fas fa-arrows-alt fa-lg"></i>
+        </button>
+        <span class="tooltiptext">
+            <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+              <strong>Elements</strong>
+            </h5>
 
-     
+        </span>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <button class="option" href="#" title="Modulos" style="text-decoration: none; color: white;">
+          <i class="icon fas fa-puzzle-piece fa-lg"></i>
+        </button> 
+        <span class="tooltiptext">
+          <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+            <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+            <strong>Modules</strong>
+          </h5>
+
+          <!--<div class="contenido">
+            <div class="opt">
+              <i class="fab fa-product-hunt fa-2x" style="color: black; margin-top: 5px;"></i>
+              <h4 style="color: black;">Authentication</h4>
+              <button style="height: 50px;">Download!</button>
+            </div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+          </div>-->
+        </span>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <button class="option" href="#" title="Bloques" style="text-decoration: none; color: white;">
+            <i class="fas fa-archive fa-lg"></i>
+        </button> 
+          <span class="tooltiptext">
+            <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+              <strong>Blocks</strong>
+            </h5>
+             
+        </span>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <button class="option" href="#" title="Ayuda" style="text-decoration: none; color: white;">
+          <i class="fas fa-question fa-lg"></i>
+        </button> 
+        <span class="tooltiptext">
+          <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+            <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+            <strong>Help</strong>
+          </h5>
+           
+        </span>
+      </div>
+    </div>
+    <!-- Start message of saved  -->
+    <div   style="z-index: 2; background: black; padding-top: 10px; position: relative; margin-right: 10px; border: lightgray 1px solid; width: 300px; height: 50px; float: right; margin-top: -15px; ">
+      <h3 style="color: white;"><i class="fas fa-check" style="margin-right: 5px; color: #FF8045;"></i>Saved successfully!</h3>
+    </div>
     <!--<div class="boxMod" style="margin-top: 150px; margin-left: 500px;  ">Hover over me
     <span class="tooltiptext">Tooltip text</span>
   </div>-->
