@@ -324,8 +324,14 @@
       </div>
     </div>
     <!-- Start message of saved  -->
-    <div   style="z-index: 2; background: black; padding-top: 10px; position: relative; margin-right: 10px; border: lightgray 1px solid; width: 300px; height: 50px; float: right; margin-top: -15px; ">
-      <h3 style="color: white;"><i class="fas fa-check" style="margin-right: 5px; color: #FF8045;"></i>Saved successfully!</h3>
+    <div style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; ">
+       
+       <h5 style="background: #FF8045; height: 37px; width: 100%; padding-bottom: 10px; padding-top: 10px;">
+        <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+        <strong>Huka message</strong>
+      </h5>
+       
+      <h3 style="color: black;" align="center"><!--<i class="fas fa-check" style="margin-left: 5px; margin-right: 5px; color: #FF8045;"></i>-->Saved successfully!</h3>
     </div>
     <!--<div class="boxMod" style="margin-top: 150px; margin-left: 500px;  ">Hover over me
     <span class="tooltiptext">Tooltip text</span>
