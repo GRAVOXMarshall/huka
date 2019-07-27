@@ -355,7 +355,8 @@
       </div>
     </div>
     <!-- Start message of saved  -->
-    <div hidden style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; ">
+    <div id="huka-message" style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; display: none;">
+ 
        
        <h5 style="background: #FF8045; height: 37px; width: 100%; padding-bottom: 10px; padding-top: 10px;">
         <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
@@ -531,6 +532,8 @@
 
            case 'save':
             editor.store();
+            $('#huka-message').show('slow/200/fast');
+            $('#huka-message').delay(2000).hide(600);
            break;
 
            case 'exit':
