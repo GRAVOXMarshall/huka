@@ -262,32 +262,63 @@
         <i class="fas fa-cog fa-lg"></i>
       </div>
       <div class="options bubbler-menu-item boxMod">
-        <button class="option" title="Elementos" style="text-decoration: none; color: white; ">
-          <i class="fas fa-arrows-alt fa-lg"></i>
-        </button>
+        <div>
+          <i class="fas fa-arrows-alt fa-lg" style="color: white; "></i>
+        </div>
         <span class="tooltiptext">
             <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
               <strong>Elements</strong>
             </h5>
-
+            <div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
+              <h6 style="color: black;">Module Elements</h6>
+            </div>
+            <div class="contenido">
+              <div class="opt" style="color: black;">elemento 1</div>
+              <div class="opt" style="color: black;">elemento 2</div>
+              <div class="opt" style="color: black;">elemento 3</div>
+              <div class="opt" style="color: black;">elemento 4</div>
+            </div>
+            <div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
+              <h6 style="color: black;">Common Elements</h6>
+            </div>
+            <div class="contenido">
+              <div class="opt" style="color: black;">elemento 1</div>
+              <div class="opt" style="color: black;">elemento 2</div>
+              <div class="opt" style="color: black;">elemento 3</div>
+              <div class="opt" style="color: black;">elemento 4</div>
+            </div>
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
-        <button class="option" href="#" title="Modulos" style="text-decoration: none; color: white;">
+        <div  style="color: white;">
           <i class="icon fas fa-puzzle-piece fa-lg"></i>
-        </button> 
+        </div> 
         <span class="tooltiptext">
           <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
             <strong>Modules</strong>
           </h5>
-
-          <!--<div class="contenido">
+          <div align="left" style="border: lightgray 1px solid; ">
+            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+            <label style="color: black;">Module</label>
+            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
+          </div>
+          <div align="left" style="border: lightgray 1px solid; ">
+            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+            <label style="color: black;">Module</label>
+            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
+          </div>
+          <div align="left" style="border: lightgray 1px solid; ">
+            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+            <label style="color: black;">Module</label>
+            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
+          </div>
+           <!--<div class="contenido">
             <div class="opt">
-              <i class="fab fa-product-hunt fa-2x" style="color: black; margin-top: 5px;"></i>
+              <i class="far fa-address-card fa-2x" style="color: black; margin-top: 10px;"></i>
               <h4 style="color: black;">Authentication</h4>
-              <button style="height: 50px;">Download!</button>
+              <button style="font-size: 18px;">Download!</button>
             </div>
             <div class="opt" style="color: black;">elemento 2</div>
             <div class="opt" style="color: black;">elemento 2</div>
@@ -299,9 +330,9 @@
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
-        <button class="option" href="#" title="Bloques" style="text-decoration: none; color: white;">
+        <div style="color: white;">
             <i class="fas fa-archive fa-lg"></i>
-        </button> 
+        </div> 
           <span class="tooltiptext">
             <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
@@ -311,9 +342,9 @@
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
-        <button class="option" href="#" title="Ayuda" style="text-decoration: none; color: white;">
+        <div style="color: white;">
           <i class="fas fa-question fa-lg"></i>
-        </button> 
+        </div> 
         <span class="tooltiptext">
           <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
@@ -324,7 +355,7 @@
       </div>
     </div>
     <!-- Start message of saved  -->
-    <div style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; ">
+    <div hidden style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; ">
        
        <h5 style="background: #FF8045; height: 37px; width: 100%; padding-bottom: 10px; padding-top: 10px;">
         <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
