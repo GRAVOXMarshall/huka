@@ -280,7 +280,7 @@
             </h5>
             <div class="cont" style="border: green 1px solid;">
               <div class="op" style="border: blue 1px solid; width: 30%;">
-                <div style="border: red 1px solid; width: 100%; color: black;"><button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Option 1</button></div>
+                <div style="border: red 1px solid; width: 100%; color: black;"><button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button></div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
@@ -570,9 +570,7 @@
 
       });
 
-      $(".sections").click(function(){
-        console.log("val: "+$(this).text());
-      });
+       
 
     </script>
   </body>
