@@ -288,6 +288,7 @@
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
               </div>
               <div class="op" style="border: purple 1px solid; width: 70%">
+                <!-- Aqui es la parte de los elementos  -->
                 <div class="contenido">
                   <div class="opt" style="color: black;">elemento 1</div>
                   <div class="opt" style="color: black;">elemento 2</div>
