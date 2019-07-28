@@ -172,11 +172,11 @@
 
       .boxMod .tooltiptext {
         visibility: hidden;
-        width: 500px;
+        width: 800px;
         background-color: #fff;
         border: solid 1px black;
-        height: 250px;
-        max-height: 300px;
+        height: 500px;
+        max-height: 500px;
         overflow: auto;
         overflow-x: hidden;
         color: #fff;
@@ -220,9 +220,17 @@
         margin: 10px;
       }
       .opt{
-        width: 220px; 
-        height:200px; 
+        width: 45%; 
+        height: 50%; 
         border: orange 1px solid;
+      }
+      .cont{
+        margin: 0;
+        overflow: hidden;
+      }
+      .cont .op {
+        float: left;
+        clear: none; 
       }
     </style>
   </head>
@@ -270,7 +278,26 @@
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
               <strong>Elements</strong>
             </h5>
-            <div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
+            <div class="cont" style="border: green 1px solid;">
+              <div class="op" style="border: blue 1px solid; width: 30%;">
+                <div style="border: red 1px solid; width: 100%; color: black;"><button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Option 1</button></div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+              </div>
+              <div class="op" style="border: purple 1px solid; width: 70%">
+                <div class="contenido">
+                  <div class="opt" style="color: black;">elemento 1</div>
+                  <div class="opt" style="color: black;">elemento 2</div>
+                  <div class="opt" style="color: black;">elemento 3</div>
+                  <div class="opt" style="color: black;">elemento 4</div>
+                </div>
+              </div>
+            </div>
+            
+            <!--<div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
               <h6 style="color: black;">Module Elements</h6>
             </div>
             <div class="contenido">
@@ -287,7 +314,7 @@
               <div class="opt" style="color: black;">elemento 2</div>
               <div class="opt" style="color: black;">elemento 3</div>
               <div class="opt" style="color: black;">elemento 4</div>
-            </div>
+            </div>-->
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
@@ -541,6 +568,10 @@
            break;
         }
 
+      });
+
+      $(".sections").click(function(){
+        console.log("val: "+$(this).text());
       });
 
     </script>
