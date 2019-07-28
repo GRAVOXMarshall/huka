@@ -3,6 +3,8 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use App\Http\Classes\Element;
 use App\Http\Classes\Page;
@@ -73,7 +75,23 @@ class EditorController extends Controller
         $elements = Element::where('active', 1)->get();
         $images = Image::all();
 
-        return view('editor/test', compact('pages', 'elements', 'images'));
+        // Create a client with a base URI
+        $client = new Client(['base_uri' => 'http://localhost/webx/public/api/']);
+
+        // Send a request to http://localhost/WebServiceApp/public/api/user/tipoprojeto/
+        $response = $client->get('list-api');
+
+        // $response contains the data you are trying to get, you can do whatever u want with that data now. However to get the content add the line
+        $contents = $response->getBody()->getContents();
+        $response = json_decode($contents, true);
+
+        $modules = null;
+        $data =  unserialize($this->decodificar($response['functionalities']));
+        if (isset($response['functionalities']) && $response['functionalities']) {
+            $modules = $data;
+        }
+
+        return view('editor/test', compact('pages', 'elements', 'images', 'modules'));
     }
 
 
@@ -184,6 +202,21 @@ class EditorController extends Controller
 
         //Session::flash('flashSession', ['status' => 'danger', 'message' => 'Error, you cannot build this Page!']);
         return '{"status":"error"}';die;
+    }
+
+    function decodificar($dato) {
+        $resultado = base64_decode($dato);
+        list($resultado, $letra) = explode('+', $resultado);
+        $arrayLetras = array('M', 'A', 'R', 'C', 'O', 'S');
+        for ($i = 0; $i < count($arrayLetras); $i++) {
+            if ($arrayLetras[$i] == $letra) {
+                for ($j = 1; $j <= $i; $j++) {
+                    $resultado = base64_decode($resultado);
+                }
+                break;
+            }
+        }
+        return $resultado;
     }
 
 }

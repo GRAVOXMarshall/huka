@@ -69,11 +69,35 @@
       }
 
       /* Reset some default styling */
+      /* Primary color for the background */
+      .gjs-one-bg {
+        background-color: #FFFFFF;
+      }
+
+      /* Secondary color for the text color */
+      .gjs-two-color {
+        color: rgba(169, 162, 160, 0.7);
+      }
+
+      /* Tertiary color for the background */
+      .gjs-three-bg {
+        background-color: #FF8045;
+        color: white;
+      }
+
+      /* Quaternary color for the text color */
+      .gjs-four-color,
+      .gjs-four-color-h:hover {
+        color: #FF8045;
+      }
+
       .gjs-cv-canvas {
         top: 0;
         width: 100%;
         height: 100%;
       }
+
+
 
       .bubbler-wrapper {
           font-family: "Roboto","Helvetica","Arial",sans-serif;
@@ -289,12 +313,7 @@
               </div>
               <div class="op" style="border: purple 1px solid; width: 70%">
                 <!-- Aqui es la parte de los elementos  -->
-                <div class="contenido">
-                  <div class="opt" style="color: black;">elemento 1</div>
-                  <div class="opt" style="color: black;">elemento 2</div>
-                  <div class="opt" style="color: black;">elemento 3</div>
-                  <div class="opt" style="color: black;">elemento 4</div>
-                </div>
+                <div id="elements-content"></div>
               </div>
             </div>
             
@@ -327,21 +346,13 @@
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
             <strong>Modules</strong>
           </h5>
-          <div align="left" style="border: lightgray 1px solid; ">
-            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
-            <label style="color: black;">Module</label>
-            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
-          </div>
-          <div align="left" style="border: lightgray 1px solid; ">
-            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
-            <label style="color: black;">Module</label>
-            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
-          </div>
-          <div align="left" style="border: lightgray 1px solid; ">
-            <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
-            <label style="color: black;">Module</label>
-            <button style="font-size: 18px; margin-left: 45%;">Download!</button>
-          </div>
+          @foreach($modules as $module)
+            <div align="left" style="border: lightgray 1px solid; ">
+              <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+              <label style="color: black;">{{ $module['name'] }}</label>
+              <button style="font-size: 18px; margin-left: 45%;">Download!</button>
+            </div>
+          @endforeach
            <!--<div class="contenido">
             <div class="opt">
               <i class="far fa-address-card fa-2x" style="color: black; margin-top: 10px;"></i>
@@ -474,6 +485,24 @@
         },
         // Avoid any default panel
         panels: { defaults: [] },
+
+        blockManager: {
+          appendTo: '#elements-content',
+          blocks: [
+            // These elements getting through the controller and only get active
+            @if(count($elements) > 0)
+              @foreach($elements as $element)
+                {
+                  id: '{{ $element->name }}', 
+                  label: '{{ $element->label }}',
+                  attributes: {!! $element->attributes !!},
+                  content: {!! $element->content !!} // Content can be String or JSON
+                },
+              @endforeach
+            @endif
+          ]
+        },
+
       });
 
       // Add delimiter to the elements
