@@ -198,11 +198,8 @@
         visibility: hidden;
         width: 800px;
         background-color: #fff;
-        border: solid 1px black;
-        height: 500px;
-        max-height: 500px;
-        overflow: auto;
-        overflow-x: hidden;
+        border: solid 3px black;
+        height: 550px;
         color: #fff;
         text-align: center;
         border-radius: 6px;
@@ -302,16 +299,20 @@
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
               <strong>Elements</strong>
             </h5>
-            <div class="cont" style="border: green 1px solid;">
-              <div class="op" style="border: blue 1px solid; width: 30%;">
+            <div class="cont" style="border: green 6px solid; height: 93%; overflow: auto; overflow-x: hidden;">
+              <div class="op" style="border: blue 5px solid; width: 30%; height: auto;">
                 <div style="border: red 1px solid; width: 100%; color: black;"><button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button></div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
                 <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
               </div>
-              <div class="op" style="border: purple 1px solid; width: 70%">
+              <div class="op" style="border: purple 7px solid; width: 70%; height: auto;">
                 <!-- Aqui es la parte de los elementos  -->
                 <div id="elements-content"></div>
               </div>
