@@ -27,6 +27,7 @@
         "@fortawesome/fontawesome-free": "^5.8.2",
         "datatables.net": "^1.10.19",
         "datatables.net-dt": "^1.10.19",
-        "grapesjs": "^0.14.61"
+        "grapesjs": "^0.14.61",
+        "tippy.js": "^4.3.4"
     }
 }

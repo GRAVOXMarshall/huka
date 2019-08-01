@@ -17,8 +17,10 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
+    window.tippy = require('tippy.js').default;
+
     require('bootstrap');
-    require( 'datatables.net' )();
+    require('datatables.net')();
 
 } catch (e) {}
 

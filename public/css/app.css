@@ -6019,6 +6019,7 @@ button:focus {
 }
 
 input,
+button,
 select,
 optgroup,
 textarea {
