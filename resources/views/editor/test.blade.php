@@ -256,6 +256,20 @@
         float: left;
         clear: none; 
       }
+
+      .gjs-item-trait{
+          position:absolute;
+          border: 2px solid #3b97e3;
+          background: white;
+          color:white;
+          z-index:10;
+          top:0;
+          left:0;
+          height: 200px; 
+          width: 220px;
+          display: none; 
+      }
+
     </style>
   </head>
   <body>
@@ -409,6 +423,7 @@
   </div>-->
     <div id="editor" style="margin-top: 45px;">
     </div>
+
     <script type="text/javascript">
       const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
       const pages = [
@@ -503,12 +518,26 @@
           ]
         },
 
+        traitManager: {
+          appendTo: '.gjs-item-trait',
+        },
+
       });
 
       // Add delimiter to the elements
       editor.Canvas.getBody().className = 'gjs-dashed';
       const um = editor.UndoManager;
 
+      editor.Commands.add('tlb-traits', {
+        run(editor, sender) {
+          var trait_element = $('.gjs-item-trait');
+          if ($(trait_element).is(":visible")) {
+            $(trait_element).hide();
+          }else{
+            $(trait_element).show();
+          }
+        }
+      });
 
       /**
      * This function loads a page to be edited
