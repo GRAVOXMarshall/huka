@@ -198,7 +198,7 @@
         visibility: hidden;
         width: 800px;
         background-color: #fff;
-        border: solid 3px black;
+        border: solid 2px black;
         height: 550px;
         color: #fff;
         text-align: center;
@@ -266,6 +266,9 @@
           width: 220px;
           display: none; 
       }
+      .sections:hover{
+        color: #FF8045;
+      }
 
     </style>
   </head>
@@ -299,7 +302,6 @@
         <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>   
     </div> 
-   
     <div id="list-action" class="bubbler-wrapper" >
       <div class="bubbler-menu-loader" >
         <i class="fas fa-cog fa-lg"></i>
@@ -310,25 +312,23 @@
         </div>
         <span class="tooltiptext">
             <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
-              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white;"></i>
               <strong>Elements</strong>
             </h5>
-            <div class="cont" style="border: green 6px solid; height: 93%; overflow: auto; overflow-x: hidden;">
-              <div class="op" style="border: blue 5px solid; width: 30%; height: auto;">
-                <div style="border: red 1px solid; width: 100%; color: black;"><button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button></div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
-                <div class="sections" style="border: red 1px solid; width: 100%; color: black;">Option 1</div>
+            <div class="cont" style="margin-left: 5px; height: 92.5%;">
+              <div class="op list-group" id="list-tab" role="tablist" style="width: 30%; height: auto;">
+                 <button class="sections" style="background: white; border: lightgray 1px solid; outline-color: #FF8045; width: 100%; height: 90px; font-size: 20px;" id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                 <button class="sections" style="background: white; border: lightgray 1px solid; outline-color: #FF8045; width: 100%; height: 90px; font-size: 20px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
+                 <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
+                 <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
+                 <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button>--> 
               </div>
-              <div class="op" style="border: purple 7px solid; width: 70%; height: auto;">
+              <div class="op tab-content" id="nav-tabContent" style="width: 70%; height: 100%; overflow: auto; overflow-x: hidden;">
                 <!-- Aqui es la parte de los elementos  -->
-                <div id="elements-content"></div>
+                <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
+                <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black; border: 1px lightgray solid;">
+                  Module Elements
+                </div>
               </div>
             </div>
             
