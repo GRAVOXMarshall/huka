@@ -243,7 +243,7 @@
       .opt{
         width: 45%; 
         height: 50%; 
-        border: orange 1px solid;
+        border: lightgray 1px solid;
       }
       .cont{
         margin: 0;
@@ -266,8 +266,12 @@
           width: 220px;
           display: none; 
       }
-      .sections:hover{
-        color: #FF8045;
+      .list-group-item.active {
+        z-index: 2;
+        color: #fff;
+        background-color: #FF8045;
+        border:lightgray 1px solid ;
+        
       }
 
     </style>
@@ -317,8 +321,8 @@
             </h5>
             <div class="cont" style="margin-left: 5px; height: 92.5%;">
               <div class="op list-group" id="list-tab" role="tablist" style="width: 30%; height: auto;">
-                 <button class="sections" style="background: white; border: lightgray 1px solid; outline-color: #FF8045; width: 100%; height: 90px; font-size: 20px;" id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
-                 <button class="sections" style="background: white; border: lightgray 1px solid; outline-color: #FF8045; width: 100%; height: 90px; font-size: 20px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
+                 <button class="sections list-group-item list-group-item-action active" style="outline-color: #FF8045;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                 <button class="sections list-group-item list-group-item-action" style="outline-color: #FF8045;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
                  <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button>--> 
@@ -326,8 +330,28 @@
               <div class="op tab-content" id="nav-tabContent" style="width: 70%; height: 100%; overflow: auto; overflow-x: hidden;">
                 <!-- Aqui es la parte de los elementos  -->
                 <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
-                <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black; border: 1px lightgray solid;">
-                  Module Elements
+                <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module One</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Two</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Three</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -356,18 +380,24 @@
         <div  style="color: white;">
           <i class="icon fas fa-puzzle-piece fa-lg"></i>
         </div> 
-        <span class="tooltiptext">
+        <span class="tooltiptext" style="height: 500px;">
           <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
             <strong>Modules</strong>
           </h5>
-          @foreach($modules as $module)
-            <div align="left" style="border: lightgray 1px solid; ">
-              <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
-              <label style="color: black;">{{ $module['name'] }}</label>
-              <button style="font-size: 18px; margin-left: 45%;">Download!</button>
+          <div style="height: 91.5%; overflow: auto; overflow-x: hidden;">
+            @foreach($modules as $module)
+            <div style="border: lightgray 1px solid; overflow: hidden; width: 100%; ">
+              <div align="left" style="width: 50%; float: left;">
+                <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+                <label style="color: black;">{{ $module['name'] }}</label>
+              </div>
+              <div align="right" style="width: 50%; float: left;">  
+                <button style="margin-right: 20px; border: lightgray 1px solid; font-size: 18px;" class="btn">Download!</button>
+              </div>
             </div>
           @endforeach
+          </div>
            <!--<div class="contenido">
             <div class="opt">
               <i class="far fa-address-card fa-2x" style="color: black; margin-top: 10px;"></i>
@@ -387,7 +417,7 @@
         <div style="color: white;">
             <i class="fas fa-archive fa-lg"></i>
         </div> 
-          <span class="tooltiptext">
+          <span class="tooltiptext" style="height: 450px;">
             <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
               <strong>Blocks</strong>
@@ -399,7 +429,7 @@
         <div style="color: white;">
           <i class="fas fa-question fa-lg"></i>
         </div> 
-        <span class="tooltiptext">
+        <span class="tooltiptext" style="height: 380px;">
           <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
             <strong>Help</strong>
@@ -629,6 +659,8 @@
         }
 
       });
+
+
 
        
 
