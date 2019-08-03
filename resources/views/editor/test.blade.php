@@ -256,7 +256,7 @@
 
       .gjs-item-trait{
           position:absolute;
-          border: 2px solid #3b97e3;
+          border: 2px solid #FF8045;
           background: white;
           color:white;
           z-index:10;
