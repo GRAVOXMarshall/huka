@@ -93,20 +93,28 @@ class ProductsController extends Controller
 	    	if ($contents['txt'] == 0) {
 	    		switch ($type) {
 		    		case 'functionality':
+		    			$result = [
+		    				'error' => false,
+		    				'menssage' => '',
+		    			];
 		    			$name = str_replace(' ', '', ucwords(strtolower($contents['functionality']['name'])));
 		    			if (!file_exists('../modules/'.$name.'/')) {
-		    				$result = $this->extractZipFile($name, '../modules');
-		    				if ($result['error']) {
-		    					return back()->with('error', $result['menssage']);
+		    				$data = $this->extractZipFile($name, '../modules');
+		    				if ($data['error']) {
+		    					$result['error'] = true;
+		    					$result['menssage'] = $data['menssage'];
 		    				}
 		    			}
 		    			$className = 'Modules\\'.$name.'\\'.$name;
 		                $module = new $className;
 		                if (!$module->install()) {
-		                	return back()->with('error', $module->error);
+		                	$result['error'] = true;
+		    				$result['menssage'] = $module->error;
+		                }else{
+		                	$result['menssage'] = 'Instalado con exito';
+		                	$result['configuration'] = route(strtolower($name).'.configuration');
 		                }
-	                    return back()->with('txt', 'Instalado con exito');
-		                //return contents()->download($tempImage, 'archivo.rar');
+	                    return json_encode($result);
 		    		break;
 		    		
 		    		case 'template':
