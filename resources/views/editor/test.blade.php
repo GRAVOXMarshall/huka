@@ -320,14 +320,23 @@
               <strong>Elements</strong>
             </h5>
             <div class="cont" style="margin-left: 5px; height: 92.5%;">
-              <div class="op list-group" id="list-tab" role="tablist" style="width: 30%; height: auto;">
-                 <button class="sections list-group-item list-group-item-action active" style="outline-color: #FF8045;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
-                 <button class="sections list-group-item list-group-item-action" style="outline-color: #FF8045;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
+              <div class="op list-group" id="list-tab" role="tablist" style="width: 100%; height: auto;">
+                <div style="overflow: hidden; width: 100%;">
+                  <div style="float: left; width: 50%;">
+                    <button class="sections list-group-item list-group-item-action active" style="outline-color: #FF8045;  "   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                  </div>
+                  <div style="float: left; width: 50%;">
+                    <button class="sections list-group-item list-group-item-action" style="outline-color: #FF8045;   " id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
+                  </div>
+                </div>
+                
+                  
+                  
                  <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button>--> 
               </div>
-              <div class="op tab-content" id="nav-tabContent" style="width: 70%; height: 100%; overflow: auto; overflow-x: hidden;">
+              <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 100%; overflow: auto; overflow-x: hidden;">
                 <!-- Aqui es la parte de los elementos  -->
                 <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
                 <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
