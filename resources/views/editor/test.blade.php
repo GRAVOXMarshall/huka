@@ -388,12 +388,27 @@
           <div style="height: 91.5%; overflow: auto; overflow-x: hidden;">
             @foreach($modules as $module)
             <div style="border: lightgray 1px solid; overflow: hidden; width: 100%; ">
-              <div align="left" style="width: 50%; float: left;">
-                <i class="far fa-address-card fa-lg" style="color: black; margin-left: 10px;"></i>
+              <div style="width: 10%; float: left; color: #FF8045;">
+                <i class="fas fa-puzzle-piece fa-lg"></i>
+              </div>
+              <div align="left" style="width: 70%; float: left;">
                 <label style="color: black;">{{ $module['name'] }}</label>
               </div>
-              <div align="right" style="width: 50%; float: left;">  
-                <button style="margin-right: 20px; border: lightgray 1px solid; font-size: 18px;" class="btn">Download!</button>
+              <div align="right" style="width: 20%; float: left;">
+                @if($module['status'] == 1)
+                <div class="btn-group" style="margin-right: 20px;">
+                  <a href="{{ route(strtolower($module['name']).'.configuration') }}" class="btn btn-outline-primary">Configurate</a>
+                  <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu" align="center"  aria-labelledby="dropdownMenuReference">  
+                    <button class="dropdown-item btn btn-danger text-danger">Deactivate</button>
+                    <button class="dropdown-item btn btn-primary text-primary">Uninstall</button>
+                  </div>
+                </div>
+                @else
+                  <button class="btn btn-primary btn-install-module" product="{{ Crypt::encrypt($module['id']) }}" style="margin-right: 20px;">Install</button>
+                @endif
               </div>
             </div>
           @endforeach
@@ -440,18 +455,12 @@
     </div>
     <!-- Start message of saved  -->
     <div id="huka-message" style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; display: none;">
- 
-       
        <h5 style="background: #FF8045; height: 37px; width: 100%; padding-bottom: 10px; padding-top: 10px;">
         <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
         <strong>Huka message</strong>
       </h5>
-       
-      <h3 style="color: black;" align="center"><!--<i class="fas fa-check" style="margin-left: 5px; margin-right: 5px; color: #FF8045;"></i>-->Saved successfully!</h3>
+      <h3 class="message" style="color: black;"><i class="fas fa-check" style="margin-left: 5px; margin-right: 5px; color: #FF8045;"></i><span>Saved successfully!</span></h3>
     </div>
-    <!--<div class="boxMod" style="margin-top: 150px; margin-left: 500px;  ">Hover over me
-    <span class="tooltiptext">Tooltip text</span>
-  </div>-->
     <div id="editor" style="margin-top: 45px;">
     </div>
 
@@ -590,6 +599,11 @@
         editor.load();  
       }
 
+      function showMessage(){
+        $('#huka-message').show('slow/200/fast');
+        $('#huka-message').delay(2000).hide(600);
+      }
+
       $('.btn-page-type').click(function(e) {
         $('.btn-page-type.active').removeClass('active');
         $(this).addClass('active');
@@ -649,8 +663,7 @@
 
            case 'save':
             editor.store();
-            $('#huka-message').show('slow/200/fast');
-            $('#huka-message').delay(2000).hide(600);
+            showMessage();
            break;
 
            case 'exit':
@@ -660,7 +673,44 @@
 
       });
 
-
+      $('.btn-install-module').click(function(e) {
+        var content = $(this).parent();
+        $.ajax({
+          url: '{{ route("install.products") }}',
+          type: 'POST',
+          data: {
+            _token: token,
+            product_id: $(this).attr('product'),
+            type: 'functionality'
+          },
+          success: function(response){
+            console.log(response);
+            if (!response.error) {
+              showMessage();
+              console.log(content);
+              $(content).empty();
+              $(content).append(
+                `<div class="btn-group" style="margin-right: 20px;">
+                  <a href="${response.configuration}" class="btn btn-outline-primary">Configurate</a>
+                  <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu" align="center"  aria-labelledby="dropdownMenuReference">  
+                    <button class="dropdown-item btn btn-danger text-danger">Deactivate</button>
+                    <button class="dropdown-item btn btn-primary text-primary">Uninstall</button>
+                  </div>
+                </div>`
+              );
+            }
+            
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+        
+      });
 
        
 

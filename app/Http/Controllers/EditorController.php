@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Classes\Element;
 use App\Http\Classes\Page;
 use App\Http\Classes\Image;
+use App\Http\Classes\Module;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\File;
@@ -85,12 +86,30 @@ class EditorController extends Controller
         $contents = $response->getBody()->getContents();
         $response = json_decode($contents, true);
 
-        $modules = null;
+        $modules = array();
+
         $data =  unserialize($this->decodificar($response['functionalities']));
         if (isset($response['functionalities']) && $response['functionalities']) {
-            $modules = $data;
-        }
+            $currently_modules = DB::table('modules')->select('id')->get();
+            $ids_modules = array();
+            foreach ($currently_modules as $module) {
+                array_push($ids_modules, $module->id);
+            }
+            foreach ($data as $module) {
+                $status = 0;
+                if (in_array($module['id'], $ids_modules)) {
+                    $status = 1;
+                }
 
+                array_push($modules, [
+                    'id' => $module['id'],
+                    'name' => str_replace(' ', '', ucwords(strtolower($module['name']))),
+                    'price' => $module['price'],
+                    'status' => $status
+                ]);
+            }
+        }
+        
         return view('editor/test', compact('pages', 'elements', 'images', 'modules'));
     }
 
