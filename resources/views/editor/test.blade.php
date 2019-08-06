@@ -113,6 +113,7 @@
           -ms-user-select: none;
           user-select: none;
           z-index: 2;
+           
       }
 
           .bubbler-wrapper .options {
@@ -125,7 +126,8 @@
               border-radius: 50%;
               -webkit-box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
               -moz-box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
-              box-shadow: 0 1px 1px 1px rgba(0,0,0,.1)
+              box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
+           
           }
 
           .bubbler-wrapper .bubbler-menu-loader {
@@ -139,6 +141,8 @@
               color: white;
               text-align: center;
               line-height: 70px;
+           
+
               /*position: fixed;
               right: 50px;
               bottom: 50px;
@@ -164,6 +168,7 @@
               color: white;
               text-align: center;
               line-height: 70px;
+           
               /*position: fixed;
               right: 50px;
               bottom: 50px;*/
@@ -172,7 +177,9 @@
           .bubbler-wrapper:hover .bubbler-menu-item {
               opacity: 1;
               max-height: 100%;
-              transition: opacity 0.2s,max-height 0s
+              transition: opacity 0.2s,max-height 0s;
+           
+
           }
 
 
@@ -180,13 +187,17 @@
          
           opacity: 0;
           max-height: 0;
-          transition: opacity 0.2s,max-height 0s 0.2s
+          transition: opacity 0.2s,max-height 0s 0.2s;
+           
+
       }
 
       .bubbler-wrapper:hover .bubbler-menu-item {
           opacity: 1;
           max-height: 100%;
-          transition: opacity 0.2s,max-height 0s
+          transition: opacity 0.2s,max-height 0s;
+          
+
       }
       .boxMod {
         position: relative;
@@ -208,8 +219,8 @@
         z-index: 2;
         top: -5px;
         right: 110%;
-        opacity: 0;
-        transition: opacity 0.3s;
+        opacity: 100;
+        transition: opacity 0.2s;
       }
 
       .boxMod .tooltiptext::after {
