@@ -320,23 +320,26 @@
               <strong>Elements</strong>
             </h5>
             <div class="cont" style="margin-left: 5px; height: 92.5%;">
-              <div class="op list-group" id="list-tab" role="tablist" style="width: 100%; height: auto;">
-                <div style="overflow: hidden; width: 100%;">
-                  <div style="float: left; width: 50%;">
-                    <button class="sections list-group-item list-group-item-action active" style="outline-color: #FF8045;  "   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
-                  </div>
-                  <div style="float: left; width: 50%;">
-                    <button class="sections list-group-item list-group-item-action" style="outline-color: #FF8045;   " id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
-                  </div>
-                </div>
-                
-                  
-                  
+              <div class="op list-group list-group-horizontal" id="list-tab" role="tablist" style="width: 100%;">
+
+                    <button class="list-group-item active btn-xs" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                    <button class="list-group-item" style="outline-color: #FF8045; width: 100%; height: 50px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
                  <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button>--> 
               </div>
-              <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 100%; overflow: auto; overflow-x: hidden;">
+              <div style="width: 100%; overflow: hidden;  ">
+                <div style="float: left;width: 20%;"><h5  style="color: black; padding-top: 7.5px;">Filter by module: </h5></div>
+                <div style="float: left; width: 79%;">
+                  <select class="form-control">
+                     @foreach($modules as $module)
+                    <option>{{ $module['name'] }}</option>
+                     @endforeach
+                  </select>
+                   
+                </div>
+              </div>
+              <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 77%; overflow: auto; overflow-x: hidden;">
                 <!-- Aqui es la parte de los elementos  -->
                 <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
                 <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
@@ -396,7 +399,7 @@
           </h5>
           <div style="height: 91.5%; overflow: auto; overflow-x: hidden;">
             @foreach($modules as $module)
-            <div style="border: lightgray 1px solid; overflow: hidden; width: 100%; ">
+            <div style="border: lightgray 1px solid; overflow: hidden; width: 100%;">
               <div style="width: 10%; float: left; color: #FF8045;">
                 <i class="fas fa-puzzle-piece fa-lg"></i>
               </div>
