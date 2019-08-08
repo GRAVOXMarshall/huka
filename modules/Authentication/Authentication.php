@@ -3,6 +3,7 @@
 namespace Modules\Authentication;
 
 use App\Http\Classes\Module;
+use App\Http\Classes\Element;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Classes\ModuleConfigure;
 
@@ -120,6 +121,29 @@ class Authentication extends Module
                     break;
             }
         }
+    }
+
+    public function updateConfigValue($value)
+    {
+        if (!is_null($value) && !is_null($module = $this->getByName($this->name))) {
+            $module->configuration = $value;
+            if ($module->save()) {
+                $element = Element::create([
+                    'name' => "login",
+                    'label' => "Login Form",
+                    'attributes' => json_encode(array(
+                        "class" => "fa fa-wpforms"
+                    )), 
+                    "content" => "\"  <form action='".route('authentication.login')."' method='post'><div style='margin-bottom: 1rem;'><input type='email' name='email' placeholder='Email'></div><div style='margin-bottom: 1rem;'><input type='password' name='password' placeholder='Password'></div><button type='submit'>Sign in</button></form> \" ",
+                    'type' => 'M',
+                    'active' => true,
+                    'module_id' => $module->id
+                ]);
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

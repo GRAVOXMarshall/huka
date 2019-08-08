@@ -267,7 +267,7 @@
 
       .gjs-item-trait{
           position:absolute;
-          border: 2px solid #FF8045;
+          border: 2px solid #3b97e3;
           background: white;
           color:white;
           z-index:10;
@@ -420,7 +420,7 @@
               <div align="right" style="width: 20%; float: left;">
                 @if($module['status'] == 1)
                 <div class="btn-group" style="margin-right: 20px;">
-                  <a href="{{ route(strtolower($module['name']).'.configuration') }}" class="btn btn-outline-primary">Configurate</a>
+                  <button class="btn btn-outline-primary btn-config" ref="{{ route(strtolower($module['name']).'.display.config') }}">Configurate</button>
                   <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
@@ -489,6 +489,18 @@
 
     <script type="text/javascript">
       const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
+      // instanciate new modal
+      const modal = new tingle.modal({
+          footer: false,
+          stickyFooter: false,
+          closeMethods: ['overlay', 'button', 'escape'],
+          beforeClose: function() {
+              // here's goes some logic
+              // e.g. save content before closing the modal
+              return true; // close the modal
+              return false; // nothing happens
+          }
+      });
       const pages = [
       @foreach($pages as $page)
         {
@@ -735,6 +747,52 @@
         
       });
 
+
+      $(document).on('click', '.btn-config', function(event) {
+        var url = $(this).attr('ref');
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {_token: token},
+          success: function(response){
+            console.log(response);
+            // set content
+            modal.setContent(response.html);
+
+            // open modal
+            modal.open();    
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+      });
+
+      $(document).on('click', '.btn-close-modal', function(event) {
+        modal.close();
+      });
+
+      $(document).on('submit', '.module-modal', function(event) {
+        event.preventDefault();
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: data+'&_token='+token,
+          success: function(response){
+            console.log(response);
+            showMessage();
+            modal.close();
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+        
+      });
        
 
     </script>
