@@ -21,6 +21,43 @@ class ConfiguratesController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
+    public function displayConfigurationsForm()
+    {
+        $returnHTML = view('authentication::form')->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function processSaveConfiguration(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|in:1,2',
+            'session_time' => 'required|integer',
+            'fail_number' => 'required|integer'
+        ]);
+
+        if (!$validator->fails()) {
+            $values = json_encode(array(
+                'type' => $request->type,
+                'session_time' => $request->session_time,
+                'fail_number' => $request->fail_number,
+            ));
+            $module = new Authentication();
+            return response()->json([
+                'is_error' => $module->updateConfigValue($values),
+                'values' => $values
+            ]);
+        }else{
+            return response()->json([
+                'is_error' => true,
+                'result' => (!is_null($validator)) ? $validator->errors() : 'Request is invalidate.',
+            ]);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     * @return Response
+     */
     public function displayConfigurations()
     {
         $columns = array();

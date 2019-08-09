@@ -13,7 +13,7 @@ class Element extends Model
      * @var array
      */
     protected $fillable = [
-        'components', 'style'
+        'name', 'label', 'attributes', 'content', 'type', 'active', 
     ];
 
 

@@ -14,6 +14,10 @@
 Route::prefix('module/authentication')->group(function() {
 	Route::get('/', 'ConfiguratesController@displayConfigurations')->name('authentication.configuration');
 
+	Route::post('/', 'ConfiguratesController@displayConfigurationsForm')->name('authentication.display.config');
+
+	Route::post('/configuration/save', 'ConfiguratesController@processSaveConfiguration')->name('authentication.save.config');
+
 	Route::post('/configuration/database', 'ConfiguratesController@processConfigurationDataBase')->name('authentication.configuration.database');
 
 	Route::post('/configuration/type/login', 'ConfiguratesController@processConfigurationTypeLogin')->name('authentication.configuration.type.login');
