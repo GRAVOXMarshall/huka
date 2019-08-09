@@ -178,18 +178,13 @@
               opacity: 1;
               max-height: 100%;
               transition: opacity 0.2s,max-height 0s;
-           
-
           }
 
 
-      .bubbler-menu-item {
-         
+      .bubbler-menu-item {  
           opacity: 0;
           max-height: 0;
           transition: opacity 0.2s,max-height 0s 0.2s;
-           
-
       }
 
       .bubbler-wrapper:hover .bubbler-menu-item {
@@ -219,7 +214,7 @@
         z-index: 2;
         top: -5px;
         right: 110%;
-        opacity: 100;
+        opacity: 1;
         transition: opacity 0.2s;
       }
 
@@ -231,6 +226,7 @@
         margin-top: -5px;
         top: 50%;
         left: 100%;
+        opacity: 1;
         border-color: transparent transparent transparent #555;
       }
 
