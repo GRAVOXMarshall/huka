@@ -329,7 +329,7 @@
             <div class="cont" style="margin-left: 5px; height: 92.5%;">
               <div class="op list-group list-group-horizontal" id="list-tab" role="tablist" style="width: 100%;">
 
-                    <button class="list-group-item active btn-xs" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                    <button class="list-group-item active" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
                     <button class="list-group-item" style="outline-color: #FF8045; width: 100%; height: 50px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
                  <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
                  <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
