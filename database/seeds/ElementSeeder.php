@@ -149,8 +149,8 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "navbar",
-            'label' => "Navbar",
+            'name' => "Navigation",
+            'label' => "Navigation",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
             )), 
@@ -171,12 +171,67 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
+            'name' => "footer two",
+            'label' => "Footer two",
+            'attributes' => json_encode(array(
+                "class" => "fa fa-link"
+            )), 
+            "content" => "\" <footer class='page-footer font-small blue pt-4 border-top shadow-sm' ><div class='container-fluid'><div class='row'><div class='hk-md-4'><h3>Company Name</h3></div><div class='hk-md-4'><h4>Contact</h4><h6>Email: Email@example.com</h6><h6>Phone: +56912345678</h6><h6>Address: The street #123</h6></div><div class='hk-md-4'><h4>Menu</h4><ul><li><a href='#'>Section one</a></li><li><a href='#'>Section two</a></li><li><a href='#'>Section three</a></li><li><a href='#'>Section four</a></li><li><a href='#'>Section five</a></li></ul></div></div><div class='row'><div class='hk-md-12'><div class='footer-copyright text-center py-3'>© 2019 Copyright:<a href='https://mdbootstrap.com/education/bootstrap/'> gethuka.com</a></div></div></div></div></footer> \" ",
+            'type' => 'N',
+            'active' => true,
+        ]);
+
+        DB::table('elements')->insert([
             'name' => "lista",
             'label' => "Lista",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
             )), 
             "content" => "\" <dl><dd>lista 1</dd><dd>lista 1</dd><dd>lista 3</dd><dd>lista 4</dd><dd>lista 5</dd></dl> \" ",
+            'type' => 'N',
+            'active' => true,
+        ]);
+
+        DB::table('elements')->insert([
+            'name' => "Navigation 2",
+            'label' => "Navigation 2",
+            'attributes' => json_encode(array(
+                "class" => "fa fa-link"
+            )), 
+            "content" => "\" <nav class='navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm'><a class='navbar-brand' href='#'>Company</a><button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarText' aria-controls='navbarText' aria-expanded='false' aria-label='Toggle navigation'><span class='navbar-toggler-icon'></span></button><div class='collapse navbar-collapse' id='navbarText'><ul class='navbar-nav mr-auto'><li class='nav-item active'><a class='nav-link' href='#'>Home <span class='sr-only'>(current)</span></a></li><li class='nav-item'><a class='nav-link' href='#'>Features</a></li><li class='nav-item'><a class='nav-link' href='#'>Pricing</a></li></ul></div></nav> \" ",
+            'type' => 'N',
+            'active' => true,
+        ]);
+
+        DB::table('elements')->insert([
+            'name' => "Navigation 3",
+            'label' => "Navigation 3",
+            'attributes' => json_encode(array(
+                "class" => "fa fa-link"
+            )), 
+            "content" => "\" <nav class='navbar navbar-expand-lg navbar-dark bg-secondary border-bottom shadow-sm'><div class='collapse navbar-collapse' id='navbarText'><ul class='navbar-nav mr-auto'><li class='nav-item active'><a class='nav-link' href='#'>Home <span class='sr-only'>(current)</span></a></li><li class='nav-item'><a class='nav-link' href='#'>Features</a></li><li class='nav-item'><a class='nav-link' href='#'>Pricing</a></li></ul></div><a class='navbar-brand' href='#'>Logo/Company</a><button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarText' aria-controls='navbarText' aria-expanded='false' aria-label='Toggle navigation'><span class='navbar-toggler-icon'></span></button></nav> \" ",
+            'type' => 'N',
+            'active' => true,
+        ]);
+
+        DB::table('elements')->insert([
+            'name' => "Features",
+            'label' => "Features",
+            'attributes' => json_encode(array(
+                "class" => "fa fa-link"
+            )), 
+            "content" => "\" <div class='container-fluid'><div class='row'><div class='hk-md-6' align='center'><h2><strong>Topic</strong></h2><h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h6></div><div class='hk-md-6' align='center'><h2><strong>Topic</strong></h2><h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h6></div></div><div class='row'><div class='hk-md-6' align='center'><h2><strong>Topic</strong></h2><h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h6></div><div class='hk-md-6' align='center'><h2><strong>Topic</strong></h2><h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h6></div></div></div> \" ",
+            'type' => 'N',
+            'active' => true,
+        ]);
+
+        DB::table('elements')->insert([
+            'name' => "Team",
+            'label' => "Team",
+            'attributes' => json_encode(array(
+                "class" => "fa fa-link"
+            )), 
+            "content" => "\" <div class='container-fluid'><div class='row'><div class='hk-md-12' align='center'><h1><strong>Our Team</strong></h1></div></div><div class='row'><div class='hk-md-4'  align='center'><img src='' width='300' height='300'><br><h3><strong>Nicolas Marshall</strong></h3><h5 style='color: gray;'>Developer</h5></div><div class='hk-md-4'  align='center'><img src='' width='300' height='300'><br><h3><strong>Nicolas Marshall</strong></h3><h5 style='color: gray;'>Developer</h5></div><div class='hk-md-4'  align='center'><img src='' width='300' height='300'><br><h3><strong>Nicolas Marshall</strong></h3><h5 style='color: gray;'>Developer</h5></div></div></div> \" ",
             'type' => 'N',
             'active' => true,
         ]);
