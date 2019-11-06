@@ -7,7 +7,7 @@
         </div>
         <div class="col-sm-4 d-flex align-items-end flex-column mt-2 mb-1">
             <h5>
-            	<a href="{{ route('add.page') }}" class="btn btn-outline-primary btn-sm" role="button"><i class="fas fa-plus"></i> Add admin</a>
+            	<a href="{{ route('register.admin') }}" class="btn btn-outline-primary btn-sm" role="button"><i class="fas fa-plus"></i> Add admin</a>
             </h5>
         </div>
     </div>
