@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
         <script src="{{ asset('js/app.js') }}"></script>
         <style type="text/css">
             .step-list{
@@ -17,6 +17,7 @@
     </head>
     <body>
         <br>
+
         <div class="container">
           <div class="row bg-white p-4">
             <div class="col-12 mb-4">
@@ -25,19 +26,19 @@
             <div class="col-3">
             <ul class="list-group" style="list-style-type:none; font-size: 1rem;">
                 <li class="text-muted mb-3">
-                    <i class="fa fa-check text-success fa-fw icon-step"></i><a href="#">License agreements</a>
+                    <i class="fa fa-check text-success fa-fw "></i><a href="#">License agreements</a>
                 </li>
                 <li class="text-primary mb-3">
-                    <i class="fas fa-caret-right fa-fw icon-step"></i><a href="#">System compatibility</a>
+                    <i class="fas fa-caret-right fa-fw "></i><a href="#">System compatibility</a>
                 </li>
                 <li class="text-muted mb-3">
-                    <i class="fas fa-caret-right fa-fw icon-step"></i><a href="#">Web Information</a>
+                    <i class="fas fa-caret-right fa-fw "></i><a href="#">Web Information</a>
                 </li>
                 <li class="text-muted mb-3">
-                    <i class="fas fa-caret-right fa-fw icon-step"></i><a href="#">System configuration</a>
+                    <i class="fas fa-caret-right fa-fw "></i><a href="#">System configuration</a>
                 </li>
                 <li class="text-muted mb-3">
-                    <i class="fas fa-caret-right fa-fw icon-step"></i><a href="#">Web installation</a>
+                    <i class="fas fa-caret-right fa-fw "></i><a href="#">Web installation</a>
                 </li>
             </ul>
             </div>

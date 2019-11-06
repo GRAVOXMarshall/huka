@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use App\Http\Classes\Element;
+use App\Http\Classes\ElementTrait;
 use App\Http\Classes\Page;
 use App\Http\Classes\Image;
 use App\Http\Classes\Module;
@@ -74,6 +75,10 @@ class EditorController extends Controller
         $pages = Page::all();
         // Get active elements in db 
         $elements = Element::where('active', 1)->get();
+        $traits = ElementTrait::all();
+        foreach ($traits as $trait) {
+            $trait->values = json_decode($trait->values);
+        }
         $images = Image::all();
 
         // Create a client with a base URI
@@ -110,7 +115,7 @@ class EditorController extends Controller
             }
         }
         
-        return view('editor/test', compact('pages', 'elements', 'images', 'modules'));
+        return view('editor/test', compact('pages', 'elements', 'traits', 'images', 'modules'));
     }
 
 

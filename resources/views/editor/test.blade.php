@@ -582,7 +582,8 @@
                   id: '{{ $element->name }}', 
                   label: '{{ $element->label }}',
                   attributes: {!! $element->attributes !!},
-                  content: {!! $element->content !!} // Content can be String or JSON
+                  // Content can be String or JSON
+                  content: {!! $element->content !!},
                 },
               @endforeach
             @endif
@@ -595,6 +596,23 @@
 
       });
 
+      @if(count($traits) > 0)
+        @foreach($traits as $trait)
+          var options = [];
+          $.each(@json($trait->values), function(index, val) {
+            options.push((val.substr(0,1) == '{') ? JSON.parse(val) : val);
+          });
+          
+          // Define traits to elements
+          editor.DomComponents.addType('{{ $trait->name }}', {
+            model: {
+              defaults: {
+                traits: options
+              }
+            }
+          });
+        @endforeach
+      @endif
       // Add delimiter to the elements
       editor.Canvas.getBody().className = 'gjs-dashed';
       const um = editor.UndoManager;

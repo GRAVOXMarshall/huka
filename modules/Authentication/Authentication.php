@@ -4,6 +4,7 @@ namespace Modules\Authentication;
 
 use App\Http\Classes\Module;
 use App\Http\Classes\Element;
+use App\Http\Classes\ElementTrait;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Classes\ModuleConfigure;
 
@@ -128,17 +129,39 @@ class Authentication extends Module
         if (!is_null($value) && !is_null($module = $this->getByName($this->name))) {
             $module->configuration = $value;
             if ($module->save()) {
-                $element = Element::create([
+                Element::create([
                     'name' => "login",
                     'label' => "Login Form",
                     'attributes' => json_encode(array(
                         "class" => "fa fa-wpforms"
                     )), 
-                    "content" => "\"  <form action='".route('authentication.login')."' method='post'><div style='margin-bottom: 1rem;'><input type='email' name='email' placeholder='Email'></div><div style='margin-bottom: 1rem;'><input type='password' name='password' placeholder='Password'></div><button type='submit'>Sign in</button></form> \" ",
+                    "content" => "\"  <form data-gjs-type='login' action='".route('authentication.login')."' method='post'><div style='margin-bottom: 1rem;'><input data-gjs-type='login_input' type='email' name='email' placeholder='Email'></div><div style='margin-bottom: 1rem;'><input data-gjs-type='login_input' type='password' name='password' placeholder='Password'></div><button data-gjs-type='button' type='submit'>Sign in</button></form> \" ",
                     'type' => 'M',
                     'active' => true,
                     'module_id' => $module->id
                 ]);
+
+                $options = array(
+                    array('value' => 'text', 'name'  => 'Text'),
+                    array('value' => 'email', 'name'  => 'Email')
+                );
+
+                ElementTrait::create([
+                    'name' => "login_input",
+                    'values' => json_encode(
+                        [
+                            'name',
+                            'placeholder',
+                            json_encode([
+                                'type' => 'select',
+                                'label' => 'Type',
+                                'name' =>  'type',
+                                'options' => $options
+                            ])
+                        ]
+                    )
+                ]);
+
                 return true;
             }
         }

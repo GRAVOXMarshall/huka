@@ -37,8 +37,19 @@ class ElementSeeder extends Seeder
             'label' => "Container",
             'attributes' => json_encode(array(
                 "class" => "gjs-fonts gjs-f-b1"
-            )), 
-            'content' => "\"    <div  class='container-fluid'></div><style> .container-fluid { display: table; padding: 40px; width: 100%;} </style>\"    ",
+            )),
+            'content' => json_encode(array(
+                "type" => "box",
+                "classes" => [
+                    "container-fluid"
+                ],
+                "style" => [
+                    "display" => "table",
+                    "padding" => "40px",
+                    "width" => "100%"
+                ],
+                "activeOnRender" => 1
+            )),
             'type' => 'N',
             'active' => true,
         ]);
