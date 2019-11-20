@@ -124,44 +124,101 @@ class Authentication extends Module
         }
     }
 
+    public function getConfigValue()
+    {
+        if (!is_null($module = $this->getByName($this->name))) {
+            return json_decode($module->configuration);
+        }
+    }
+
     public function updateConfigValue($value)
     {
         if (!is_null($value) && !is_null($module = $this->getByName($this->name))) {
-            $module->configuration = $value;
-            if ($module->save()) {
+            if (is_null($module->configuration)) {
+
+                $configuration = json_decode($value);
+                $register = "";
+                $login = ""; 
+                foreach ($configuration->fields as $field) {
+                    $register .= "<div style='margin-bottom: 1rem;'><input data-gjs-type='form_input' type='".strtolower($field->type)."' name='".$field->name."' placeholder='".$field->name."'></div>";
+                    if ($field->login) {
+                        $login .= "<div style='margin-bottom: 1rem;'><input data-gjs-type='login_input' type='".strtolower($field->type)."' name='".$field->name."' placeholder='".$field->name."'></div>";
+                    }
+                }
+
+                Element::create([
+                    'name' => "register",
+                    'label' => "Register Form",
+                    'attributes' => json_encode(array(
+                        "class" => "fa fa-wpforms"
+                    )), 
+                    "content" => "\" <form data-gjs-type='register' action='".route('authentication.register')."' method='post'>".$register."<button data-gjs-type='button' type='submit'>Register</button></form> \" ",
+                    'type' => 'M',
+                    'active' => true,
+                    'module_id' => $module->id
+                ]);
+
                 Element::create([
                     'name' => "login",
                     'label' => "Login Form",
                     'attributes' => json_encode(array(
                         "class" => "fa fa-wpforms"
                     )), 
-                    "content" => "\"  <form data-gjs-type='login' action='".route('authentication.login')."' method='post'><div style='margin-bottom: 1rem;'><input data-gjs-type='login_input' type='email' name='email' placeholder='Email'></div><div style='margin-bottom: 1rem;'><input data-gjs-type='login_input' type='password' name='password' placeholder='Password'></div><button data-gjs-type='button' type='submit'>Sign in</button></form> \" ",
+                    "content" => "\" <form data-gjs-type='login' action='".route('authentication.login')."' method='post'>".$login."<button data-gjs-type='button' type='submit'>Sign in</button></form> \" ",
+                    'type' => 'M',
+                    'active' => true,
+                    'module_id' => $module->id
+                ]);
+
+                Element::create([
+                    'name' => "logout",
+                    'label' => "Logout Button",
+                    'attributes' => json_encode(array(
+                        "class" => "fa fa-wpforms"
+                    )), 
+                    "content" => "\" <form data-gjs-type='logout' action='".route('authentication.logout')."' method='post'><button data-gjs-type='button' type='submit'>Logout</button></form> \" ",
                     'type' => 'M',
                     'active' => true,
                     'module_id' => $module->id
                 ]);
 
                 $options = array(
+                    array('value' => 'button', 'name'  => 'Button'),
+                    array('value' => 'checkbox', 'name'  => 'Checkbox'),
+                    array('value' => 'color', 'name'  => 'Color'),
+                    array('value' => 'date', 'name'  => 'Date'),
+                    array('value' => 'datetime-local', 'name'  => 'Datetime local'),
+                    array('value' => 'email', 'name'  => 'Email'),
+                    array('value' => 'file', 'name'  => 'File'),
+                    array('value' => 'hidden', 'name'  => 'Hidden'),
+                    array('value' => 'image', 'name'  => 'Image'),
+                    array('value' => 'month', 'name'  => 'Month'),
+                    array('value' => 'number', 'name'  => 'Mumber'),
+                    array('value' => 'password', 'name'  => 'Password'),
+                    array('value' => 'radio', 'name'  => 'Radio'),
+                    array('value' => 'range', 'name'  => 'Range'),
+                    array('value' => 'reset', 'name'  => 'Reset'),
+                    array('value' => 'search', 'name'  => 'Search'),
+                    array('value' => 'submit', 'name'  => 'Submit'),
+                    array('value' => 'tel', 'name'  => 'Tel'),
                     array('value' => 'text', 'name'  => 'Text'),
-                    array('value' => 'email', 'name'  => 'Email')
+                    array('value' => 'time', 'name'  => 'Time'),
+                    array('value' => 'url', 'name'  => 'Url'),
+                    array('value' => 'week', 'name'  => 'Week'),
                 );
 
                 ElementTrait::create([
-                    'name' => "login_input",
+                    'name' => "form_input",
                     'values' => json_encode(
                         [
-                            'name',
-                            'placeholder',
-                            json_encode([
-                                'type' => 'select',
-                                'label' => 'Type',
-                                'name' =>  'type',
-                                'options' => $options
-                            ])
+                            'placeholder'
                         ]
                     )
                 ]);
+            }
 
+            $module->configuration = $value;
+            if ($module->save()) {
                 return true;
             }
         }

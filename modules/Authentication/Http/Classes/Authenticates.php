@@ -5,6 +5,7 @@ namespace Modules\Authentication\Http\Classes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Classes\ModuleConfigure;
+use Modules\Authentication\Authentication;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Validation\ValidationException;
@@ -41,8 +42,17 @@ trait Authenticates
      */
     protected function attemptLogin(Request $request)
     {
+        $module = new Authentication();
+        $configuration = $module->getConfigValue();
+        $inputs = array();
+        foreach ($configuration->fields as $field) {
+            if ($field->login) {
+                array_push($inputs, $field->name);
+            }
+        }
+
         return $this->guard()->attempt(
-            $this->credentials($request), $request->filled('remember')
+            $this->credentials($request, $inputs), $request->filled('remember')
         );
     }
 
@@ -52,9 +62,9 @@ trait Authenticates
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function credentials(Request $request)
+    protected function credentials(Request $request, $inputs)
     {
-        return $request->only($this->username(), 'password');
+        return $request->only($inputs);
     }
 
     /**
@@ -95,9 +105,13 @@ trait Authenticates
      */
     public function username()
     {
-        $configurate = ModuleConfigure::where('step', 1)->firstOrFail();
-        $values = json_decode($configurate->value);
-        return $values->username;
+        $module = new Authentication();
+        $configuration = $module->getConfigValue();
+        foreach ($configuration->fields as $field) {
+            if ($field->type == 'EMAIL') {
+                return $field->name;
+            }
+        }
     }
 
     /**

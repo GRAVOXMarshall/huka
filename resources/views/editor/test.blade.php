@@ -307,6 +307,7 @@
       </div>
       <div class="child" style="width: 22%; text-align: center;">
         <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
         <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
         <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
         <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
@@ -518,6 +519,7 @@
             '{{ asset("css/bootstrap-new.css") }}',
           ]
         },
+        userLogin: false,
         fromElement: 1,
         clearOnRender: true,
         // Select container of editor
@@ -628,6 +630,13 @@
         }
       });
 
+      // Add attribute to items that will only be visible when the user logs in
+      editor.on('component:add', (component) => {
+        if (editor.Config.userLogin) {
+          component.attributes.requiredUserLogin = true;
+        }
+      });
+
       /**
      * This function loads a page to be edited
      * @param Integer id_page
@@ -699,6 +708,18 @@
               $(this).addClass('active');
               editor.Canvas.getBody().className = '';
               $('#list-action').hide();
+            }
+           break;
+
+           case 'login':
+            if ($(this).hasClass('active')) {
+              $(this).removeClass('active');
+              editor.Config.userLogin = false;
+              displayUserLoginElements(editor.DomComponents.componentsById, false);
+            }else{
+              $(this).addClass('active');
+              editor.Config.userLogin = true;
+              displayUserLoginElements(editor.DomComponents.componentsById, true);
             }
            break;
 
@@ -807,7 +828,27 @@
         });
         
       });
-       
+      
+
+      function displayUserLoginElements(elements, display) {
+        $.each(elements, function(index, element) {
+          if (typeof element.attributes.requiredUserLogin !== 'undefined' && element.attributes.requiredUserLogin) {
+            if (display) {
+              $(element.getEl()).show();
+            }else{
+              $(element.getEl()).hide();
+            }
+          }
+        });
+      }
+
+      function addNewRowToTable(table, tr) {
+        $(table).children('tbody').append(tr);
+      }
+
+      function removeElement(element) {
+        $(element).remove();
+      }
 
     </script>
   </body>

@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Classes;
+namespace Modules\Authentication\Http\Classes;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Authentication\Authentication;
 
 class User extends Authenticatable
 {
 
-	use Notifiable;
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'firstname', 'lastname', 'email', 'password',
-    ];
+    protected $guarded = [];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -38,13 +39,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public static function getColumns()
     {
         $result = DB::select('SHOW COLUMNS FROM users');
         $columns = array();
         foreach ($result as $value) {
-            if ($value->Field != 'id') {
+            if ($value->Field != 'id' && $value->Field != 'remember_token' && $value->Field != 'created_at' && $value->Field != 'updated_at') {
                 array_push($columns, ['name' => $value->Field, 'key' => $value->Key]);
             }
         }

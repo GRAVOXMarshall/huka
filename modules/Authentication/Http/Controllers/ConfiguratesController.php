@@ -4,10 +4,12 @@ namespace Modules\Authentication\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Authentication\Authentication;
+use Modules\Authentication\Http\Classes\User;
 use App\Http\Classes\Image;
 use App\Http\Classes\Page;
 use App\Http\Classes\Layout;
@@ -23,10 +25,23 @@ class ConfiguratesController extends Controller
      */
     public function displayConfigurationsForm()
     {
-        $returnHTML = view('authentication::form')->render();
-        return response()->json(array('success' => true, 'html' => $returnHTML));
+        $module = new Authentication();
+        $configuration = $module->getConfigValue();
+        $fields = [];
+        if (is_null($configuration)) {
+            $fields = User::getColumns();
+        }else{
+            $fields = $configuration->fields;
+        }
+
+        $returnHTML = view('authentication::form', compact('fields', 'configuration'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML, 'fields' => $fields, 'configuration' => $configuration));
     }
 
+    /**
+     * Save new configuration of module in the modale
+     * @return Response
+     */
     public function processSaveConfiguration(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -36,15 +51,84 @@ class ConfiguratesController extends Controller
         ]);
 
         if (!$validator->fails()) {
+
+            $columns = User::getColumns();
+            $code = 'Schema::table("users", function ($table) {'."\n";
+            $inputs = $request->input_auth;
+            $selects = $request->select_auth;
+            $checkets = $request->check_login;
+            $fields = array();
+            // In this for we create de code to execute to insert, edit or delete fields in the database
+            foreach ($columns as $column) {
+                $delete = true;
+                for ($i=0; $i < count($inputs); $i++) {
+                    if ($column['name'] == $inputs[$i]) {
+                        $delete = false;
+                    }
+                }
+                if ($delete) {
+                    $code.= '$table->dropColumn("'.$column['name'].'");'."\n";
+                }elseif ($column['key'] == 'UNI') {
+                    $code .= '$table->dropUnique("users_'.$column['name'].'_unique");'."\n";
+                }
+            }
+
+
+            for ($i=0; $i < count($inputs); $i++) { 
+                $edit_column = false;
+                foreach ($columns as $column) {
+                    if ($column['name'] == $inputs[$i]) {
+                        $edit_column = true;
+                    }
+                }
+
+                $code.= '$table->';
+                switch ($selects[$i]) {
+                    case 'TEXT':
+                        $code .= 'text("'.$inputs[$i].'")';
+                        break;
+                    case 'EMAIL':
+                        $drop_unique = true;
+                        $code .= 'string("'.$inputs[$i].'", 150)->unique()';
+                        break;
+                    case 'PASSWORD':
+                        $code .= 'string("'.$inputs[$i].'")';
+                        break;
+                    case 'NUMBER':
+                        $code .= 'integer("'.$inputs[$i].'")';
+                        break;
+                    case 'DATE':
+                        $code .= 'date("'.$inputs[$i].'")';
+                        break;
+                }
+                if ($edit_column ) {
+                    $code .= '->change()';
+                }
+
+                $code .= ';'."\n";
+
+                array_push($fields, [
+                    'name' => $inputs[$i],
+                    'type' => $selects[$i],
+                    'login' => ((int)$checkets[$i] == 1) ? true : false
+                ]);
+            }
+
+            $code .= '});';
+            eval($code);
+
             $values = json_encode(array(
                 'type' => $request->type,
                 'session_time' => $request->session_time,
                 'fail_number' => $request->fail_number,
+                'fields' => $fields,
             ));
             $module = new Authentication();
             return response()->json([
                 'is_error' => $module->updateConfigValue($values),
-                'values' => $values
+                'values' => $values,
+                'code' => $code,
+                'result' => DB::select('SHOW COLUMNS FROM users')
             ]);
         }else{
             return response()->json([

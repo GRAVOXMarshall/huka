@@ -137,7 +137,8 @@ class PageController extends Controller
             if ($page->user_page && Auth::guard($type_page)->user() || !$page->user_page) {
                 $result;
                 $css;
-                $components = json_decode(json_decode($page->components, true));
+                $components = $this->setUserCondition(json_decode(json_decode($page->components, true)));
+
                 foreach ($components as $component) {
                     if ($component->type == 'module') {
                         $this->loadModuleComponents($component, $option_value);
@@ -238,6 +239,21 @@ class PageController extends Controller
                 $this->setSentences($component->components, $module, $option_value);
             }
         }
+    }
+
+    public function setUserCondition($components){
+        if (!is_null($components) && !empty($components)) {
+            foreach ($components as $key => $component) {
+                if (isset($component->requiredUserLogin) && !is_null($component->requiredUserLogin) && $component->requiredUserLogin && !Auth::guard("front")->user()) {
+
+                    unset($components[$key]);
+                }elseif (!empty($component->components)) {
+                    $component->components = $this->setUserCondition($component->components);
+                }
+            }
+        }
+
+        return $components;
     }
 
 }

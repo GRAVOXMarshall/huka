@@ -79,6 +79,7 @@ class EditorController extends Controller
         foreach ($traits as $trait) {
             $trait->values = json_decode($trait->values);
         }
+        
         $images = Image::all();
 
         // Create a client with a base URI

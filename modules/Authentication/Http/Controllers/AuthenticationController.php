@@ -2,7 +2,6 @@
 
 namespace Modules\Authentication\Http\Controllers;
 
-use App\Http\Classes\User;
 use App\Http\Classes\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Modules\Authentication\Authentication;
+use Modules\Authentication\Http\Classes\User;
 use Modules\Authentication\Http\Classes\Authenticates;
 
 class AuthenticationController extends Controller
@@ -26,16 +27,21 @@ class AuthenticationController extends Controller
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $module = new Authentication();
+        $configuration = $module->getConfigValue();
+        // Validate request of form 
+        $inputs = $this->validateLogin($request, $configuration);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
+        
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
         }
+
 
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);
@@ -104,19 +110,15 @@ class AuthenticationController extends Controller
      */
     public function register(Request $request)
     {   
-        $inputs = $this->validateRegister($request);
-        $values = array();
-        foreach ($inputs as $key => $value) {
-            if ($key != 'password') {
-                $values[$key] = $value;
-            }else{
-                $values[$key] = Hash::make($value);
-            }
-            
-        }
-
+        $module = new Authentication();
+        $configuration = $module->getConfigValue();
+        // Validate request of form 
+        $inputs = $this->validateRegister($request, $configuration);
+        // Update values of password values 
+        $values = $this->encryptPasswordValues($configuration, $inputs);
+        // Register user 
         event(new Registered($user = User::create($values)));
-
+        // Login user
         $this->guard()->login($user);
 
         return redirect(Page::getMainPage('front'));
@@ -131,16 +133,87 @@ class AuthenticationController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function validateRegister(Request $request)
+    protected function validateRegister(Request $request, $configuration)
     {
-        $inputs = array();
-        
-        foreach ($request->all() as $key => $value) {
-            if ($key != '_token') {
-                $inputs[$key] = 'required|string';
+        $inputs = [];
+        foreach ($configuration->fields as $field) {
+            $validator = '';
+            $validator.= ($field->login) ? 'required|' : '';
+            switch ($field->type) {
+                case 'TEXT':
+                    $validator.= 'string';
+                    break;
+                case 'EMAIL':
+                    $validator.= 'string|unique:users|max:150';
+                    break;
+                case 'PASSWORD':
+                    $validator.= 'string|max:255';
+                    break;
+                case 'NUMBER':
+                    $validator.= 'numeric';
+                    break;
+                case 'DATE':
+                    $validator.= 'date';
+                    break;
+            }
+            $inputs[$field->name] = $validator;
+        }
+
+        return $request->validate($inputs);
+    }
+
+
+    /**
+     * Validate the user register request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request, $configuration)
+    {
+        $inputs = [];
+        foreach ($configuration->fields as $field) {
+            if ($field->login) {
+                $validator = 'required|';
+                switch ($field->type) {
+                    case 'TEXT':
+                    case 'EMAIL':
+                    case 'PASSWORD':
+                        $validator.= 'string';
+                        break;
+                    case 'NUMBER':
+                        $validator.= 'numeric';
+                        break;
+                    case 'DATE':
+                        $validator.= 'date';
+                        break;
+                }
+                $inputs[$field->name] = $validator;
             }
         }
+
         return $request->validate($inputs);
+    }
+
+    /**
+     * Validate the user register request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function encryptPasswordValues($configuration, $inputs)
+    {
+        foreach ($configuration->fields as $field) {
+            if ($field->type == 'PASSWORD') {
+                $inputs[$field->name] = Hash::make($inputs[$field->name]);
+            }
+        }
+
+        return $inputs;
     }
 
 }
