@@ -62,28 +62,23 @@ Route::group(['middleware' => 'admin'], function () {
 	/*
 	* Functionalities Admin route
 	*/
-	Route::get('/admin/dashboard/users', 'AdminController')->name('dash.users');
+	Route::get('/admin/dashboard/users', 'AdminController')->name('dash.users'); // Revisar esta ruta
 
-	Route::post('/admin/dashboard/users-post', 'AdminController@formAdmin')->name('dash.users.post');
+	Route::get('/admin/dashboard/admin/add', 'AdminController@newAdmin')->name('dash.new.admin');
 
-	Route::get('/admin/dashboard/permits-admin', 'AdminController@permits')->name('permits.admin');
-
-	Route::get('/admin/dashboard/register-admin', 'AdminController@register')->name('register.admin');
+	Route::post('/admin/dashboard/admin/add/form', 'AdminController@addAdmin')->name('dash.add.admin');
 
 	Route::post('/admin/dashboard/change-status', 'AdminController@changeState')->name('change.status');
 
-	Route::post('/admin/dashboard/delete-admin', 'AdminController@deleteAdmin')->name('delete.admin');
+	Route::post('/admin/dashboard/admin/delete', 'AdminController@deleteAdmin')->name('delete.admin');
 
-	Route::get('/admin/dashboard/group', 'AdminController@group')->name('group.admin');
-
-	Route::post('/admin/dashboard/group/add', 'AdminController@addGroup')->name('add.group.admin');
+	Route::post('/admin/dashboard/group/add', 'AdminController@addGroup')->name('add.group');
 
 	Route::get('/admin/dashboard/group/delete/{id}', 'AdminController@deleteGroup')->name('delete.group');
 
 	Route::post('/admin/dashboard/group/options', 'AdminController@options')->name('options.data');
 
 	Route::post('/admin/dashboard/group/load/group', 'AdminController@loadGroup')->name('load.group'); 
-
 
 	/*
 	* End Admin route

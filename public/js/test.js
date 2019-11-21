@@ -19,10 +19,11 @@ $(".permits").empty();
  
 			$.each(success.group, function(index, val) {
 				if (val.type === 0) {
-					$(".permits").append('<div class="custom-control custom-checkbox col-md-12 border shadow-sm p-1 mb-2 bg-white rounded-lg" align="center"><input type="checkbox" route="'+success.url+'" data="'+val.id+'-'+group+'"  class="custom-control-input btnPermit" id="defaultChecked'+val.id+'" checked><label class="h5 custom-control-label" for="defaultChecked'+val.id+'">'+val.name+'</label></div>');
+					
+					$(".permits").append('<div class="row"><div class="col-md-12"><div class="form-check"><input class="form-check-input btnPermit" type="checkbox" route="'+success.url+'" data="'+val.id+'-'+group+'" id="defaultChecked'+val.id+'" checked><label class="form-check-label" for="defaultChecked'+val.id+'">'+val.name+'</label></div></div></div><hr style="color: gray;">');
 
 				}else if(val.type === 1){
-					$(".permits").append('<div class="custom-control custom-checkbox col-md-12 border shadow-sm p-1 mb-2 bg-white rounded-lg" align="center"><input type="checkbox" route="'+success.url+'" data="'+val.id+'-'+group+'"  class="custom-control-input btnPermit" id="defaultChecked'+val.id+'"  ><label class="h5 custom-control-label" for="defaultChecked'+val.id+'">'+val.name+'</label></div>');
+					$(".permits").append('<div class="row"><div class="col-md-12"><div class="form-check"><input class="form-check-input btnPermit" type="checkbox" route="'+success.url+'" data="'+val.id+'-'+group+'" id="defaultChecked'+val.id+'"><label class="form-check-label" for="defaultChecked'+val.id+'">'+val.name+'</label></div></div></div><hr style="color: gray;">');
 
 				}
  
@@ -81,7 +82,7 @@ $(document).on('click', '.btnPermit', function(){
 	          success: function (success) {
  
 	              	$(".texto").show( ); 
-	            	$(".texto").append('<div class="row"><div class="col-md-12"><div class="alert alert-success alert-dismissible fade show" role="alert">'+success.txt+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div></div></div><br>');          
+	            	$(".texto").append('<div class="row"><div class="col-md-12"><div class="alert alert-danger alert-dismissible fade show" role="alert">'+success.txt+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div></div></div><br>');          
 	          		$(".texto").hide(3000);           
 	          },
 	          error: function (success) {

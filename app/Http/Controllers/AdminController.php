@@ -20,27 +20,15 @@ class AdminController extends Controller
     	
         $admins = DB::table('admins')
                 ->join('groups', 'groups.id', '=', 'admins.group_id')
-                ->select('admins.id', 'admins.firstname' , 'admins.lastname', 'admins.email', 'groups.name')
+                ->select('admins.id', 'admins.group_id', 'admins.firstname' , 'admins.lastname', 'admins.email', 'groups.name')
                 ->get();
         return view('back/content',  compact('admins'));
     }
 
-    public function permits(){
-         
-        $group = Groups::where('name', '!=', 'Super Admin')->get();
-        $permits = Permit::all();
-        $permitGroup = PermitGroups::all();
-    	return view('back/permitsAdmin', compact('group','permits','permitGroup'));
-    }
-
-    public function register(){
-        $group = Groups::where('name', '!=', 'Super Admin')->get()->toArray();
-        return view('back/form/admin', compact('group'));
-    }
-     public function group(){
-        $admin = Admin::where('is_admin', '!=', 2)->get();
-        $group = Groups::where('name', '!=', 'Super Admin')->get()->toArray();
-        return view('back/groupAdmin', compact('admin', 'group'));
+    public function newAdmin(){
+        $groups = Groups::where('name', '!=', 'Super Admin')->get();
+        $admin = Admin::all();
+        return view('back/newAdmin', compact('groups', 'admin'));
     }
 
     public function addGroup(Request $request){
@@ -48,9 +36,9 @@ class AdminController extends Controller
             $group = new Groups();
             $group->name = $request->group;
             $group->save();
-            return back()->with('txt', 'grupo creado con exito');
+            return back()->with('txt', 'Group created successfully!');
         }else{
-            return back()->with('error', 'el grupo ya existe');
+            return back()->with('error', 'The group already exists!');
         }
     }
 
@@ -105,13 +93,13 @@ class AdminController extends Controller
                     $permitGroup->permit_id = $permit->id;
                     $permitGroup->groups_id = $group->id;
                     if ($permitGroup->save()) {
-                        return response()->json(['txt' => 'Permiso asigando con exito']);
+                        return response()->json(['txt' => 'Successful permission!']);
                     }else{
-                        return response()->json(['txt' => 'Permiso no asigando con exito']);
+                        return response()->json(['txt' => 'Permission not successful!']);
 
                     }
                 }else{
-                        return response()->json(['txt' => 'Permiso ya asigando anteriormente']);
+                        return response()->json(['txt' => 'Permission already assigning previously!']);
 
                 }
                 
@@ -122,9 +110,9 @@ class AdminController extends Controller
                 //return response()->json(['txt' => $permitsGroup]);
                 
                     if ( PermitGroups::where(['permit_id' => $permit->id, 'groups_id' => $group->id])->delete()) {
-                        return response()->json(['txt' => 'Permiso eliminado con exito']);
+                        return response()->json(['txt' => 'Permission successfully removed!']);
                     }else{
-                        return response()->json(['txt' => 'Permiso no eliminado con exito']);
+                        return response()->json(['txt' => 'Permission not removed successfully!']);
                     }
             
                     
@@ -171,7 +159,7 @@ class AdminController extends Controller
       return response()->json(array('msg'=> $msg), 200);*/
     }
 
-    public function formAdmin(Request $request){
+    public function addAdmin(Request $request){
     	if (strlen($request->pass) >= 6) {
     		if (!Admin::where('email', $request->email)->exists()) {
                 //dd($request);
@@ -180,14 +168,14 @@ class AdminController extends Controller
 	    		$admin->lastname = $request->lastname;
 	    		$admin->email = $request->email;
 	    		$admin->password = bcrypt($request->pass);
-	    		$admin->is_admin =  0;
+	    		$admin->is_admin =  1;
                 if (isset($request->group) && $request->group != 0) {
                     $admin->group_id = $request->group;
+                    $admin->save();
+                    return back()->with('txt', 'Successfully registered administrator!');
                 }else{
-                    $admin->group_id = null;
+                    return back()->with('error', 'It is necessary to select a group!');
                 }
-	    		$admin->save();
-	    		return back()->with('txt', 'Successfully registered administrator!');
 	    	}else{
 	    		return back()->with('error', 'The mail is already in use!'); 
 	    	}
@@ -197,7 +185,7 @@ class AdminController extends Controller
     	
     }
 
-    public function changeState(Request $request){
+   /* public function changeState(Request $request){
     	//dd($request->id);
     	if (Admin::where('id', $request->id)->exists()) {
     		$admin = Admin::find($request->id);
@@ -209,12 +197,13 @@ class AdminController extends Controller
     		$admin->save();
     		return back();
     	}
-    }
+    }*/
 
     public function deleteAdmin(Request $request){
-    	//dd($request->id);
-    	if (Admin::where('id', $request->id)->exists()) {
-			$admin = Admin::find($request->id);
+    	//dd(decrypt($request->admin_id));
+        $val = decrypt($request->admin_id);
+    	if (Admin::where('id', $val)->exists()) {
+			$admin = Admin::find($val);
 			$admin->delete();
     		return back();
     	}
