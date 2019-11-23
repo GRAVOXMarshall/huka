@@ -617,7 +617,9 @@
       @endif
       // Add delimiter to the elements
       editor.Canvas.getBody().className = 'gjs-dashed';
+
       const um = editor.UndoManager;
+      const blockManager = editor.BlockManager;
 
       editor.Commands.add('tlb-traits', {
         run(editor, sender) {
@@ -754,14 +756,13 @@
             type: 'functionality'
           },
           success: function(response){
-            console.log(response);
-            if (!response.error) {
+            var data =JSON.parse(response);
+            if (!data.error) {
               showMessage();
-              console.log(content);
               $(content).empty();
               $(content).append(
                 `<div class="btn-group" style="margin-right: 20px;">
-                  <a href="${response.configuration}" class="btn btn-outline-primary">Configurate</a>
+                  <button class="btn btn-outline-primary btn-config" ref="${data.configuration}">Configurate</button>
                   <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
@@ -817,7 +818,8 @@
           type: 'POST',
           data: data+'&_token='+token,
           success: function(response){
-            console.log(response);
+            // We reload elements to add new elements of the module 
+            reloadElements();
             showMessage();
             modal.close();
           },
@@ -839,6 +841,52 @@
               $(element.getEl()).hide();
             }
           }
+        });
+      }
+
+      function reloadElements() {
+        // Get elements from block manager
+        var elements = blockManager.getAll();
+        var ids_elements = [];
+        // Get id of elements and save en ids_elements array 
+        $.each(elements.models, function(index, val) {
+          if (typeof val.id !== 'undefined') {
+            ids_elements.push(val.id);
+          }
+        });
+        // Remove elements to block manager
+        $.each(ids_elements, function(index, id) {
+          blockManager.remove(id);
+        });
+
+        // Get and add elements to block manager
+        $.ajax({
+          url: '{{ route("get.elements") }}',
+          type: 'POST',
+          data: {
+            _token: token,
+          },
+          success: function(result){
+            $.each(result, function(index, element) {
+              var content;
+              // If content is an array we parse to json 
+              try {
+                  content = JSON.parse(element.content);
+              } catch (e) {
+                  content = element.content;
+              }
+              // Add element to block manager
+              blockManager.add(element.name, {
+                label: element.label,
+                content: content,
+                attributes: JSON.parse(element.attributes)
+              });
+            });
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
         });
       }
 
