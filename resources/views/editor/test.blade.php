@@ -76,7 +76,7 @@
 
       /* Secondary color for the text color */
       .gjs-two-color {
-        color: rgba(169, 162, 160, 0.7);
+        color: rgba(75, 75, 75, 1);
       }
 
       /* Tertiary color for the background */
@@ -273,6 +273,20 @@
           width: 220px;
           display: none; 
       }
+
+      .gjs-item-design{
+          position:absolute;
+          border: 2px solid #3b97e3;
+          background: white;
+          color:white;
+          z-index:10;
+          top:0;
+          left:0;
+          height: 200px; 
+          width: 220px;
+          display: none;
+      }
+
       .list-group-item.active {
         z-index: 2;
         color: #fff;
@@ -592,6 +606,49 @@
           ]
         },
 
+        // Set default styles manager 
+        styleManager: {
+          appendTo: '.gjs-item-design',
+          sectors: [
+            {
+              name: 'General',
+              open: false,
+              buildProps: ['display', 'position', 'top', 'right', 'left', 'bottom']
+            },
+
+            {
+              name: 'Flex',
+              open: false,
+              buildProps: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'align-content', 'order', 'flex-basis', 'flex-grow', 'flex-shrink', 'align-self']
+            },
+
+            {
+              name: 'Dimension',
+              open: false,
+              buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding']
+            },
+
+            {
+            name: 'Typography',
+              open: false,
+              buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-align', 'text-shadow'],
+              properties: [
+                {
+                property: 'text-align',
+                list: [{ value: 'left', className: 'fa fa-align-left' }, { value: 'center', className: 'fa fa-align-center' }, { value: 'right', className: 'fa fa-align-right' }, { value: 'justify', className: 'fa fa-align-justify' }]
+                }
+              ]
+            },
+
+            {
+              name: 'Decorations',
+              open: false,
+              buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background']
+            },
+
+          ]
+        },
+
         traitManager: {
           appendTo: '.gjs-item-trait',
         },
@@ -628,6 +685,17 @@
             $(trait_element).hide();
           }else{
             $(trait_element).show();
+          }
+        }
+      });
+
+      editor.Commands.add('tlb-design', {
+        run(editor, sender) {
+          var design_element = $('.gjs-item-design');
+          if ($(design_element).is(":visible")) {
+            $(design_element).hide();
+          }else{
+            $(design_element).show();
           }
         }
       });
