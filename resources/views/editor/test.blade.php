@@ -76,7 +76,7 @@
 
       /* Secondary color for the text color */
       .gjs-two-color {
-        color: rgba(169, 162, 160, 0.7);
+        color: rgba(75, 75, 75, 1);
       }
 
       /* Tertiary color for the background */
@@ -273,6 +273,20 @@
           width: 220px;
           display: none; 
       }
+
+      .gjs-item-design{
+          position:absolute;
+          border: 2px solid #3b97e3;
+          background: white;
+          color:white;
+          z-index:10;
+          top:0;
+          left:0;
+          height: 200px; 
+          width: 220px;
+          display: none;
+      }
+
       .list-group-item.active {
         z-index: 2;
         color: #fff;
@@ -652,6 +666,49 @@
           ]
         },
 
+        // Set default styles manager 
+        styleManager: {
+          appendTo: '.gjs-item-design',
+          sectors: [
+            {
+              name: 'General',
+              open: false,
+              buildProps: ['display', 'position', 'top', 'right', 'left', 'bottom']
+            },
+
+            {
+              name: 'Flex',
+              open: false,
+              buildProps: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'align-content', 'order', 'flex-basis', 'flex-grow', 'flex-shrink', 'align-self']
+            },
+
+            {
+              name: 'Dimension',
+              open: false,
+              buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding']
+            },
+
+            {
+            name: 'Typography',
+              open: false,
+              buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-align', 'text-shadow'],
+              properties: [
+                {
+                property: 'text-align',
+                list: [{ value: 'left', className: 'fa fa-align-left' }, { value: 'center', className: 'fa fa-align-center' }, { value: 'right', className: 'fa fa-align-right' }, { value: 'justify', className: 'fa fa-align-justify' }]
+                }
+              ]
+            },
+
+            {
+              name: 'Decorations',
+              open: false,
+              buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background']
+            },
+
+          ]
+        },
+
         traitManager: {
           appendTo: '.gjs-item-trait',
         },
@@ -683,7 +740,9 @@
       @endif
       // Add delimiter to the elements
       editor.Canvas.getBody().className = 'gjs-dashed';
+
       const um = editor.UndoManager;
+      const blockManager = editor.BlockManager;
 
       editor.Commands.add('tlb-traits', {
         run(editor, sender) {
@@ -692,6 +751,17 @@
             $(trait_element).hide();
           }else{
             $(trait_element).show();
+          }
+        }
+      });
+
+      editor.Commands.add('tlb-design', {
+        run(editor, sender) {
+          var design_element = $('.gjs-item-design');
+          if ($(design_element).is(":visible")) {
+            $(design_element).hide();
+          }else{
+            $(design_element).show();
           }
         }
       });
@@ -820,14 +890,13 @@
             type: 'functionality'
           },
           success: function(response){
-            console.log(response);
-            if (!response.error) {
+            var data =JSON.parse(response);
+            if (!data.error) {
               showMessage();
-              console.log(content);
               $(content).empty();
               $(content).append(
                 `<div class="btn-group" style="margin-right: 20px;">
-                  <a href="${response.configuration}" class="btn btn-outline-primary">Configurate</a>
+                  <button class="btn btn-outline-primary btn-config" ref="${data.configuration}">Configurate</button>
                   <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
@@ -883,7 +952,8 @@
           type: 'POST',
           data: data+'&_token='+token,
           success: function(response){
-            console.log(response);
+            // We reload elements to add new elements of the module 
+            reloadElements();
             showMessage();
             modal.close();
           },
@@ -905,6 +975,52 @@
               $(element.getEl()).hide();
             }
           }
+        });
+      }
+
+      function reloadElements() {
+        // Get elements from block manager
+        var elements = blockManager.getAll();
+        var ids_elements = [];
+        // Get id of elements and save en ids_elements array 
+        $.each(elements.models, function(index, val) {
+          if (typeof val.id !== 'undefined') {
+            ids_elements.push(val.id);
+          }
+        });
+        // Remove elements to block manager
+        $.each(ids_elements, function(index, id) {
+          blockManager.remove(id);
+        });
+
+        // Get and add elements to block manager
+        $.ajax({
+          url: '{{ route("get.elements") }}',
+          type: 'POST',
+          data: {
+            _token: token,
+          },
+          success: function(result){
+            $.each(result, function(index, element) {
+              var content;
+              // If content is an array we parse to json 
+              try {
+                  content = JSON.parse(element.content);
+              } catch (e) {
+                  content = element.content;
+              }
+              // Add element to block manager
+              blockManager.add(element.name, {
+                label: element.label,
+                content: content,
+                attributes: JSON.parse(element.attributes)
+              });
+            });
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
         });
       }
 

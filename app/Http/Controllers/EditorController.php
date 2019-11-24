@@ -229,6 +229,19 @@ class EditorController extends Controller
         return '{"status":"error"}';die;
     }
 
+    /**
+     * Get configurate of page
+     * @param Object Page
+     * @return Json
+     */
+    public function getElements(Request $request)
+    {
+        // Get active elements in db 
+        $elements = Element::where('active', 1)->get();
+
+        return response()->json($elements);
+    }
+
     function decodificar($dato) {
         $resultado = base64_decode($dato);
         list($resultado, $letra) = explode('+', $resultado);

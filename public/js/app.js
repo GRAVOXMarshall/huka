@@ -46308,12 +46308,21 @@ module.exports = function () {
 
 
     /**
-     * Returns toolbar element
+     * Returns trait element
      * @return {HTMLElement}
      * @private
      */
     getItemTraitEl: function getItemTraitEl() {
       return CanvasView.itemTraitEl;
+    },
+
+    /**
+     * Returns design element
+     * @return {HTMLElement}
+     * @private
+     */
+    getItemDesignEl: function getItemDesignEl() {
+      return CanvasView.itemDesignEl;
     },
 
     /**
@@ -47202,13 +47211,14 @@ module.exports = _backbone2.default.View.extend({
         this.renderScripts(); // will call renderBody later
       }
     }
-    $el.find('[data-tools]').append('\n      <div id="' + ppfx + 'tools" style="pointer-events:none">\n        <div class="' + ppfx + 'highlighter"></div>\n        <div class="' + ppfx + 'badge"></div>\n        <div class="' + ppfx + 'placeholder">\n          <div class="' + ppfx + 'placeholder-int"></div>\n        </div>\n        <div class="' + ppfx + 'ghost"></div>\n        <div class="' + ppfx + 'toolbar" style="pointer-events:all"></div>\n        <div class="' + ppfx + 'item-trait" style="pointer-events:all;"></div>\n        <div class="' + ppfx + 'resizer"></div>\n        <div class="' + ppfx + 'offset-v"></div>\n        <div class="' + ppfx + 'offset-fixed-v"></div>\n      </div>\n    ');
+    $el.find('[data-tools]').append('\n      <div id="' + ppfx + 'tools" style="pointer-events:none">\n        <div class="' + ppfx + 'highlighter"></div>\n        <div class="' + ppfx + 'badge"></div>\n        <div class="' + ppfx + 'placeholder">\n          <div class="' + ppfx + 'placeholder-int"></div>\n        </div>\n        <div class="' + ppfx + 'ghost"></div>\n        <div class="' + ppfx + 'toolbar" style="pointer-events:all"></div>\n        <div class="' + ppfx + 'item-design" style="pointer-events:all;"></div>\n        <div class="' + ppfx + 'item-trait" style="pointer-events:all;"></div>\n        <div class="' + ppfx + 'resizer"></div>\n        <div class="' + ppfx + 'offset-v"></div>\n        <div class="' + ppfx + 'offset-fixed-v"></div>\n      </div>\n    ');
     var toolsEl = el.querySelector('#' + ppfx + 'tools');
     this.hlEl = el.querySelector('.' + ppfx + 'highlighter');
     this.badgeEl = el.querySelector('.' + ppfx + 'badge');
     this.placerEl = el.querySelector('.' + ppfx + 'placeholder');
     this.ghostEl = el.querySelector('.' + ppfx + 'ghost');
     this.toolbarEl = el.querySelector('.' + ppfx + 'toolbar');
+    this.itemDesignEl = el.querySelector('.' + ppfx + 'item-design');
     this.itemTraitEl = el.querySelector('.' + ppfx + 'item-trait');
     this.resizerEl = el.querySelector('.' + ppfx + 'resizer');
     this.offsetEl = el.querySelector('.' + ppfx + 'offset-v');
@@ -51210,7 +51220,8 @@ module.exports = {
     var view = model && model.view;
     this.updateToolbar(model);
     this.updateItemTrait(model);
-    
+    this.updateItemDesign(model);
+
     if (view) {
       var el = view.el;
 
@@ -51414,7 +51425,6 @@ module.exports = {
    */
   updateToolbarPos: function updateToolbarPos(el, elPos) {
     var canvas = this.canvas;
-
     var unit = 'px';
     var toolbarEl = canvas.getToolbarEl();
     var toolbarStyle = toolbarEl.style;
@@ -51466,7 +51476,6 @@ module.exports = {
 		var toolbarEl = canvas.getToolbarEl();
 		var pos = canvas.getTargetToElementDim(itemTraitEl, view.el);
 		var posToolbar = canvas.getTargetToElementDim(toolbarEl, view.el);
-
 		if (pos) {
 	      var frameOffset = canvas.getCanvasView().getFrameOffset();
 
@@ -51479,6 +51488,40 @@ module.exports = {
 	      itemTraitStyle.top = posToolbar.top + unit;
 	 
 	      itemTraitStyle.left = (leftPos < 0 ? 0 : leftPos) + unit;
+
+	    }
+    }
+  
+  },
+
+  /**
+   * Update item design if the component has one
+   * @param {Object} mod
+   */
+  updateItemDesign: function updateItemDesign(mod) {
+  	var em = this.config.em;
+    var model = mod == em ? em.getSelected() : mod;
+    if (model) {
+    	var unit = 'px';
+		var canvas = this.canvas;
+		var view = model.view;
+		var itemDesignEl = canvas.getItemDesignEl();
+		var itemDesignStyle = itemDesignEl.style;
+		var toolbarEl = canvas.getToolbarEl();
+		var pos = canvas.getTargetToElementDim(itemDesignEl, view.el);
+		var posToolbar = canvas.getTargetToElementDim(toolbarEl, view.el);
+		if (pos) {
+	      var frameOffset = canvas.getCanvasView().getFrameOffset();
+
+	      // Check if not outside of the canvas
+	      if (pos.left < pos.canvasLeft) {
+	        pos.left = pos.canvasLeft;
+	      }
+
+	      var leftPos = posToolbar.targetWidth + pos.left;
+	      itemDesignStyle.top = posToolbar.top + unit;
+	 
+	      itemDesignStyle.left = (leftPos < 0 ? 0 : leftPos) + unit;
 
 	    }
     }
@@ -54735,22 +54778,30 @@ var Component = Backbone.Model.extend(_Styleable2.default).extend({
           command: 'tlb-move'
         });
       }
+
+      tb.push({
+	      attributes: { class: 'fa fa-paint-brush item-design' },
+	      command: 'tlb-design'
+	  });
+      
+      tb.push({
+	      attributes: { class: 'fa fa-wrench item-config' },
+	      command: 'tlb-traits'
+	  });
+
       if (model.get('copyable')) {
         tb.push({
           attributes: { class: 'fa fa-clone' },
           command: 'tlb-clone'
         });
       }
+
       if (model.get('removable')) {
         tb.push({
           attributes: { class: 'fa fa-trash-o' },
           command: 'tlb-delete'
         });
       }
-      tb.push({
-	      attributes: { class: 'fa fa-wrench item-config' },
-	      command: 'tlb-traits'
-	  });
 
       model.set('toolbar', tb);
       /* Este es el validador

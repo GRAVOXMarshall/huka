@@ -112,7 +112,7 @@ class ProductsController extends Controller
 		    				$result['menssage'] = $module->error;
 		                }else{
 		                	$result['menssage'] = 'Instalado con exito';
-		                	$result['configuration'] = route(strtolower($name).'.configuration');
+		                	$result['configuration'] = route(strtolower($name).'.display.config');
 		                }
 	                    return json_encode($result);
 		    		break;

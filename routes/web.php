@@ -100,6 +100,9 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('/admin/editor/{page}/load', 'EditorController@builderLoad');
 
+	Route::post('/admin/editor/get/elements', 'EditorController@getElements')->name('get.elements');
+
+
 	// End editor routes 
 
 	/*

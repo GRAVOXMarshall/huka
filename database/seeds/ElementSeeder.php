@@ -61,7 +61,7 @@ class ElementSeeder extends Seeder
             	"class" => "gjs-fonts gjs-f-b1"
             )), 
             'content' => "\"	<div  class='row'><div  class='hk-md-12'></div></div><style> .row {padding: 20px; width: 100%;} .hk-md-12 { padding: 20px 0px;}</style>\"	",
-            'type' => 1,
+            'type' => 'S',
             'active' => true,
         ]);
         //<div class='row'><div class='hk-md-12' style='border:orange 1px solid; height:50px;'></div></div>
@@ -137,7 +137,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Button",
+            'name' => "button",
             'label' => "Button Normal",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -148,7 +148,7 @@ class ElementSeeder extends Seeder
         ]);
          
         DB::table('elements')->insert([
-            'name' => "ButtonAll",
+            'name' => "buttonlarge",
             'label' => "Button Large",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link",
@@ -160,7 +160,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Navigation",
+            'name' => "navigation",
             'label' => "Navigation",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -182,7 +182,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "footer two",
+            'name' => "footer2",
             'label' => "Footer two",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -204,7 +204,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Navigation 2",
+            'name' => "navigation2",
             'label' => "Navigation 2",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -215,7 +215,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Navigation 3",
+            'name' => "navigation3",
             'label' => "Navigation 3",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -226,7 +226,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Features",
+            'name' => "features",
             'label' => "Features",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
@@ -237,7 +237,7 @@ class ElementSeeder extends Seeder
         ]);
 
         DB::table('elements')->insert([
-            'name' => "Team",
+            'name' => "team",
             'label' => "Team",
             'attributes' => json_encode(array(
                 "class" => "fa fa-link"
