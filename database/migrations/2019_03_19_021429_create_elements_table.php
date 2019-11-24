@@ -19,7 +19,7 @@ class CreateElementsTable extends Migration
             $table->text('label');
             $table->text('attributes');
             $table->text('content');
-            $table->enum('type', ['N', 'M']);
+            $table->enum('type', ['S','B', 'M']);
             $table->boolean('active')->default(false);
             $table->unsignedInteger('module_id')->nullable();;
             $table->timestamps();

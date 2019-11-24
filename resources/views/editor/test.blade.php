@@ -327,14 +327,49 @@
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white;"></i>
               <strong>Elements</strong>
             </h5>
-            <div class="cont" style="margin-left: 5px; height: 92.5%;">
+            <div class="container">   
+              <div class="row">
+                <div class="col-md-12 btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary active" style="padding: 20px;">
+                    <input type="radio" name="options" id="option1" value="simple" checked> Simple
+                  </label>
+                  <label class="btn btn-outline-secondary" style="padding: 20px;">
+                    <input   type="radio" name="options" id="option2" value="module"> Module
+                  </label>
+                </div>
+              </div>
+              
+              <div class="row simpleEl">
+                <div class="col-md-12" id="elements-content" style="height: 422px; overflow-y: auto; overflow-x: hidden;">
+                    
+                </div>
+              </div>
+
+              <div class="row moduleEl">
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="row">
+                    <div class="col-md-3" style="padding-top: 8px;">
+                      <h5 style="color: black;">Filter by module:</h5>
+                    </div>
+                    <div class="col-md-9">
+                      <select class="form-control">
+                        <option value="">[Select a module...]</option>
+                         @foreach($modules as $module)
+                            <option>{{ $module['name'] }}</option>
+                         @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <hr style="color: gray;">
+                </div>
+              </div>
+            </div>
+            <!--<div class="cont" style="margin-left: 5px; height: 92.5%;">
               <div class="op list-group list-group-horizontal" id="list-tab" role="tablist" style="width: 100%;">
 
                     <button class="list-group-item active" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
                     <button class="list-group-item" style="outline-color: #FF8045; width: 100%; height: 50px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
-                 <!--<button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
-                 <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button> 
-                 <button class="sections" style="width: 100%; height: 90px; font-size: 20px;">Common</button>--> 
+                 
               </div>
               <div style="width: 100%; overflow: hidden;  ">
                 <div style="float: left;width: 20%;"><h5  style="color: black; padding-top: 7.5px;">Filter by module: </h5></div>
@@ -348,7 +383,7 @@
                 </div>
               </div>
               <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 77%; overflow: auto; overflow-x: hidden;">
-                <!-- Aqui es la parte de los elementos  -->
+                 Aqui es la parte de los elementos  
                 <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
                 <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
                   <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module One</h6>
@@ -374,7 +409,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
             
             <!--<div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
               <h6 style="color: black;">Module Elements</h6>
@@ -457,7 +492,13 @@
               <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
               <strong>Blocks</strong>
             </h5>
-             
+            <div class="container"> 
+             <div class="row">
+                <div class="col-md-12" id="block-content" style="height: 422px; overflow-y: auto; overflow-x: hidden;">
+                    
+                </div>
+              </div>
+            </div>
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
@@ -485,6 +526,23 @@
     </div>
 
     <script type="text/javascript">
+
+      // CODIGO QUE DESPUES HAY QUE CAMBIAR DE POSISCION
+      $(".moduleEl").hide();
+      $("input[name=options]").change(function(){
+        if ($(this).is(":checked")) {
+          console.log($(this).val());
+          if ($(this).val() == "simple") {
+            $(".simpleEl").show();
+            $(".moduleEl").hide();
+          }else{
+            $(".moduleEl").show();
+            $(".simpleEl").hide();
+          }
+        }
+      });
+
+
       const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
       // instanciate new modal
       const modal = new tingle.modal({
@@ -580,13 +638,15 @@
             // These elements getting through the controller and only get active
             @if(count($elements) > 0)
               @foreach($elements as $element)
-                {
+                 @if(in_array('S', array_column(array($element), 'type')))
+                 {
                   id: '{{ $element->name }}', 
                   label: '{{ $element->label }}',
                   attributes: {!! $element->attributes !!},
                   // Content can be String or JSON
                   content: {!! $element->content !!},
                 },
+                @endif
               @endforeach
             @endif
           ]
@@ -597,6 +657,12 @@
         },
 
       });
+
+      /*var blockManager = editor.BlockManager;
+      blockManager.add('block-content', {
+        label: 'Simple block',
+        content: '<div class="my-block" style="color:black;">This is a simple block</div>',
+      });*/
 
       @if(count($traits) > 0)
         @foreach($traits as $trait)
