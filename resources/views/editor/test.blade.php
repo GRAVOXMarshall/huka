@@ -282,7 +282,8 @@
           z-index:10;
           top:0;
           left:0;
-          height: 200px; 
+          min-height: 200px;
+          height: auto; 
           width: 220px;
           display: none;
       }
