@@ -65,16 +65,7 @@ class EditorController extends Controller
         return redirect('/');
     }
 
-    public function loadEditor($type){
-        $pages = Page::where('type', $type)->get();
-        // Get active elements in db 
-        $elements = Element::where('active', 1)->get();
-        $images = Image::all();
-        return view('editor/index', compact('pages', 'elements', 'images'));
-    }
-
-
-    public function loadTest(){
+    public function loadEditor(){
         $pages = Page::all();
         $layouts = Layout::all();
         // Get active elements in db 
@@ -120,7 +111,7 @@ class EditorController extends Controller
             }
         }
         
-        return view('editor/test', compact('pages', 'layouts', 'elements', 'traits', 'images', 'modules'));
+        return view('editor/index', compact('pages', 'layouts', 'elements', 'traits', 'images', 'modules'));
     }
 
 

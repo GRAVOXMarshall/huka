@@ -5,169 +5,602 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Huka Editor</title> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
     <script src="{{ asset('js/app.js') }}"></script>
     <style>
-      body,
-
-      html {
+      body {
         height: 100%;
-        margin: 0;
         overflow: hidden;
+        margin: 0;
+        background: white;
       }
 
-      /* Theming */
+      .child {
+        display: inline-block; 
+        vertical-align: middle;
+        height: 100%;
+      }
+      .pattern {
+        position: fixed;
+        top: 0;
+        width: 100%;  
+        height: 30px; 
+        white-space: nowrap; 
+        line-height: 0px; 
+        overflow: hidden;
+        -webkit-box-shadow: 0px 5px 13px -7px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 13px -7px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 13px -7px rgba(0,0,0,0.75);
+        background: white;
+      }
 
+      button.btn-action{
+        color: #A9A2A0;
+        justify-content: center;
+        background-color: #fff;
+        border: 0;
+      }
+
+      button.btn-action.active{
+        color: #FF8045;
+      }
+
+      button.btn-action:hover{
+        color: #FF8045;
+      }
+
+      button.btn-action:focus{
+        outline-color: transparent; 
+        outline-style: none;
+      }
+      .logo{
+        width: 10%; 
+        text-align: center; 
+        border-right: #DBDBDB 1px solid;
+      }
+      select{
+        width: 100%; 
+        height: 100%; 
+        border-radius: 6px 6px 6px 6px;
+        -moz-border-radius: 6px 6px 6px 6px;
+        -webkit-border-radius: 6px 6px 6px 6px;
+        border: 1px solid #ccc4cc;
+      }
+
+      /* Reset some default styling */
       /* Primary color for the background */
       .gjs-one-bg {
-        background-color: #363E46;
+        background-color: #FFFFFF;
       }
 
       /* Secondary color for the text color */
       .gjs-two-color {
-        color: rgba(246, 246, 246, 1);
+        color: rgba(75, 75, 75, 1);
       }
 
       /* Tertiary color for the background */
       .gjs-three-bg {
-        background-color: #FC9627;
+        background-color: #FF8045;
         color: white;
       }
 
       /* Quaternary color for the text color */
       .gjs-four-color,
       .gjs-four-color-h:hover {
-        color: #FC9627;
+        color: #FF8045;
       }
 
-      /* Reset some default styling */
       .gjs-cv-canvas {
         top: 0;
         width: 100%;
         height: 100%;
       }
-      .panel__top {
-        padding: 0;
-        width: 100%;
-        height: 7%;
-        min-height: 43px;
-        max-height: 45px;
-        display: flex;
-        position: initial;
-        justify-content: center;
-        justify-content: space-between;
-      }
-      .panel__basic-actions {
-        width: 9%;
-        max-width: 126px;
-        position: initial;
-        border: 2px solid rgba(0,0,0,0.2);
+
+
+
+      .bubbler-wrapper {
+          font-family: "Roboto","Helvetica","Arial",sans-serif;
+          position: fixed;
+          top: 60px;
+          right: 0;
+          margin: 0 1em 3.5em 0;
+          cursor: pointer;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          z-index: 2;
+           
       }
 
-      .panel__devices {
-        margin-left: 38%;
-        position: initial;
+          .bubbler-wrapper .options {
+              width: 1.7em;
+              height: 1.7em;
+              font-size: 2em;
+              line-height: 1.7em;
+              text-align: center;
+              background: white;
+              border-radius: 50%;
+              -webkit-box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
+              -moz-box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
+              box-shadow: 0 1px 1px 1px rgba(0,0,0,.1);
+           
+          }
+
+          .bubbler-wrapper .bubbler-menu-loader {
+              width: 70px;
+              height: 70px;
+              background:  lightgray ;
+              border-radius: 50%;
+              box-shadow: -1px 7px 17px -7px rgba(0,0,0,0.75);
+              transition: all 0.2s ease-in-out;
+              font-size: 25px;
+              color: white;
+              text-align: center;
+              line-height: 70px;
+           
+
+              /*position: fixed;
+              right: 50px;
+              bottom: 50px;
+              z-index: 1000;*/
+          }
+
+          .bubbler-wrapper div:not(:last-child) {
+              margin-bottom: .3em
+          }
+
+          .bubbler-wrapper .bubbler-menu-item {
+               
+              opacity: 0;
+              max-height: 0;
+              transition: opacity 0.2s,max-height 0s 0.2s;
+              width: 70px;
+              height: 70px;
+              background:  #FF8045;
+              border-radius: 50%;
+              box-shadow: -1px 7px 17px -7px rgba(0,0,0,0.75);
+              transition: all 0.1s ease-in-out;
+              font-size: 25px;
+              color: white;
+              text-align: center;
+              line-height: 70px;
+           
+              /*position: fixed;
+              right: 50px;
+              bottom: 50px;*/
+          }
+
+          .bubbler-wrapper:hover .bubbler-menu-item {
+              opacity: 1;
+              max-height: 100%;
+              transition: opacity 0.2s,max-height 0s;
+          }
+
+
+      .bubbler-menu-item {  
+          opacity: 0;
+          max-height: 0;
+          transition: opacity 0.2s,max-height 0s 0.2s;
       }
 
-      .panel__options {
-        margin-left: 20%;
-        position: initial;
-      }
+      .bubbler-wrapper:hover .bubbler-menu-item {
+          opacity: 1;
+          max-height: 100%;
+          transition: opacity 0.2s,max-height 0s;
+          
 
-      .panel__switcher {
-        width: 14.5%;
-        max-width: 200px;
-        border: 2px solid rgba(0,0,0,0.2);
-        position: initial;
       }
-
-      .editor-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: stretch;
-        flex-wrap: nowrap;
-        height: 100%;
-      }
-
-      .editor-canvas {
-        flex-grow: 1;
-      }
-
-      .panel__right {
-        flex-basis: 200px;
+      .boxMod {
         position: relative;
-        overflow-y: auto;
-        height: 100%;
-      }
-      .panel__left {
-        flex-basis: 125px;
-        position: relative;
-        overflow-y: auto;
-        height: 100%;
-      }
-      .pages-btn{
-        width: 100%; 
-        background: rgba(0,0,0,0.1); 
-        color: white; 
-        padding-right: 10px;
-        outline: none; 
-        border: 1px solid rgba(0,0,0,0.25);
-      }
-      .pages-btn:focus{
-        background: rgba(255,255,255,0.1);
+        display: block;
+        border-bottom: 1px dotted black;
       }
 
-      
+      .boxMod .tooltiptext {
+        visibility: hidden;
+        width: 800px;
+        background-color: #fff;
+        border: solid 2px black;
+        height: 550px;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 2;
+        top: -5px;
+        right: 110%;
+        opacity: 1;
+        transition: opacity 0.2s;
+      }
+
+      .boxMod .tooltiptext::after {
+        content: "";
+        position: absolute;
+        border-width: 5px;
+        border-style: solid;
+        margin-top: -5px;
+        top: 50%;
+        left: 100%;
+        opacity: 1;
+        border-color: transparent transparent transparent #555;
+      }
+
+      .boxMod:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      .option{
+        background: transparent;
+        border: transparent;
+      }
+      .option:focus{
+        outline-color: transparent; 
+        outline-style: none;
+         
+      }
+      .contenido > .opt{
+        float: left;
+        margin: 10px;
+      }
+      .opt{
+        width: 45%; 
+        height: 50%; 
+        border: lightgray 1px solid;
+      }
+      .cont{
+        margin: 0;
+        overflow: hidden;
+      }
+      .cont .op {
+        float: left;
+        clear: none; 
+      }
+
+      .gjs-item-trait{
+          position:absolute;
+          border: 2px solid #3b97e3;
+          background: white;
+          color:white;
+          z-index:10;
+          top:0;
+          left:0;
+          height: 200px; 
+          width: 220px;
+          display: none; 
+      }
+
+      .gjs-item-design{
+          position:absolute;
+          border: 2px solid #3b97e3;
+          background: white;
+          color:white;
+          z-index:10;
+          top:0;
+          left:0;
+          min-height: 200px;
+          height: auto; 
+          width: 220px;
+          display: none;
+      }
+
+      .list-group-item.active {
+        z-index: 2;
+        color: #fff;
+        background-color: #FF8045;
+        border:lightgray 1px solid ;
+        
+      }
+
     </style>
   </head>
   <body>
-    <div class="panel__top">
-      <div class="panel__basic-actions">
-        <label style="font-size: 20px; color: #FC9627;"><i class="fas fa-align-justify"></i> Pages</label>
+    <div class="pattern"> 
+      <div class="child logo" >
+        <h4 style="margin-top: 5px;"><i class="icon-fa-huka" style="margin-right: 10px; color: #FF8045; "></i><strong>Huka</strong></h4>
       </div>
-      <div class="panel__devices"></div>
-      <div class="panel__options"></div>
-      <div class="panel__switcher"></div>
-    </div>
-    <div class="editor-row">
-      <div class="panel__left">
-        <div class="pages-container">
-          <dd>
-            @foreach($pages as $page)
-              <dt>
-                <button class="pages-btn" value="{{ $page->id }}">
-                  <i class="fas fa-chevron-right fa-xs" style="padding-right: 5px;"></i> {{ $page->name }}
-                </button>
-              </dt>
-            @endforeach 
-          </dd>
+      <div class="child" style="width: 10%; margin-left: 5px; text-align: center;">
+        <select id="select-page" style="border: none; outline:none;">
+          @foreach($pages as $page)
+            @if($page->type != 'B')
+              <option class="page-option" value="{{ $page->id }}">{{ $page->name }}</option>
+            @endif
+          @endforeach
+        </select>
+      </div>
+      <div class="child" style="width: 10%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
+        <button class="btn-action btn-page-type option active" type="front"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px; margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" type="layout"><i class="fas fa-window-restore fa-lg" style="margin-top: 10px;"></i></button>
+      </div>
+      <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
+        <button class="btn-action btn-devices option active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
+      </div>
+      <div class="child" style="width: 22%; text-align: center;">
+        <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
+        <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
+      </div>   
+    </div> 
+    <div id="list-action" class="bubbler-wrapper" >
+      <div class="bubbler-menu-loader" >
+        <i class="fas fa-cog fa-lg"></i>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <div>
+          <i class="fas fa-arrows-alt fa-lg" style="color: white; "></i>
         </div>
+        <span class="tooltiptext">
+            <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white;"></i>
+              <strong>Elements</strong>
+            </h5>
+            <div class="container">   
+              <div class="row">
+                <div class="col-md-12 btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary active" style="padding: 20px;">
+                    <input type="radio" name="options" id="option1" value="simple" checked> Simple
+                  </label>
+                  <label class="btn btn-outline-secondary" style="padding: 20px;">
+                    <input   type="radio" name="options" id="option2" value="module"> Module
+                  </label>
+                </div>
+              </div>
+              
+              <div class="row simpleEl">
+                <div class="col-md-12" id="elements-content" style="height: 422px; overflow-y: auto; overflow-x: hidden;">
+                    
+                </div>
+              </div>
+
+              <div class="row moduleEl">
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="row">
+                    <div class="col-md-3" style="padding-top: 8px;">
+                      <h5 style="color: black;">Filter by module:</h5>
+                    </div>
+                    <div class="col-md-9">
+                      <select class="form-control">
+                        <option value="">[Select a module...]</option>
+                         @foreach($modules as $module)
+                            <option>{{ $module['name'] }}</option>
+                         @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <hr style="color: gray;">
+                </div>
+              </div>
+            </div>
+            <!--<div class="cont" style="margin-left: 5px; height: 92.5%;">
+              <div class="op list-group list-group-horizontal" id="list-tab" role="tablist" style="width: 100%;">
+
+                    <button class="list-group-item active" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
+                    <button class="list-group-item" style="outline-color: #FF8045; width: 100%; height: 50px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
+                 
+              </div>
+              <div style="width: 100%; overflow: hidden;  ">
+                <div style="float: left;width: 20%;"><h5  style="color: black; padding-top: 7.5px;">Filter by module: </h5></div>
+                <div style="float: left; width: 79%;">
+                  <select class="form-control">
+                     @foreach($modules as $module)
+                    <option>{{ $module['name'] }}</option>
+                     @endforeach
+                  </select>
+                   
+                </div>
+              </div>
+              <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 77%; overflow: auto; overflow-x: hidden;">
+                 Aqui es la parte de los elementos  
+                <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
+                <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module One</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Two</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
+                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Three</h6>
+                  <div class="contenido">
+                    <div class="opt" style="color: black;">elemento 1</div>
+                    <div class="opt" style="color: black;">elemento 2</div>
+                    <div class="opt" style="color: black;">elemento 3</div>
+                    <div class="opt" style="color: black;">elemento 4</div>
+                  </div>
+                </div>
+              </div>
+            </div>-->
+            
+            <!--<div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
+              <h6 style="color: black;">Module Elements</h6>
+            </div>
+            <div class="contenido">
+              <div class="opt" style="color: black;">elemento 1</div>
+              <div class="opt" style="color: black;">elemento 2</div>
+              <div class="opt" style="color: black;">elemento 3</div>
+              <div class="opt" style="color: black;">elemento 4</div>
+            </div>
+            <div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
+              <h6 style="color: black;">Common Elements</h6>
+            </div>
+            <div class="contenido">
+              <div class="opt" style="color: black;">elemento 1</div>
+              <div class="opt" style="color: black;">elemento 2</div>
+              <div class="opt" style="color: black;">elemento 3</div>
+              <div class="opt" style="color: black;">elemento 4</div>
+            </div>-->
+        </span>
       </div>
-      <div class="editor-canvas">
-        <div id="editor"></div>
+      <div class="options bubbler-menu-item boxMod">
+        <div  style="color: white;">
+          <i class="icon fas fa-puzzle-piece fa-lg"></i>
+        </div> 
+        <span class="tooltiptext" style="height: 500px;">
+          <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+            <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+            <strong>Modules</strong>
+          </h5>
+          <div style="height: 91.5%; overflow: auto; overflow-x: hidden;">
+            @foreach($modules as $module)
+            <div style="border: lightgray 1px solid; overflow: hidden; width: 100%;">
+              <div style="width: 10%; float: left; color: #FF8045;">
+                <i class="fas fa-puzzle-piece fa-lg"></i>
+              </div>
+              <div align="left" style="width: 70%; float: left;">
+                <label style="color: black;">{{ $module['name'] }}</label>
+              </div>
+              <div align="right" style="width: 20%; float: left;">
+                @if($module['status'] == 1)
+                <div class="btn-group" style="margin-right: 20px;">
+                  <button class="btn btn-outline-primary btn-config" ref="{{ route(strtolower($module['name']).'.display.config') }}">Configurate</button>
+                  <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu" align="center"  aria-labelledby="dropdownMenuReference">  
+                    <button class="dropdown-item btn btn-danger text-danger">Deactivate</button>
+                    <button class="dropdown-item btn btn-primary text-primary">Uninstall</button>
+                  </div>
+                </div>
+                @else
+                  <button class="btn btn-primary btn-install-module" product="{{ Crypt::encrypt($module['id']) }}" style="margin-right: 20px;">Install</button>
+                @endif
+              </div>
+            </div>
+          @endforeach
+          </div>
+           <!--<div class="contenido">
+            <div class="opt">
+              <i class="far fa-address-card fa-2x" style="color: black; margin-top: 10px;"></i>
+              <h4 style="color: black;">Authentication</h4>
+              <button style="font-size: 18px;">Download!</button>
+            </div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+            <div class="opt" style="color: black;">elemento 2</div>
+          </div>-->
+        </span>
       </div>
-      <div class="panel__right">
-        <div class="layers-container"></div>
-        <div class="styles-container"></div>
-        <div class="elements-container"></div>
+      <div class="options bubbler-menu-item boxMod">
+        <div style="color: white;">
+            <i class="fas fa-archive fa-lg"></i>
+        </div> 
+          <span class="tooltiptext" style="height: 450px;">
+            <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+              <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+              <strong>Blocks</strong>
+            </h5>
+            <div class="container"> 
+             <div class="row">
+                <div class="col-md-12" id="block-content" style="height: 395px; overflow-y: auto; overflow-x: hidden;">
+                    
+                </div>
+              </div>
+            </div>
+        </span>
+      </div>
+      <div class="options bubbler-menu-item boxMod">
+        <div style="color: white;">
+          <i class="fas fa-question fa-lg"></i>
+        </div> 
+        <span class="tooltiptext" style="height: 380px;">
+          <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
+            <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+            <strong>Help</strong>
+          </h5>
+           
+        </span>
       </div>
     </div>
+    <!-- Start message of saved  -->
+    <div id="huka-message" style="z-index: 2; background: white; position: relative; margin-right: 10px; border: #FF8045 1px solid; width: 300px; height: 85px; float: right; margin-top: -15px; display: none;">
+       <h5 style="background: #FF8045; height: 37px; width: 100%; padding-bottom: 10px; padding-top: 10px;">
+        <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
+        <strong>Huka message</strong>
+      </h5>
+      <h3 class="message" style="color: black;"><i class="fas fa-check" style="margin-left: 5px; margin-right: 5px; color: #FF8045;"></i><span>Saved successfully!</span></h3>
+    </div>
+    <div id="editor" style="margin-top: 45px;">
+    </div>
+
     <script type="text/javascript">
-      // These pages are getting through the controller and only get pages corresponding to selected type are set
+
+      // CODIGO QUE DESPUES HAY QUE CAMBIAR DE POSISCION
+      $(".moduleEl").hide();
+      $("input[name=options]").change(function(){
+        if ($(this).is(":checked")) {
+          console.log($(this).val());
+          if ($(this).val() == "simple") {
+            $(".simpleEl").show();
+            $(".moduleEl").hide();
+          }else{
+            $(".moduleEl").show();
+            $(".simpleEl").hide();
+          }
+        }
+      });
+
+
       const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
+      // instanciate new modal
+      const modal = new tingle.modal({
+          footer: false,
+          stickyFooter: false,
+          closeMethods: ['overlay', 'button', 'escape'],
+          beforeClose: function() {
+              // here's goes some logic
+              // e.g. save content before closing the modal
+              return true; // close the modal
+              return false; // nothing happens
+          }
+      });
       const pages = [
       @foreach($pages as $page)
         {
           id: {{ $page->id }},
           name: '{{ $page->name }}',
           title: '{{ $page->title }}',
+          type: '{{ $page->type }}',
+          main: ({{ $page->main }} == 1) ? true : false,
           builder: {!! !empty($page->builder) ? $page->builder : '[]' !!},
         },
       @endforeach
       ];
+
+      const layouts = [
+      @foreach($layouts as $layout)
+        {
+          id: {{ $layout->id }},
+          name: '{{ $layout->name }}',
+          title: '{{ $layout->title }}',
+          type: 'L',
+          builder: {!! !empty($layout->builder) ? $layout->builder : '[]' !!},
+        },
+      @endforeach
+      ];
+
+      let type_page = 'P';
+
       // Pages 0 will be the default page when loading the editor
       var page = pages[0];
-      // grapesjs.init will load the editor with the corresponding configuration
       const editor = grapesjs.init({
         // Set assigned template
         canvas: {
@@ -175,6 +608,7 @@
             '{{ asset("css/bootstrap-new.css") }}',
           ]
         },
+        userLogin: false,
         fromElement: 1,
         clearOnRender: true,
         // Select container of editor
@@ -184,8 +618,8 @@
           autosave: false,
           setStepsBeforeSave: 1,
           type: 'remote',
-          urlStore: '/admin/editor/store/' + page.id, // Url where we storage page in db
-          urlLoad: '/admin/editor/' + page.id + '/load', // Url where we load page
+          urlStore: '/admin/editor/store/P/' + page.id, // Url where we storage page in db
+          urlLoad: '/admin/editor/load/P/' + page.id, // Url where we load page
           contentTypeJson: true,
           params: { _token:token },
         },
@@ -211,133 +645,49 @@
           autoAdd: 1,
         },
 
-        layerManager: {
-          appendTo: '.layers-container'
-        },
-        // Avoid any default panel
-        panels: {
-          defaults: [
+        // Set default devices manager
+        deviceManager: {
+          devices: [
             {
-              id: 'layers',
-              el: '.panel__right',
-              // Make the panel resizable
-              resizable: {
-                maxDim: 250,
-                minDim: 150,
-                tc: 0, // Top handler
-                cl: 1, // Left handler
-                cr: 0, // Right handler
-                bc: 0, // Bottom handler
-                // Being a flex child we need to change `flex-basis` property
-                // instead of the `width` (default)
-                keyWidth: 'flex-basis',
-              },
-            },
+              name: 'Desktop',
+              width: '', // default size
+            }, 
 
             {
-              id: 'pages',
-              el: '.panel__left',
-              resizable: {
-                maxDim: 150,
-                minDim: 100,
-                tc: 0,
-                cr: 1,
-                bc: 0,
-                keyWidth: 'flex-basis',
-              },
-            },
-
-            {
-              id: 'panel-switcher',
-              el: '.panel__switcher',
-              buttons: [
-                {
-                  id: 'show-layers',
-                  active: true,
-                  label: '<i class="fas fa-layer-group"></i>',
-                  command: 'show-layers',
-                  // Once activated disable the possibility to turn it off
-                  togglable: false,
-                },
-
-                {
-                  id: 'show-style',
-                  active: true,
-                  label: '<i class="fas fa-paint-brush"></i>',
-                  command: 'show-styles',
-                  togglable: false,
-                },
-
-                {
-                  id: 'show-elements',
-                  active: true,
-                  label: '<i class="fas fa-puzzle-piece"></i>',
-                  command: 'show-elements',
-                  togglable: false,
-                },
-
-              ],
-            },
-
-            {
-              id: 'panel-devices',
-              el: '.panel__devices',
-              buttons: [
-                {
-                  id: 'device-desktop',
-                  active: true,
-                  label: '<i class="fas fa-desktop"></i>',
-                  command: 'set-device-desktop',
-                  togglable: false,
-                },
-
-                {
-                  id: 'device-mobile',
-                  active: true,
-                  label: '<i class="fas fa-mobile-alt"></i>',
-                  command: 'set-device-mobile',
-                  togglable: false,
-                }
-
-              ],
-            },
-
-            {
-              id: 'panel-options',
-              el: '.panel__options',
-              buttons: [
-                {
-                  id: 'visibility',
-                  active: true, // active by default
-                  className: 'btn-toggle-borders',
-                  label: '<i class="fas fa-vector-square"></i>',
-                  command: 'sw-visibility', // Built-in command
-                },
-
-                {
-                  id: 'view-page',
-                  className: 'btn-toggle-borders',
-                  label: '<i class="far fa-eye"></i>',
-                  command: 'view-page',
-                  attributes: {title: 'View Page'}
-                },
-
-                {
-                  id: 'save-db',
-                  className: 'btn-toggle-borders',
-                  label: '<i class="far fa-save"></i>',
-                  command: 'save-db',
-                  attributes: {title: 'Save'}
-                }
-              ],
+              name: 'Mobile',
+              width: '320px', // this value will be used on canvas width
+              widthMedia: '480px', // this value will be used in CSS @media
             }
-
           ]
         },
-        
+        // Avoid any default panel
+        panels: { defaults: [] },
+
+         blockManager: {
+          appendTo: '#elements-content',
+          blocks: [
+            // These elements getting through the controller and only get active
+            @if(count($elements) > 0)
+              @foreach($elements as $element)
+                 @if(in_array('S', array_column(array($element), 'type')))
+                 {
+                  id: '{{ $element->name }}', 
+                  label: '{{ $element->label }}',
+                  attributes: {!! $element->attributes !!},
+                  // Content can be String or JSON
+                  content: {!! $element->content !!},
+                },
+                @endif
+              @endforeach
+            @endif
+          ]
+        }, 
+
+         
+
         // Set default styles manager 
         styleManager: {
-          appendTo: '.styles-container',
+          appendTo: '.gjs-item-design',
           sectors: [
             {
               name: 'General',
@@ -378,214 +728,105 @@
           ]
         },
 
-        // Set default elements
-        blockManager: {
-          appendTo: '.elements-container',
-          blocks: [
-            // These elements getting through the controller and only get active
-            @if(count($elements) > 0)
-              @foreach($elements as $element)
-                {
-                  id: '{{ $element->name }}', 
-                  label: '{{ $element->label }}',
-                  attributes: { class:'gjs-block-section' },
-                  category: 'Element',
-                  attributes: {!! $element->attributes !!},
-                  content: {!! $element->content !!} // Content can be String or JSON
-                },
-              @endforeach
+        traitManager: {
+          appendTo: '.gjs-item-trait',
+        },
+
+      });
+
+      
+     
+
+      /*var blockManager = editor.BlockManager;
+      blockManager.add('block-content', {
+        label: 'Simple block',
+        content: '<div class="my-block" style="color:black;">This is a simple block</div>',
+      });*/
+
+      @if(count($traits) > 0)
+        @foreach($traits as $trait)
+          var options = [];
+          $.each(@json($trait->values), function(index, val) {
+            options.push((val.substr(0,1) == '{') ? JSON.parse(val) : val);
+          });
+          
+          // Define traits to elements
+          editor.DomComponents.addType('{{ $trait->name }}', {
+            model: {
+              defaults: {
+                traits: options
+              }
+            }
+          });
+        @endforeach
+      @endif
+      // Add delimiter to the elements
+      editor.Canvas.getBody().className = 'gjs-dashed';
+
+      const um = editor.UndoManager;
+      const blockManager = editor.BlockManager;
+
+      /*
+      Block type elements
+      */ 
+      // You can also render your blocks outside of the main block container
+      const BlockElements = blockManager.render([
+        @if(count($elements) > 0)
+          @foreach($elements as $element)
+             @if(in_array('B', array_column(array($element), 'type')))
+             {
+              id: '{{ $element->name }}', 
+              label: '{{ $element->label }}',
+              attributes: {!! $element->attributes !!},
+              // Content can be String or JSON
+              content: {!! $element->content !!},
+            },
             @endif
-          ]
-        },
+          @endforeach
+        @endif
+            ], { external: true });
 
-        // Set default devices manager
-        deviceManager: {
-          devices: [
-            {
-              name: 'Desktop',
-              width: '', // default size
-            }, 
+      document.getElementById('block-content').appendChild(BlockElements);
 
-            {
-              name: 'Mobile',
-              width: '320px', // this value will be used on canvas width
-              widthMedia: '480px', // this value will be used in CSS @media
-            }
-          ]
-        },
-
-      }); // End editor init
-
-      var pn = editor.Panels;
-      var modal = editor.Modal;
-      var cmdm = editor.Commands;
-      var assets = editor.AssetManager.getAll();
-      // Add extra panel to editor
-      pn.addPanel({
-        id: 'panel-top',
-        el: '.panel__top',
-      });
-      pn.addPanel({
-        id: 'basic-actions',
-        el: '.panel__basic-actions',
-      });
-
-      // Define commands
-      cmdm.add('show-layers', {
-        getRowEl(editor) { return editor.getContainer().closest('.editor-row'); },
-        getLayersEl(row) { return row.querySelector('.layers-container') },
-
+      editor.Commands.add('tlb-traits', {
         run(editor, sender) {
-          const lmEl = this.getLayersEl(this.getRowEl(editor));
-          lmEl.style.display = '';
-        },
-
-        stop(editor, sender) {
-          const lmEl = this.getLayersEl(this.getRowEl(editor));
-          lmEl.style.display = 'none';
-        }
-      });
-
-      cmdm.add('show-styles', {
-        getRowEl(editor) { return editor.getContainer().closest('.editor-row'); },
-        getStyleEl(row) { return row.querySelector('.styles-container') },
-
-        run(editor, sender) {
-          const smEl = this.getStyleEl(this.getRowEl(editor));
-          smEl.style.display = '';
-        },
-
-        stop(editor, sender) {
-          const smEl = this.getStyleEl(this.getRowEl(editor));
-          smEl.style.display = 'none';
-        }
-      });
-
-      cmdm.add('show-elements', {
-        getRowEl(editor) { return editor.getContainer().closest('.editor-row'); },
-        getStyleEl(row) { return row.querySelector('.elements-container') },
-
-        run(editor, sender) {
-          const smEl = this.getStyleEl(this.getRowEl(editor));
-          smEl.style.display = '';
-        },
-
-        stop(editor, sender) {
-          const smEl = this.getStyleEl(this.getRowEl(editor));
-          smEl.style.display = 'none';
-        }
-      });
-
-      cmdm.add('set-device-desktop', {
-        run(editor, sender) {
-          editor.setDevice('Desktop');
-          sender.set('active', true);
-        },
-
-        stop(editor, sender) {
-          sender.set('active', false);
-        }
-      });
-
-      cmdm.add('set-device-mobile', {
-        run(editor, sender) {
-          editor.setDevice('Mobile');
-          sender.set('active', true);
-        },
-
-        stop(editor, sender) {
-          sender.set('active', false);
-        }
-      });
-
-      cmdm.add('save-db', {
-        run: function(editor, sender){
-          editor.store();
-        }
-      });
-
-      cmdm.add('view-page', {
-        run: function(editor, sender){
-          var url = editor.StorageManager.get('remote').get('urlLoad');
-          var id_page = url.split("/")[3];
-          window.open('/page/'+id_page, '_blank');
-        }
-      });
-
-      // Function to remove images
-      assets.on('remove', function(asset) {
-        var removefile = asset.get('src');
-        $.ajax({
-          url: '/admin/editor/store/images',
-          type: 'POST',
-          data: { file:removefile, _token:token, action:'remove', enctype:'multipart/form-data' },
-          success: function(response){
-            if (response.error) {
-              console.log(response.message);
-            }else{
-              assets.remove(asset.get('src'));
-            }
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert("Status: " + textStatus);
-            alert("Error: " + errorThrown); 
-          }  
-        });
-
-      });
-
-      // Define traits to elements
-      editor.DomComponents.addType('buttonLarge', {
-        model: {
-          defaults: {
-            traits: [
-              // Trait to button element
-              { 
-                type: 'select', 
-                label: 'Color/Size', 
-                name: 'class', 
-                options: [
-                  { value: '', name: 'Default' },
-                  { value: 'btn-primary', name: 'Primary' },
-                  { value: 'btn-primary form-control', name: 'Primary Large' },
-                  { value: 'btn-secondary', name: 'Secondary' },
-                  { value: 'btn-secondary form-control', name: 'Secondary Large' },
-                  { value: 'btn-success', name: 'Success' },
-                  { value: 'btn-success form-control', name: 'Success Large' },
-                  { value: 'btn-info', name: 'Info' },
-                  { value: 'btn-info form-control', name: 'Info Large' },
-                  { value: 'btn-warning', name: 'Warning' },
-                  { value: 'btn-danger', name: 'Danger' },
-                  { value: 'btn-dark', name: 'Dark' },
-                  { value: 'btn-outline-primary', name: 'Outline-primary' },
-                  { value: 'btn-outline-secondary', name: 'Outline-secondary' },
-                  { value: 'btn-outline-success', name: 'Outline-success' },
-                  { value: 'btn-outline-info', name: 'Outline-info' },
-                  { value: 'btn-outline-warning', name: 'Outline-warning' },
-                  { value: 'btn-outline-warning form-control', name: 'Outline-warning Large' },
-                  { value: 'btn-outline-danger', name: 'Outline-danger' },
-                  { value: 'btn-outline-danger form-control', name: 'Outline-danger Large' },
-                  { value: 'btn-outline-dark', name: 'Outline-dark' }, 
-                  { value: 'btn-link', name: 'Link' }  
-                ] 
-              }, 
-
-            ]
+          var trait_element = $('.gjs-item-trait');
+          if ($(trait_element).is(":visible")) {
+            $(trait_element).hide();
+          }else{
+            $(trait_element).show();
           }
         }
       });
 
+      editor.Commands.add('tlb-design', {
+        run(editor, sender) {
+          var design_element = $('.gjs-item-design');
+          if ($(design_element).is(":visible")) {
+            $(design_element).hide();
+          }else{
+            $(design_element).show();
+          }
+        }
+      });
+
+      // Add attribute to items that will only be visible when the user logs in
+      editor.on('component:add', (component) => {
+        if (editor.Config.userLogin) {
+          component.attributes.requiredUserLogin = true;
+        }
+      });
 
       /**
      * This function loads a page to be edited
      * @param Integer id_page
      * @return void
      */
-      function builderEditor(id_page){
+      function builderEditor(id_page, type){
         // Change urls to load and store
         editor.StorageManager.get('remote').set({
-          urlStore: '/admin/editor/store/' + id_page, 
-          urlLoad: '/admin/editor/' + id_page + '/load'
+          urlStore: '/admin/editor/store/' + type + '/' + id_page, 
+          urlLoad: '/admin/editor/load/' + type + '/'+ id_page
         });
 
         editor.DomComponents.clear(); // Clear components
@@ -596,15 +837,276 @@
         editor.load();  
       }
 
-      // This function run when select a pages button in the page panel
-      $(document).on('click', '.pages-btn', function(event) {
+      function showMessage(){
+        $('#huka-message').show('slow/200/fast');
+        $('#huka-message').delay(2000).hide(600);
+      }
+
+      $('.btn-page-type').click(function(e) {
+        $('.btn-page-type.active').removeClass('active');
+        $(this).addClass('active');
+        $('#select-page').empty();
+
+        switch($(this).attr('type')){
+          case 'front':
+          case 'back':
+            type_page = 'P';
+            var type = ($(this).attr('type') == 'front') ? 'F' : 'B';
+            $.each(pages, function(index, page) {
+              if (page.type == type) {
+                $('#select-page').append(`<option class="page-option" value="${page.id}">${page.name}</option>`);
+                if (page.main) {
+                  builderEditor(page.id, 'P');
+                }
+              }
+            });
+          break;
+
+          case 'layout':
+            type_page = 'L';
+            $.each(layouts, function(index, layout) {
+              $('#select-page').append(`<option class="page-option" value="${layout.id}">${layout.name}</option>`);
+            });
+
+            builderEditor(layouts[0].id, 'L');
+
+          break;
+
+        }
+        
+        reloadElements();
+
+      });
+
+      $('#select-page').change(function(e) {
+        var id_page = parseInt($("#select-page option:selected").val());
+        builderEditor(id_page, type_page);
+      });
+
+      $('.btn-devices').click(function(e) {
+        $('.btn-devices.active').removeClass('active');
+        $(this).addClass('active');
+        switch($(this).attr('device')){
+           case 'desktop':
+            editor.setDevice('Desktop');
+           break;
+
+           case 'mobile':
+            editor.setDevice('Mobile');
+           break;
+        }
+      });
+
+      $('.btn-main-action').click(function(e) {
+
+        switch($(this).attr('action')){
+           case 'view':
+            if ($(this).hasClass('active')) {
+              $(this).removeClass('active');
+              editor.Canvas.getBody().className = 'gjs-dashed';
+               $('#list-action').show();
+            }else{
+              $(this).addClass('active');
+              editor.Canvas.getBody().className = '';
+              $('#list-action').hide();
+            }
+           break;
+
+           case 'login':
+            if ($(this).hasClass('active')) {
+              $(this).removeClass('active');
+              editor.Config.userLogin = false;
+              displayUserLoginElements(editor.DomComponents.componentsById, false);
+            }else{
+              $(this).addClass('active');
+              editor.Config.userLogin = true;
+              displayUserLoginElements(editor.DomComponents.componentsById, true);
+            }
+           break;
+
+           case 'undo':
+            um.undo();
+           break;
+
+           case 'redo':
+            um.redo();
+           break;
+
+           case 'save':
+            editor.store();
+            showMessage();
+           break;
+
+           case 'exit':
+            window.location.replace("{{ route('dash.init') }}");
+           break;
+        }
+
+      });
+
+      $('.btn-install-module').click(function(e) {
+        var content = $(this).parent();
+        $.ajax({
+          url: '{{ route("install.products") }}',
+          type: 'POST',
+          data: {
+            _token: token,
+            product_id: $(this).attr('product'),
+            type: 'functionality'
+          },
+          success: function(response){
+            var data =JSON.parse(response);
+            if (!data.error) {
+              showMessage();
+              $(content).empty();
+              $(content).append(
+                `<div class="btn-group" style="margin-right: 20px;">
+                  <button class="btn btn-outline-primary btn-config" ref="${data.configuration}">Configurate</button>
+                  <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu" align="center"  aria-labelledby="dropdownMenuReference">  
+                    <button class="dropdown-item btn btn-danger text-danger">Deactivate</button>
+                    <button class="dropdown-item btn btn-primary text-primary">Uninstall</button>
+                  </div>
+                </div>`
+              );
+            }
+            
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+        
+      });
+
+
+      $(document).on('click', '.btn-config', function(event) {
+        var url = $(this).attr('ref');
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {_token: token},
+          success: function(response){
+            console.log(response);
+            // set content
+            modal.setContent(response.html);
+
+            // open modal
+            modal.open();    
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+      });
+
+      $(document).on('click', '.btn-close-modal', function(event) {
+        modal.close();
+      });
+
+      $(document).on('submit', '.module-modal', function(event) {
         event.preventDefault();
-        /* Act on the event */
-        // Get id of page that want to edit
-        var id_page = $(this).val();
-        // Set id page to builderEditor function 
-        builderEditor(parseInt(id_page));
-      }); 
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: data+'&_token='+token,
+          success: function(response){
+            // We reload elements to add new elements of the module 
+            reloadElements();
+            showMessage();
+            modal.close();
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+        
+      });
+      
+
+      function displayUserLoginElements(elements, display) {
+        $.each(elements, function(index, element) {
+          if (typeof element.attributes.requiredUserLogin !== 'undefined' && element.attributes.requiredUserLogin) {
+            if (display) {
+              $(element.getEl()).show();
+            }else{
+              $(element.getEl()).hide();
+            }
+          }
+        });
+      }
+
+      function reloadElements() {
+        // Get elements from block manager
+        var elements = blockManager.getAll();
+        var ids_elements = [];
+        // Get id of elements and save en ids_elements array 
+        $.each(elements.models, function(index, val) {
+          if (typeof val.id !== 'undefined') {
+            ids_elements.push(val.id);
+          }
+        });
+        // Remove elements to block manager
+        $.each(ids_elements, function(index, id) {
+          blockManager.remove(id);
+        });
+
+        if (type_page == 'L') {
+          // Add child element to block manager
+          blockManager.add('childContainer', {
+            label: 'Child Container',
+            content: '<div data-gjs-type="childContainer">${Child Content}</div>',
+            attributes: {
+                'class': 'gjs-fonts gjs-f-b1'
+            },
+          });
+        }
+
+        // Get and add elements to block manager
+        $.ajax({
+          url: '{{ route("get.elements") }}',
+          type: 'POST',
+          data: {
+            _token: token,
+          },
+          success: function(result){
+            $.each(result, function(index, element) {
+              var content;
+              // If content is an array we parse to json 
+              try {
+                  content = JSON.parse(element.content);
+              } catch (e) {
+                  content = element.content;
+              }
+              // Add element to block manager
+              blockManager.add(element.name, {
+                label: element.label,
+                content: content,
+                attributes: JSON.parse(element.attributes)
+              });
+            });
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest);
+            alert("Status: " + textStatus);
+          }  
+        });
+      }
+
+      function addNewRowToTable(table, tr) {
+        $(table).children('tbody').append(tr);
+      }
+
+      function removeElement(element) {
+        $(element).remove();
+      }
 
     </script>
   </body>

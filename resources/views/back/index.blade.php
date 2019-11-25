@@ -388,7 +388,7 @@
 
               <!-- Nav Item - Messages -->
               <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="{{ route('select.editor') }}">
+                <a class="nav-link dropdown-toggle" href="{{ url('/admin/editor') }}">
                   Edit Web
                   <span class="ml-2"><i class="far fa-edit"></i></span>
                 </a>

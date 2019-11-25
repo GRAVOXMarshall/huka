@@ -85,12 +85,7 @@ Route::group(['middleware' => 'admin'], function () {
 	*/
 
 	// Editor routes 
-	Route::get('/admin/editor', function () {
-	    return view('back/selectEditor');
-	})->name('select.editor');
-
-	// Editor routes 
-	Route::get('/admin/test', 'EditorController@loadTest');
+	Route::get('/admin/editor', 'EditorController@loadEditor');
 
 	Route::post('/admin/editor/store/images', 'EditorController@builderStorageImage')->name('storage.images');
 
