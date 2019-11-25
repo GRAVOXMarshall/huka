@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Classes\Element;
 use App\Http\Classes\ElementTrait;
 use App\Http\Classes\Page;
+use App\Http\Classes\Layout;
 use App\Http\Classes\Image;
 use App\Http\Classes\Module;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +24,9 @@ class EditorController extends Controller
      * @param Object Page
      * @return Json
      */
-    public function builderLoad(Page $page)
+    public function builderLoad($type, $id_page)
     {
+        $page = ($type != 'L') ? Page::find((int)$id_page) : Layout::find((int)$id_page);
         if (!empty($page)) {
             return json_encode([
                 'gjs-css' => (!is_null($page->css)) ? json_decode($page->css, true) : [],
@@ -46,8 +48,9 @@ class EditorController extends Controller
      * @param Object Request
      * @return Json
      */
-    public function builderPost(Page $page, Request $request)
+    public function builderPost($type, $id_page, Request $request)
     {
+        $page = ($type != 'L') ? Page::find((int)$id_page) : Layout::find((int)$id_page);
         if (!empty($page)) {
             $page->css = json_encode($request['gjs-css']);
             $page->styles = json_encode($request['gjs-styles']);
@@ -73,6 +76,7 @@ class EditorController extends Controller
 
     public function loadTest(){
         $pages = Page::all();
+        $layouts = Layout::all();
         // Get active elements in db 
         $elements = Element::where('active', 1)->get();
         $traits = ElementTrait::all();
@@ -116,7 +120,7 @@ class EditorController extends Controller
             }
         }
         
-        return view('editor/test', compact('pages', 'elements', 'traits', 'images', 'modules'));
+        return view('editor/test', compact('pages', 'layouts', 'elements', 'traits', 'images', 'modules'));
     }
 
 

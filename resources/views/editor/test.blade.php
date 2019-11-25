@@ -312,9 +312,10 @@
           @endforeach
         </select>
       </div>
-      <div class="child" style="width: 6%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
+      <div class="child" style="width: 10%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
         <button class="btn-action btn-page-type option active" type="front"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-page-type" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-page-type" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px; margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" type="layout"><i class="fas fa-window-restore fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
         <button class="btn-action btn-devices option active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
@@ -583,6 +584,19 @@
         },
       @endforeach
       ];
+
+      const layouts = [
+      @foreach($layouts as $layout)
+        {
+          id: {{ $layout->id }},
+          name: '{{ $layout->name }}',
+          title: '{{ $layout->title }}',
+          type: 'L',
+          builder: {!! !empty($layout->builder) ? $layout->builder : '[]' !!},
+        },
+      @endforeach
+      ];
+
       // Pages 0 will be the default page when loading the editor
       var page = pages[0];
       const editor = grapesjs.init({
@@ -602,8 +616,8 @@
           autosave: false,
           setStepsBeforeSave: 1,
           type: 'remote',
-          urlStore: '/admin/editor/store/' + page.id, // Url where we storage page in db
-          urlLoad: '/admin/editor/' + page.id + '/load', // Url where we load page
+          urlStore: '/admin/editor/store/P/' + page.id, // Url where we storage page in db
+          urlLoad: '/admin/editor/load/P' + page.id, // Url where we load page
           contentTypeJson: true,
           params: { _token:token },
         },
@@ -779,11 +793,11 @@
      * @param Integer id_page
      * @return void
      */
-      function builderEditor(id_page){
+      function builderEditor(id_page, type){
         // Change urls to load and store
         editor.StorageManager.get('remote').set({
-          urlStore: '/admin/editor/store/' + id_page, 
-          urlLoad: '/admin/editor/' + id_page + '/load'
+          urlStore: '/admin/editor/store/' + type + '/' + id_page, 
+          urlLoad: '/admin/editor/load/' + type + '/'+ id_page
         });
 
         editor.DomComponents.clear(); // Clear components
@@ -802,16 +816,33 @@
       $('.btn-page-type').click(function(e) {
         $('.btn-page-type.active').removeClass('active');
         $(this).addClass('active');
-        var type = ($(this).attr('type') == 'front') ? 'F' : 'B';
         $('#select-page').empty();
-        $.each(pages, function(index, page) {
-          if (page.type == type) {
-            $('#select-page').append(`<option class="page-option" value="${page.id}">${page.name}</option>`);
-            if (page.main) {
-              builderEditor(page.id);
-            }
-          }
-        });
+
+        switch($(this).attr('type')){
+          case 'front':
+          case 'back':
+            var type = ($(this).attr('type') == 'front') ? 'F' : 'B';
+            $.each(pages, function(index, page) {
+              if (page.type == type) {
+                $('#select-page').append(`<option class="page-option" value="${page.id}">${page.name}</option>`);
+                if (page.main) {
+                  builderEditor(page.id, 'P');
+                }
+              }
+            });
+          break;
+
+          case 'layout':
+            $.each(layouts, function(index, layout) {
+              $('#select-page').append(`<option class="page-option" value="${layout.id}">${layout.name}</option>`);
+            });
+
+            builderEditor(layouts[0].id, 'L');
+
+          break;
+
+        }
+        
       });
 
       $('#select-page').change(function(e) {

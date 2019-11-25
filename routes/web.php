@@ -96,12 +96,11 @@ Route::group(['middleware' => 'admin'], function () {
 
 	Route::get('/admin/editor/{type}', 'EditorController@loadEditor')->name('select.type.editor');
 
-	Route::post('/admin/editor/store/{page}', 'EditorController@builderPost');
+	Route::post('/admin/editor/store/{type}/{page}', 'EditorController@builderPost');
 
-	Route::get('/admin/editor/{page}/load', 'EditorController@builderLoad');
+	Route::get('/admin/editor/load/{type}/{page}', 'EditorController@builderLoad');
 
 	Route::post('/admin/editor/get/elements', 'EditorController@getElements')->name('get.elements');
-
 
 	// End editor routes 
 
