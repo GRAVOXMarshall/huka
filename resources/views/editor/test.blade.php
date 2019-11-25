@@ -510,7 +510,7 @@
             </h5>
             <div class="container"> 
              <div class="row">
-                <div class="col-md-12" id="block-content" style="height: 422px; overflow-y: auto; overflow-x: hidden;">
+                <div class="col-md-12" id="block-content" style="height: 395px; overflow-y: auto; overflow-x: hidden;">
                     
                 </div>
               </div>
@@ -661,7 +661,7 @@
         // Avoid any default panel
         panels: { defaults: [] },
 
-        blockManager: {
+         blockManager: {
           appendTo: '#elements-content',
           blocks: [
             // These elements getting through the controller and only get active
@@ -679,7 +679,9 @@
               @endforeach
             @endif
           ]
-        },
+        }, 
+
+         
 
         // Set default styles manager 
         styleManager: {
@@ -730,6 +732,9 @@
 
       });
 
+      
+     
+
       /*var blockManager = editor.BlockManager;
       blockManager.add('block-content', {
         label: 'Simple block',
@@ -758,6 +763,27 @@
 
       const um = editor.UndoManager;
       const blockManager = editor.BlockManager;
+
+      /*
+      Block type elements
+      */ 
+      // You can also render your blocks outside of the main block container
+      const BlockElements = blockManager.render([
+        @if(count($elements) > 0)
+          @foreach($elements as $element)
+             @if(in_array('B', array_column(array($element), 'type')))
+             {
+              id: '{{ $element->name }}', 
+              label: '{{ $element->label }}',
+              attributes: {!! $element->attributes !!},
+              // Content can be String or JSON
+              content: {!! $element->content !!},
+            },
+            @endif
+          @endforeach
+        @endif
+            ], { external: true });
+      document.getElementById('block-content').appendChild(BlockElements);
 
       editor.Commands.add('tlb-traits', {
         run(editor, sender) {
