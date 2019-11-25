@@ -667,6 +667,8 @@
           ]
         },
 
+         
+
         // Set default styles manager 
         styleManager: {
           appendTo: '.gjs-item-design',
@@ -715,6 +717,9 @@
         },
 
       });
+
+      
+     
 
       /*var blockManager = editor.BlockManager;
       blockManager.add('block-content', {
