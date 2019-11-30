@@ -449,8 +449,7 @@
           <h5 style="background: #FF8045; margin-top: -5px; padding-bottom: 10px; padding-top: 10px;">
             <i class="icon-fa-huka" style="margin-left: 10px; margin-right: 5px; color: white; "></i>
             <strong>Help</strong>
-          </h5>
-           
+          </h5> 
         </span>
       </div>
     </div>
