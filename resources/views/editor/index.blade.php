@@ -322,12 +322,12 @@
         <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
-        <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-main-action" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button> 
-        <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button> 
+        <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px; margin-right: 60px;"></i></button>
       </div>   
     </div> 
     <div id="list-action" class="bubbler-wrapper" >
@@ -354,7 +354,6 @@
                   </label>
                 </div>
               </div>
-              
               <div class="row simpleEl">
                 <div class="col-md-12" id="elements-content" style="height: 422px; overflow-y: auto; overflow-x: hidden;">
                     
@@ -377,74 +376,12 @@
                     </div>
                   </div>
                   <hr style="color: gray;">
+                  <div class="col-md-12" id="module-content" style="height: 330px; overflow-y: auto; overflow-x: hidden;">
+                    
+                </div>
                 </div>
               </div>
             </div>
-            <!--<div class="cont" style="margin-left: 5px; height: 92.5%;">
-              <div class="op list-group list-group-horizontal" id="list-tab" role="tablist" style="width: 100%;">
-
-                    <button class="list-group-item active" style="outline-color: #FF8045; width: 100%; height: 50px;"   id="elements-content-list" data-toggle="list" href="#elements-content" role="tab" aria-controls="content">Common</button> 
-                    <button class="list-group-item" style="outline-color: #FF8045; width: 100%; height: 50px;" id="elements-module-list" data-toggle="list" href="#elements-module" role="tab" aria-controls="module">Module</button> 
-                 
-              </div>
-              <div style="width: 100%; overflow: hidden;  ">
-                <div style="float: left;width: 20%;"><h5  style="color: black; padding-top: 7.5px;">Filter by module: </h5></div>
-                <div style="float: left; width: 79%;">
-                  <select class="form-control">
-                     @foreach($modules as $module)
-                    <option>{{ $module['name'] }}</option>
-                     @endforeach
-                  </select>
-                   
-                </div>
-              </div>
-              <div class="op tab-content" id="nav-tabContent" style="width: 100%; height: 77%; overflow: auto; overflow-x: hidden;">
-                 Aqui es la parte de los elementos  
-                <div class="tab-pane fade show active" id="elements-content" role="tabpanel" aria-labelledby="elements-content-list" style="border: 1px lightgray solid;"></div>
-                <div class="tab-pane fade" id="elements-module" role="tabpanel" aria-labelledby="elements-module-list" style="color: black;">
-                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module One</h6>
-                  <div class="contenido">
-                    <div class="opt" style="color: black;">elemento 1</div>
-                    <div class="opt" style="color: black;">elemento 2</div>
-                    <div class="opt" style="color: black;">elemento 3</div>
-                    <div class="opt" style="color: black;">elemento 4</div>
-                  </div>
-                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Two</h6>
-                  <div class="contenido">
-                    <div class="opt" style="color: black;">elemento 1</div>
-                    <div class="opt" style="color: black;">elemento 2</div>
-                    <div class="opt" style="color: black;">elemento 3</div>
-                    <div class="opt" style="color: black;">elemento 4</div>
-                  </div>
-                  <h6 align="left" style="margin-left: 5px; border-bottom: 1px #FF8045 solid;">Module Three</h6>
-                  <div class="contenido">
-                    <div class="opt" style="color: black;">elemento 1</div>
-                    <div class="opt" style="color: black;">elemento 2</div>
-                    <div class="opt" style="color: black;">elemento 3</div>
-                    <div class="opt" style="color: black;">elemento 4</div>
-                  </div>
-                </div>
-              </div>
-            </div>-->
-            
-            <!--<div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
-              <h6 style="color: black;">Module Elements</h6>
-            </div>
-            <div class="contenido">
-              <div class="opt" style="color: black;">elemento 1</div>
-              <div class="opt" style="color: black;">elemento 2</div>
-              <div class="opt" style="color: black;">elemento 3</div>
-              <div class="opt" style="color: black;">elemento 4</div>
-            </div>
-            <div align="left" style="margin-left: 10px; border-bottom: orange 1px solid;">
-              <h6 style="color: black;">Common Elements</h6>
-            </div>
-            <div class="contenido">
-              <div class="opt" style="color: black;">elemento 1</div>
-              <div class="opt" style="color: black;">elemento 2</div>
-              <div class="opt" style="color: black;">elemento 3</div>
-              <div class="opt" style="color: black;">elemento 4</div>
-            </div>-->
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
@@ -484,19 +421,6 @@
             </div>
           @endforeach
           </div>
-           <!--<div class="contenido">
-            <div class="opt">
-              <i class="far fa-address-card fa-2x" style="color: black; margin-top: 10px;"></i>
-              <h4 style="color: black;">Authentication</h4>
-              <button style="font-size: 18px;">Download!</button>
-            </div>
-            <div class="opt" style="color: black;">elemento 2</div>
-            <div class="opt" style="color: black;">elemento 2</div>
-            <div class="opt" style="color: black;">elemento 2</div>
-            <div class="opt" style="color: black;">elemento 2</div>
-            <div class="opt" style="color: black;">elemento 2</div>
-            <div class="opt" style="color: black;">elemento 2</div>
-          </div>-->
         </span>
       </div>
       <div class="options bubbler-menu-item boxMod">
@@ -542,7 +466,7 @@
     </div>
 
     <script type="text/javascript">
-
+      // MODO REGISTRADO y VISITANTE
       // CODIGO QUE DESPUES HAY QUE CAMBIAR DE POSISCION
       $(".moduleEl").hide();
       $("input[name=options]").change(function(){
@@ -787,6 +711,27 @@
             ], { external: true });
 
       document.getElementById('block-content').appendChild(BlockElements);
+
+      const ModuleElements = blockManager.render([
+        @if(count($elements) > 0)
+          @foreach($elements as $element)    
+            @if(in_array('M', array_column(array($element), 'type')))
+             {
+              id: '{{ $element->name }}', 
+              label: '{{ $element->label }}',
+              attributes: {!! $element->attributes !!},
+              // Content can be String or JSON
+              content: {!! $element->content !!},
+            },
+            @endif
+          @endforeach
+        @endif
+            ], { external: true });
+
+      document.getElementById('module-content').appendChild(ModuleElements);
+
+      const blocks = blockManager.getAll();
+      //console.log(JSON.stringify(blocks));
 
       editor.Commands.add('tlb-traits', {
         run(editor, sender) {
