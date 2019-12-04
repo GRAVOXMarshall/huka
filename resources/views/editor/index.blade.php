@@ -313,21 +313,21 @@
         </select>
       </div>
       <div class="child" style="width: 10%; margin-left: 5px; border-right: #DBDBDB 1px solid; border-left: #DBDBDB 1px solid; text-align: center;">
-        <button class="btn-action btn-page-type option active" type="front"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-page-type" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px; margin-right: 10px;"></i></button>
-        <button class="btn-action btn-page-type" type="layout"><i class="fas fa-window-restore fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-page-type option active" data-toggle="tooltip" data-placement="bottom" title="Front pages" type="front"><i class="fas fa-laptop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" data-toggle="tooltip" data-placement="bottom" title="Back pages" type="back"><i class="fas fa-server fa-lg" style="margin-top: 10px; margin-right: 10px;"></i></button>
+        <button class="btn-action btn-page-type" data-toggle="tooltip" data-placement="bottom" title="Layouts" type="layout"><i class="fas fa-window-restore fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div id="" class="child" style="width: 50%; text-align: center; border-right: #DBDBDB 1px solid;">
-        <button class="btn-action btn-devices option active" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
-        <button class="btn-action btn-devices" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
+        <button class="btn-action btn-devices option active" data-toggle="tooltip" data-placement="bottom" title="Desktop" device="desktop"><i class="fas fa-desktop fa-lg" style="margin-top: 10px;  margin-right: 10px;"></i></button>
+        <button class="btn-action btn-devices" data-toggle="tooltip" data-placement="bottom" title="Mobile" device="mobile"><i class="fas fa-mobile-alt fa-lg" style="margin-top: 10px;"></i></button>
       </div>
       <div class="child" style="width: 22%; text-align: center;">
-        <button class="btn-action btn-main-action" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
-        <button class="btn-action btn-main-action" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
-        <button class="btn-action btn-main-action" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
-        <button class="btn-action btn-main-action" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
-        <button class="btn-action btn-main-action" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button> 
-        <button class="btn-action btn-main-action" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px; margin-right: 60px;"></i></button>
+        <button class="btn-action btn-main-action" data-toggle="tooltip" data-placement="bottom" title="Preview" action="view"><i class="far fa-eye fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" data-toggle="tooltip" data-placement="bottom" title="?????" action="login"><i class="far fa-user fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" data-toggle="tooltip" data-placement="bottom" title="Undo" action="undo"><i class="fas fa-undo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action"data-toggle="tooltip" data-placement="bottom" title="Redo" action="redo"><i class="fas fa-redo fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button>
+        <button class="btn-action btn-main-action" data-toggle="tooltip" data-placement="bottom" title="Save" action="save"><i class="far fa-save fa-lg" style="margin-top: 10px;  margin-right: 15px;"></i></button> 
+        <button class="btn-action btn-main-action" data-toggle="tooltip" data-placement="bottom" title="Save" action="exit"><i class="fas fa-sign-out-alt fa-lg" style="margin-top: 10px; margin-right: 60px;"></i></button>
       </div>   
     </div> 
     <div id="list-action" class="bubbler-wrapper" >
@@ -465,6 +465,9 @@
     </div>
 
     <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
       // MODO REGISTRADO y VISITANTE
       // CODIGO QUE DESPUES HAY QUE CAMBIAR DE POSISCION
       $(".moduleEl").hide();
