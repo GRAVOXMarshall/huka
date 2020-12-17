@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.2",
-        "datatables.net": "^1.10.19",
+        "datatables.net": "^1.10.22",
         "datatables.net-dt": "^1.10.19",
         "grapesjs": "^0.14.61",
         "tingle.js": "^0.15.1",
